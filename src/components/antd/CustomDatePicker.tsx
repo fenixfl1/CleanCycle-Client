@@ -3,11 +3,11 @@ import { DatePicker } from 'antd'
 import { PickerProps } from 'antd/es/date-picker/generatePicker'
 import { Dayjs } from 'dayjs'
 
-type CustomDatePickerProps<T> = PickerProps<T> & {
+export type CustomDatePickerProps = PickerProps<Dayjs> & {
   width?: number | string
 }
 
-const CustomDatePicker: React.FC<CustomDatePickerProps<Dayjs>> = ({
+const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
   style,
   width = '100%',
   format = 'DD/MM/YYYY',

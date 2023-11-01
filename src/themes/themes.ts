@@ -36,12 +36,13 @@ declare module 'styled-components' {
     secondaryColorHover: string
     paragraphFontSize: string
     h1FontSize: string
+    secondaryTextColor: string
   }
 }
 
 export const defaultTheme: DefaultTheme = {
-  primaryColor: '#0b4d1d',
-  secondaryColor: Colors.blue[5],
+  primaryColor: Colors.purple[6],
+  secondaryColor: Colors.green[6],
   baseBgColor: '#ffffff',
   backgroundColor: Colors.gray[1],
   textColor: Colors.gray[9],
@@ -59,6 +60,7 @@ export const defaultTheme: DefaultTheme = {
   secondaryColorHover: 'rgba(0, 0, 0, 0.06)',
   paragraphFontSize: '18px',
   h1FontSize: '32px',
+  secondaryTextColor: '#8c8c8c',
   breakpoints: {
     xs: 480,
     sm: 576,

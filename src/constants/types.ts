@@ -14,3 +14,10 @@ export type TriggersType = {
   onSubmit?: unknown
   onTab?: unknown
 }
+
+export type Format = 'phone' | 'document' | 'currency' | 'date'
+
+export type Location = {
+  lat: number
+  lng: number
+}

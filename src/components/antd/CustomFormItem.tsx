@@ -5,15 +5,13 @@ import {
   CustomFormItemContext,
   CustomFormItemContextProviderProps,
   CustomFormItemProps,
-} from '@/context/FormItem'
-import { AnyType } from '@/constant/types'
+} from '@/context/formItem'
 
 const { Item } = Form
 
-const CustomFormItemContextProvider: React.FC<CustomFormItemContextProviderProps> = ({
-  children,
-  ...props
-}) => {
+const CustomFormItemContextProvider: React.FC<
+  CustomFormItemContextProviderProps
+> = ({ children, ...props }) => {
   return (
     <CustomFormItemContext.Provider value={{ ...props }}>
       {children}
@@ -39,7 +37,7 @@ const CustomFormItem: React.FC<CustomFormItemProps> = ({
 
   const isFile = name?.toString().includes('FILE')
 
-  const normFile = (e: AnyType) => {
+  const normFile = (e: any) => {
     if (Array.isArray(e)) {
       return e
     }

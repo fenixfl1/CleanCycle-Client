@@ -4,6 +4,7 @@ import PageHeader from '@/components/PageHeader'
 import { defaultTheme } from '@/themes/themes'
 import React from 'react'
 import styled from 'styled-components'
+// import { Switch, useDarkreader } from 'react-darkreader'
 
 const Content = styled(CustomContent)`
   height: 85vh;
@@ -17,15 +18,27 @@ const Content = styled(CustomContent)`
   }
 `
 
+const FloatButton = styled.div`
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 999;
+`
+
 interface LayoutProps {
   children: React.ReactNode
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  // const [isDark, { toggle }] = useDarkreader(false)
   return (
     <CustomLayout style={{ background: defaultTheme.baseBgColor }}>
       <PageHeader />
       <Content>{children}</Content>
+
+      <FloatButton>
+        {/* <Switch checked={isDark} onChange={toggle} /> */}
+      </FloatButton>
     </CustomLayout>
   )
 }

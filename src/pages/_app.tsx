@@ -11,6 +11,10 @@ import { useState, useEffect } from 'react'
 import { Provider } from 'react-redux'
 import { ThemeProvider } from 'styled-components'
 import Layout from './_layout'
+import moment from 'moment'
+import 'moment/locale/es'
+
+moment.locale('es')
 
 const App: NextPage<AppProps> = ({ Component, pageProps }) => {
   const [demLoaded, setDemLoaded] = useState(false)

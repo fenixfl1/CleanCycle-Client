@@ -3,6 +3,7 @@ import { Row, RowProps } from 'antd'
 export interface CustomRowProps extends RowProps {
   width?: number | string
   height?: number | string
+  gap?: number | string
 }
 
 const CustomRow: React.FC<CustomRowProps> = ({
@@ -10,6 +11,7 @@ const CustomRow: React.FC<CustomRowProps> = ({
   height,
   justify = 'start',
   align = 'top',
+  gap,
   ...props
 }) => {
   return (
@@ -17,7 +19,7 @@ const CustomRow: React.FC<CustomRowProps> = ({
       align={align}
       justify={justify}
       {...props}
-      style={{ ...props.style, width, height }}
+      style={{ ...props.style, width, height, gap }}
     />
   )
 }

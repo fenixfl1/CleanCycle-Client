@@ -10,7 +10,7 @@ export type InputFormat = {
   currency?: CurrencyType
 }
 
-interface CustomInputNumberProps extends InputNumberProps {
+export interface CustomInputNumberProps extends InputNumberProps {
   format?: InputFormat
   width?: number | string
 }
@@ -53,8 +53,8 @@ const CustomInputNumber: React.FC<CustomInputNumberProps> = ({
       }
       default:
         return {
-          format: (undefined as unknown) as string,
-          parse: (undefined as unknown) as string,
+          format: undefined as unknown as string,
+          parse: undefined as unknown as string,
         }
     }
   }

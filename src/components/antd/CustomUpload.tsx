@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import { RcFile, UploadFile, UploadProps } from 'antd/lib/upload'
 import { Form, Upload } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
-import { sleep } from '@/helpers'
 import { UploadRequestOption } from 'rc-upload/lib/interface'
 import { useFormContext } from '@/context/form'
-import { useFormItemContext } from '@/context/FormItem'
+import { useFormItemContext } from '@/context/formItem'
 import { NamePath } from 'antd/es/form/interface'
 import CustomButton, { CustomButtonProps } from './CustomButton'
 import CustomModal from './CustomModal'
+import sleep from '@/helpers/sleep'
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -75,7 +75,7 @@ const CustomUpload: React.FC<CustomUploadProps> = ({
     setPreviewImage(file.url || (file.preview as string))
     setPreviewOpen(true)
     setPreviewTitle(
-      file.name || file.url?.substring(file.url?.lastIndexOf('/') + 1) || ''
+      file.name || file.url?.substring(file.url?.lastIndexOf('/') + 1) || '',
     )
   }
 

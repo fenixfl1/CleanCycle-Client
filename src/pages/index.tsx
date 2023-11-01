@@ -1,51 +1,37 @@
-import CustomButton from '@/components/antd/CustomButton'
-import CustomRow from '@/components/antd/CustomRow'
-import CustomTitle from '@/components/antd/CustomTitle'
-import { CustomParagraph } from '@/components/antd/CustomTypography'
+import Body from '@/components/Body'
+import ConditionalComponent from '@/components/ConditionalComponent'
+import PostPreview from '@/components/PostPreview'
+import CustomFloatButton from '@/components/antd/CustomFloatButton'
+import CustomSpace from '@/components/antd/CustomSpace'
+import { PATH_POSTS_CREATE_POSTS } from '@/constants/routes'
+import { isLoggedIn } from '@/lib/session'
+import { useGetPostsList } from '@/services/posts'
+import { EditOutlined } from '@ant-design/icons'
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
-const Image = styled.img`
-  border-radius: ${({ theme }) => theme.borderRadius};
-  // box-shadow: ${({ theme }) => theme.boxShadow};
-`
-
-const Container = styled.div`
+const Space = styled(CustomSpace)`
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 85vh;
-  width: 70%;
-  margin: 0 auto;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-
-  @media (max-width: 1802px) {
-    width: 80%;
-  }
 `
 
 const Home = () => {
+  const router = useRouter()
+  const { data } = useGetPostsList('')
+
   return (
-    <CustomRow>
-      <Container>
-        <div>
-          <CustomTitle>Waste Recycle</CustomTitle>
-          <CustomParagraph>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-            voluptatum, quos, voluptas, dolorum quia voluptates quas
-            exercitationem natus quibusdam doloribus voluptate. Quisquam
-            voluptatum, quos, voluptas, dolorum quia voluptates quas
-            exercitationem natus quibusdam doloribus voluptate.
-            <br />
-            <br />
-            <CustomButton type="primary">Leer más</CustomButton>
-          </CustomParagraph>
-        </div>
-        <Image src="\assets\img\undraw_Clean_up_re_504g.png" alt="" />
-      </Container>
-    </CustomRow>
+    <Body>
+      <Space>{data?.map((post) => <PostPreview post={post} />)}</Space>
+      <ConditionalComponent condition={isLoggedIn()}>
+        <CustomFloatButton
+          style={{ width: '50px', height: '50px' }}
+          onClick={() => router.push(PATH_POSTS_CREATE_POSTS)}
+          icon={<EditOutlined />}
+          tooltip={'Escribir un post'}
+          type="primary"
+        />
+      </ConditionalComponent>
+    </Body>
   )
 }
 

@@ -1,6 +1,6 @@
 import { Input, InputProps, InputRef } from 'antd'
 import { useFormContext } from '@/context/form'
-import { useFormItemContext } from '@/context/FormItem'
+import { useFormItemContext } from '@/context/formItem'
 import CustomTooltip from './CustomTooltip'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { forwardRef } from 'react'
@@ -26,7 +26,7 @@ const CustomInput = forwardRef<InputRef, CustomInputProps>(
       width,
       ...props
     },
-    ref
+    ref,
   ) => {
     const context = useFormContext()
     const itemContext = useFormItemContext()
@@ -34,7 +34,7 @@ const CustomInput = forwardRef<InputRef, CustomInputProps>(
     const _readOnly = (context?.readOnly && !alwaysAvailable) || readOnly
 
     const handleOnKeyPress = (
-      e: React.KeyboardEvent<HTMLInputElement>
+      e: React.KeyboardEvent<HTMLInputElement>,
     ): void => {
       if (notNumber && e.key.match(/\d/g)) {
         e.preventDefault()
@@ -67,7 +67,7 @@ const CustomInput = forwardRef<InputRef, CustomInputProps>(
         {...props}
       />
     )
-  }
+  },
 )
 
 export default CustomInput

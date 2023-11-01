@@ -3,6 +3,7 @@ import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 import { BASE_WEB_API_URL } from '@/constants/routes'
 import { ApiResponse, ResponseInterface } from '@/interfaces/general'
 import assert from '@/helpers/assert'
+import { getSessionToken } from '@/lib/session'
 
 interface BaseQueryWithRetryArgs {
   url: string
@@ -15,6 +16,7 @@ export const axiosApi = axios.create({
   baseURL: BASE_WEB_API_URL,
   headers: {
     'Content-Type': 'application/json',
+    Authorization: `Token ${getSessionToken()}`,
   },
 })
 
@@ -22,11 +24,14 @@ const axiosBaseQuery =
   (): BaseQueryFn<BaseQueryWithRetryArgs> =>
   async ({ url, method, data, params }) => {
     try {
-      const {
-        data: { response, metadata },
-      } = await axiosApi.request({ url, method, data, params })
+      const { data: response } = await axiosApi.request({
+        url,
+        method,
+        data,
+        params,
+      })
 
-      return { data: { response, metadata } } as any
+      return response
     } catch (error) {
       assert<AxiosError>(error)
       return {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
 
 interface MotionComponentProps {
   children: React.ReactNode
@@ -8,7 +8,7 @@ interface MotionComponentProps {
 }
 
 const MotionComponent: React.FC<MotionComponentProps> = ({
-  delay = 1,
+  delay = 0.5,
   ...props
 }) => {
   const router = useRouter()
@@ -20,12 +20,13 @@ const MotionComponent: React.FC<MotionComponentProps> = ({
 
   const pageTransition = {
     duration: delay,
+    type: 'tween',
   }
 
   return (
     <AnimatePresence initial presenceAffectsLayout mode="wait">
       <motion.div
-        // key={router.route}
+        key={router.route}
         initial="initial"
         animate="animate"
         exit="exit"
