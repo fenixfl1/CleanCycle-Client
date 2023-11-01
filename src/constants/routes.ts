@@ -11,7 +11,7 @@ export const WEB_API_PATH_VALIDATE_EMAIL = 'users/validate_email'
 export const WEB_API_PATH_VALIDATE_USERNAME = 'users/validate_username'
 
 export const WEB_API_RANDOM_USER_AVATAR =
-  'https://xsgames.co/randomusers/assets/avatars/pixel/[user_id].jpg'
+  'https://xsgames.co/randomusers/assets/avatars/pixel/[index].jpg'
 
 // LOCAL PATHS
 export const PATH_HOME = '/'

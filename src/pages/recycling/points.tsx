@@ -13,6 +13,8 @@ import CustomFormItem from '@/components/antd/CustomFormItem'
 import CustomSpace from '@/components/antd/CustomSpace'
 import CustomDivider from '@/components/antd/CustomDivider'
 import CustomTitle from '@/components/antd/CustomTitle'
+import { Form } from 'antd'
+import { cities, wasteTypes } from '@/constants/lists'
 
 // array of locations of dominican republic to show on the map
 const locations: Location[] = [
@@ -27,6 +29,7 @@ const locations: Location[] = [
 const googleApiUrl = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_URL
 
 const Points: React.FC = () => {
+  const [form] = Form.useForm()
   const userLocation = useGetLocation()
   const [closestLocation, setClosestLocation] = React.useState<Location>()
 
@@ -56,16 +59,24 @@ const Points: React.FC = () => {
           <CustomTitle>Puntos de reciclaje más cercanos a ti</CustomTitle>
         </CustomDivider>
         <CustomCol xs={24}>
-          <CustomForm layout={'vertical'}>
+          <CustomForm form={form} layout={'vertical'}>
             <CustomRow justify={'space-between'}>
               <CustomCol xs={8}>
-                <CustomFormItem label={'Ciudad'} name={'CITY'}>
-                  <CustomSelect width={'90%'} showSearch />
+                <CustomFormItem
+                  label={'Ciudad'}
+                  name={'CITY'}
+                  initialValue={''}
+                >
+                  <CustomSelect width={'90%'} showSearch options={cities} />
                 </CustomFormItem>
               </CustomCol>
               <CustomCol xs={8}>
-                <CustomFormItem label={'tipo de residuo'} name={'WASTE_TYPE'}>
-                  <CustomSelect width={'90%'} />
+                <CustomFormItem
+                  label={'tipo de residuo'}
+                  name={'WASTE_TYPE'}
+                  initialValue={'Todos'}
+                >
+                  <CustomSelect width={'90%'} options={wasteTypes} />
                 </CustomFormItem>
               </CustomCol>
               <CustomCol xs={8}>

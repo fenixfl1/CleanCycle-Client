@@ -36,6 +36,9 @@ import {
 import CustomTooltip from './antd/CustomTooltip'
 import { defaultTheme } from '@/themes/themes'
 
+const getAvatar = (index: number) =>
+  WEB_API_RANDOM_USER_AVATAR.replace('[index]', `${index}`)
+
 const AvatarContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -179,7 +182,7 @@ const PageHeader: React.FC = () => {
             <Avatar
               shadow
               size={44}
-              src={getSessionInfo().AVATAR}
+              src={getAvatar(getSessionInfo().USER_ID)}
               icon={<PersonCircleOutlined />}
             />
           </CustomPopover>
