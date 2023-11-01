@@ -4,7 +4,6 @@ import PageHeader from '@/components/PageHeader'
 import { defaultTheme } from '@/themes/themes'
 import React from 'react'
 import styled from 'styled-components'
-// import { Switch, useDarkreader } from 'react-darkreader'
 
 const Content = styled(CustomContent)`
   height: 85vh;
