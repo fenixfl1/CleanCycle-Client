@@ -1,8 +1,7 @@
 import React from 'react'
 import { List, ListProps } from 'antd'
-import { AnyType } from '../constant/types'
 
-const CustomList: React.FC<ListProps<AnyType>> = ({
+const CustomList: React.FC<ListProps<any>> = ({
   size = 'small',
   ...props
 }): React.ReactElement => {
