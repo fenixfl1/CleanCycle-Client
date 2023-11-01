@@ -1,4 +1,4 @@
-import { NotificationType } from '@/constant/types'
+import { NotificationType } from '@/constants/types'
 import { notification as message } from 'antd'
 
 type NotificationParametersType = {

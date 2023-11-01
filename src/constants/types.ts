@@ -21,3 +21,5 @@ export type Location = {
   lat: number
   lng: number
 }
+
+export type NotificationType = 'success' | 'info' | 'warning' | 'error'
