@@ -1,6 +1,7 @@
 export const BASE_WEB_API_URL = process.env.NEXT_PUBLIC_APP_WEB_API_URL
 export const WEB_API_PATH_LOGIN = 'login'
-export const WEB_API_PATH_GET_POST_LIST = 'posts/get_posts'
+export const WEB_API_PATH_GET_POST_LIST = 'posts/get_posts_list'
+export const WEB_API_PATH_GET_POSTS = 'posts/get_posts'
 export const WEB_API_PATH_GET_POST_BY_ID = 'posts/get_posts_by_id'
 export const WEB_API_PATH_CREATE_POST = 'posts/create_post'
 export const WEB_API_PATH_UPDATE_POST = 'posts/update_post'
