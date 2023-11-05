@@ -13,6 +13,7 @@ import CustomRow from '@/components/antd/CustomRow'
 import CustomSpace from '@/components/antd/CustomSpace'
 import CustomSpin from '@/components/antd/CustomSpin'
 import { CustomParagraph } from '@/components/antd/CustomTypography'
+import customNotification from '@/components/antd/customNotification'
 import getBase64 from '@/helpers/getBase64'
 import sleep from '@/helpers/sleep'
 import { Post } from '@/redux/slices/postsSlice'
@@ -90,8 +91,11 @@ const NewPost: React.FC = () => {
 
       await createPost(post).unwrap()
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log({ error })
+      customNotification({
+        title: 'Error',
+        description: 'Ocurrió un error al crear el post',
+        type: 'error',
+      })
     }
   }
 
