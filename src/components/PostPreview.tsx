@@ -20,6 +20,17 @@ interface PostPreviewProps {
   post: Post
 }
 
+const PostContainer = styled.div`
+  width: 100%;
+  max-width: 816px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  @media (max-width: 1819px) {
+    max-width: 700px;
+  }
+`
+
 const ImageContainer = styled.div`
   width: 100%;
 
@@ -79,6 +90,13 @@ const Container = styled(CustomCol)`
     }
   }
 `
+const Title = styled(CustomTitle)`
+  margin-bottom: 0 !important;
+`
+
+const Divider = styled(CustomDivider)`
+  margin-top: 10px !important;
+`
 
 const getPostDescription = (content: string) => {
   const description = content.replace(/<img[^>]*>/g, '')
@@ -89,45 +107,23 @@ const getPostDescription = (content: string) => {
 const PostPreview: React.FC<PostPreviewProps> = ({ post }) => {
   return (
     <CustomCol xs={24}>
-      <CustomRow justify={'center'}>
-        <Container xs={20}>
-          <Paragraph style={{ fontSize: 16 }}>
-            <CustomTitle>{post.TITLE}</CustomTitle>
-            <CustomDivider style={{ margin: '10px 0' }} />
-
+      <CustomRow style={{ position: 'relative' }}>
+        <PostContainer>
+          <Title level={1}>{post?.TITLE}</Title>
+          <Divider />
+          <Paragraph>
             <ImageContainer>
-              <img src={post.FRONT_PAGE} alt={post.TITLE} />
+              <img src={post?.FRONT_PAGE} alt={post?.TITLE} />
             </ImageContainer>
             <SubTitleContainer>
               <Subtitle>
-                <CustomSpace direction={'horizontal'} size={8}>
-                  <Subtitle>{post.AUTHOR}</Subtitle>
-                  <CustomTooltip title={'Likes'}>
-                    <CustomBadge count={post.LIKED_BY?.length} size={'small'}>
-                      <HeartOutlined />
-                    </CustomBadge>
-                  </CustomTooltip>
-                  <CustomTooltip title={'Comentarios'}>
-                    <CustomBadge count={post.COMMENTS} size={'small'}>
-                      <CommentOutlined />
-                    </CustomBadge>
-                  </CustomTooltip>
-                </CustomSpace>
+                <Subtitle>{post?.AUTHOR}</Subtitle>
               </Subtitle>
-              <Subtitle>{dateTransform(post.CREATED_AT)}</Subtitle>
+              <Subtitle>{dateTransform(post?.CREATED_AT ?? '')}</Subtitle>
             </SubTitleContainer>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: truncateText(getPostDescription(post.CONTENT), 400),
-              }}
-            />
-            <Link className={'floating-btn'} href={`/posts/${post.POST_ID}`}>
-              Continuar leyendo
-            </Link>
+            <div dangerouslySetInnerHTML={{ __html: post?.CONTENT || '' }} />
           </Paragraph>
-
-          <CustomDivider style={{ margin: '10px 0' }} />
-        </Container>
+        </PostContainer>
       </CustomRow>
       <br />
       <br />

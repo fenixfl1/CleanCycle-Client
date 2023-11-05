@@ -29,12 +29,14 @@ const GlobalStyle = createGlobalStyle`
         margin: 20px;
     }
 
-    
-
     iframe {
         box-shadow: ${({ theme }) => theme.boxShadow} !important;
         border: none;
         outline: none;
+    }
+
+    pre {
+        border-radius: ${({ theme }) => theme.borderRadius} !important;
     }
 `
 

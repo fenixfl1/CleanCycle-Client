@@ -165,6 +165,7 @@ const NewPost: React.FC = () => {
             <ButtonActions
               preview={preview}
               onPreview={handleOnPreview}
+              onPublish={handleOnCreatePost}
               position={{ top: 150, right: 220 }}
             />
           </CustomRow>
