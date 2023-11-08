@@ -18,30 +18,27 @@ import { useLikePost } from '@/services/posts'
 import { useRouter } from 'next/router'
 import CustomBadge from './antd/CustomBadge'
 import CustomTooltip from './antd/CustomTooltip'
+import CustomPopover from './antd/CustomPopover'
+import CustomCol from './antd/CustomCol'
+import { CustomParagraph } from './antd/CustomTypography'
 
 interface ButtonActionsProps {
-  likes?: string[]
-  avatar?: string
-  preview?: boolean
+  author?: { USERNAME?: string; ABOUT?: string; AVATAR?: string }
+  comments?: number
   isEditing?: boolean
+  likes?: string[]
   onComment?: () => void
   onLike?: () => void
   onPreview?: () => void
   onPublish?: () => void
-  position: {
-    top?: number | string
-    left?: number | string
-    right?: number | string
-    bottom?: number | string
-  }
+  position?: {}
+  preview?: boolean
 }
 
 const Container = styled.div<ButtonActionsProps>`
   position: fixed;
-  top: ${({ position: { top } }) => top}px;
-  left: ${({ position: { left } }) => left}px;
-  right: ${({ position: { right } }) => right}px;
-  bottom: ${({ position: { bottom } }) => bottom}px;
+  right: 5%;
+  bottom: 5%;
   z-index: 1;
   background-color: ${({ theme }) => theme.baseBgColor};
   padding: 20px;
@@ -57,7 +54,8 @@ const Container = styled.div<ButtonActionsProps>`
 `
 
 const ButtonActions: React.FC<ButtonActionsProps> = ({
-  avatar,
+  author,
+  comments = 0,
   isEditing = false,
   likes: likedBy = [],
   onComment,
@@ -104,7 +102,7 @@ const ButtonActions: React.FC<ButtonActionsProps> = ({
     <Container position={position}>
       <CustomFlex gap={20} vertical style={{ width: 'max-content' }}>
         <ConditionalComponent
-          condition={isEditing}
+          condition={!isEditing}
           fallback={
             <>
               <CustomTooltip
@@ -135,30 +133,53 @@ const ButtonActions: React.FC<ButtonActionsProps> = ({
             </>
           }
         >
-          <CustomAvatar shadow size={36} src={avatar} icon={<UserOutlined />} />
-          <CustomBadge count={likes.length}>
-            <CustomButton
-              size={'large'}
-              type={'text'}
-              onClick={handleLike}
-              icon={
-                <ConditionalComponent
-                  condition={!ILiked}
-                  fallback={
-                    <HeartTwoTone twoToneColor={'red'} style={iconStyle} />
-                  }
+          <>
+            <CustomPopover
+              title={`@${author?.USERNAME}`}
+              content={
+                <CustomCol
+                  xs={24}
+                  style={{
+                    maxWidth: '200px',
+                  }}
                 >
-                  <HeartOutlined style={iconStyle} />
-                </ConditionalComponent>
+                  <CustomParagraph>{author?.ABOUT}</CustomParagraph>
+                </CustomCol>
               }
-            />
-          </CustomBadge>
-          <CustomButton
-            onClick={onComment}
-            size={'large'}
-            type={'text'}
-            icon={<CommentOutlined style={iconStyle} />}
-          />
+            >
+              <CustomAvatar
+                shadow
+                size={36}
+                src={author?.AVATAR}
+                icon={<UserOutlined />}
+              />
+            </CustomPopover>
+            <CustomBadge count={likes.length}>
+              <CustomButton
+                size={'large'}
+                type={'text'}
+                onClick={handleLike}
+                icon={
+                  <ConditionalComponent
+                    condition={!ILiked}
+                    fallback={
+                      <HeartTwoTone twoToneColor={'red'} style={iconStyle} />
+                    }
+                  >
+                    <HeartOutlined style={iconStyle} />
+                  </ConditionalComponent>
+                }
+              />
+            </CustomBadge>
+            <CustomBadge count={comments}>
+              <CustomButton
+                onClick={onComment}
+                size={'large'}
+                type={'text'}
+                icon={<CommentOutlined style={iconStyle} />}
+              />
+            </CustomBadge>
+          </>
         </ConditionalComponent>
       </CustomFlex>
     </Container>

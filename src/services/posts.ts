@@ -6,9 +6,10 @@ import {
   WEB_API_PATH_CREATE_POST,
   WEB_API_PATH_UPDATE_POST,
   WEB_API_PATH_GET_POSTS,
+  WEB_API_PATH_GET_COMMENTS,
 } from '@/constants/routes'
 import { ApiResponse } from '@/interfaces/general'
-import { Post } from '@/redux/slices/postsSlice'
+import { Comment, Post } from '@/redux/slices/postsSlice'
 import { api } from '@/services/api'
 
 interface LikePayload {
@@ -39,7 +40,7 @@ export const postApiHelper = api.injectEndpoints({
         data: { ...payload },
       }),
     }),
-    commentPost: build.mutation<string, Comment>({
+    commentPost: build.mutation<string, Partial<Comment>>({
       query: (payload) => ({
         url: WEB_API_PATH_COMMENT_POST,
         method: 'POST',
@@ -60,9 +61,16 @@ export const postApiHelper = api.injectEndpoints({
         data: { ...payload },
       }),
     }),
-    getPosts: build.mutation<ApiResponse<Post[]>, Record<string, unknown>>({
+    getPosts: build.mutation<Post[], Record<string, unknown>>({
       query: (payload) => ({
         url: WEB_API_PATH_GET_POSTS,
+        method: 'POST',
+        data: { ...payload },
+      }),
+    }),
+    getPostComments: build.mutation<Comment[], Partial<Comment>>({
+      query: (payload) => ({
+        url: WEB_API_PATH_GET_COMMENTS,
         method: 'POST',
         data: { ...payload },
       }),
@@ -78,4 +86,5 @@ export const {
   useCreatePostMutation: useCreatePost,
   useUpdatePostMutation: useUpdatePost,
   useGetPostsMutation: useGetPosts,
+  useGetPostCommentsMutation: useGetPostComments,
 } = postApiHelper

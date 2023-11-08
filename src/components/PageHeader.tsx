@@ -182,7 +182,7 @@ const PageHeader: React.FC = () => {
             <Avatar
               shadow
               size={44}
-              src={getAvatar(getSessionInfo().USER_ID)}
+              src={getSessionInfo().AVATAR}
               icon={<PersonCircleOutlined />}
             />
           </CustomPopover>

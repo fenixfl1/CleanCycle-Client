@@ -8,6 +8,7 @@ import FrontPage from './FrontPage'
 import ButtonActions from './ButtonActions'
 import AvatarSelector from './AvatarSelector'
 import GoogleMap from './GoogleMap'
+import SearchComponent from './SearchComponents'
 
 const TextEditor = dynamic(() => import('./TextEditor'), { ssr: false })
 
@@ -22,4 +23,5 @@ export {
   ButtonActions,
   AvatarSelector,
   GoogleMap,
+  SearchComponent,
 }

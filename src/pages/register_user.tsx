@@ -13,6 +13,7 @@ import CustomInput from '@/components/antd/CustomInput'
 import CustomPasswordInput from '@/components/antd/CustomPasswordInput'
 import CustomRow from '@/components/antd/CustomRow'
 import CustomSpin from '@/components/antd/CustomSpin'
+import CustomTextArea from '@/components/antd/CustomTextArea'
 import { CustomText } from '@/components/antd/CustomTypography'
 import Logo from '@/components/styled/Logo'
 import { PATH_LOGIN } from '@/constants/routes'
@@ -92,6 +93,7 @@ const RegisterUser: React.FC = () => {
       const data = await form.validateFields()
 
       data.AVATAR = avatar
+      data.USERNAME = data.USERNAME.toLowerCase()
 
       delete data._PASSWORD
       await registerUser(data).unwrap()
@@ -145,7 +147,7 @@ const RegisterUser: React.FC = () => {
     <>
       <Body>
         <CustomSpin spinning={isLoading}>
-          <CustomRow justify={'center'} align={'middle'} height={'84vh'}>
+          <CustomRow justify={'center'} align={'middle'} height={'80vh'}>
             <Card shadow>
               <CustomFlex justify={'center'}>
                 <CustomRow width={'28rem'} align={'middle'}>
@@ -195,10 +197,12 @@ const RegisterUser: React.FC = () => {
                       <CustomCol xs={24}>
                         <CustomFormItem
                           hasFeedback
-                          name={'USERNAME'}
                           label={'Usuario'}
-                          validateStatus={usernameStatus}
+                          name={'USERNAME'}
+                          noSpaces
+                          noSymbol
                           rules={[{ required: true }]}
+                          validateStatus={usernameStatus}
                         >
                           <CustomInput
                             onBlur={handleBlurUsername}
@@ -256,6 +260,15 @@ const RegisterUser: React.FC = () => {
                           ]}
                         >
                           <CustomPasswordInput placeholder="Contraseña" />
+                        </CustomFormItem>
+                      </CustomCol>
+                      <CustomCol xs={24}>
+                        <CustomFormItem label={'Sobre ti'} name={'ABOUT'}>
+                          <CustomTextArea
+                            maxLength={700}
+                            showCount
+                            autoSize={{ minRows: 5 }}
+                          />
                         </CustomFormItem>
                       </CustomCol>
                       <CustomButton

@@ -44,7 +44,7 @@ export const defaultTheme: DefaultTheme = {
   primaryColor: Colors.purple[6],
   secondaryColor: Colors.green[6],
   baseBgColor: '#ffffff',
-  backgroundColor: Colors.gray[1],
+  backgroundColor: '#f1f3f4',
   textColor: Colors.gray[9],
   borderRadius: '10px',
   borderColor: '#f0f0f0',

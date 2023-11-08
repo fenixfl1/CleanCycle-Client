@@ -5,10 +5,9 @@ import CustomFloatButton from '@/components/antd/CustomFloatButton'
 import CustomSpace from '@/components/antd/CustomSpace'
 import { PATH_POSTS_CREATE_POSTS } from '@/constants/routes'
 import { isLoggedIn } from '@/lib/session'
-import { useGetPosts, useGetPostsList } from '@/services/posts'
+import { useGetPostsList } from '@/services/posts'
 import { EditOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 import styled from 'styled-components'
 
 const Space = styled(CustomSpace)`
@@ -18,17 +17,7 @@ const Space = styled(CustomSpace)`
 
 const Home = () => {
   const router = useRouter()
-  const [getPosts, { data: posts }] = useGetPosts()
   const { data } = useGetPostsList('')
-
-  useEffect(() => {
-    getPosts({ state: true })
-  }, [])
-
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log({ posts })
-  }, [posts])
 
   return (
     <Body>

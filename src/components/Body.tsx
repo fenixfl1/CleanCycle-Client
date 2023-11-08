@@ -2,31 +2,42 @@ import React from 'react'
 import CustomContent from './antd/CustomContent'
 import styled from 'styled-components'
 
-const Container = styled.div<{ fullSize?: boolean }>`
-  width: 100%;
-  max-width: 816px;
-  margin: 0 auto;
-  padding: 0 20px;
-  ${({ fullSize }) =>
-    fullSize &&
-    `
-    max-width: 100%;
-  `};
-  // @media (max-width: 1819px) {
-  //   max-width: 1000px;
-  //   margin: 0;
-  // }
-`
-
 interface BodyProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
   fullSize?: boolean
+  background?: string
 }
 
-const Body: React.FC<BodyProps> = ({ children, fullSize, ...props }) => {
+const Container = styled.div<BodyProps>`
+  width: 100%;
+  max-width: ${({ fullSize }) => (fullSize ? '100%' : '816px')};
+
+  margin: 0 auto;
+  padding: 0 20px;
+  border-radius: ${({ theme }) => theme.borderRadius};
+  ${({ background }) =>
+    background &&
+    `
+    background-color: ${background};
+  `};
+
+  // media queries para monitor de 22 pulgadas
+  @media (max-width: 1819px) {
+    max-width: 1000px;
+  }
+`
+
+const Body: React.FC<BodyProps> = ({
+  children,
+  fullSize,
+  background,
+  ...props
+}) => {
   return (
     <CustomContent {...props}>
-      <Container fullSize={fullSize}>{children}</Container>
+      <Container fullSize={fullSize} background={background}>
+        {children}
+      </Container>
     </CustomContent>
   )
 }
