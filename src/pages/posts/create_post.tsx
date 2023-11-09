@@ -14,12 +14,14 @@ import CustomSpace from '@/components/antd/CustomSpace'
 import CustomSpin from '@/components/antd/CustomSpin'
 import { CustomParagraph } from '@/components/antd/CustomTypography'
 import customNotification from '@/components/antd/customNotification'
+import { PATH_HOME } from '@/constants/routes'
 import getBase64 from '@/helpers/getBase64'
 import sleep from '@/helpers/sleep'
 import { Post } from '@/redux/slices/postsSlice'
 import { useCreatePost } from '@/services/posts'
 import { colBreakpoints } from '@/themes/breakpoints'
 import { Form, UploadFile } from 'antd'
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
@@ -52,6 +54,7 @@ const EditorContainer = styled.div`
 `
 
 const NewPost: React.FC = () => {
+  const router = useRouter()
   const [form] = Form.useForm<Post>()
   const content = Form.useWatch('CONTENT', form)
   const [postTitle, setPostTitle] = useState<string>('')
@@ -90,6 +93,8 @@ const NewPost: React.FC = () => {
       post.TITLE = postTitle
 
       await createPost(post).unwrap()
+      router.push(PATH_HOME)
+      router.reload()
     } catch (error) {
       customNotification({
         title: 'Error',
@@ -144,7 +149,7 @@ const NewPost: React.FC = () => {
                   >
                     <CustomForm form={form}>
                       <EditableInput
-                        name={'TITULO'}
+                        name={'TITLE'}
                         editable={true}
                         value={postTitle}
                         inputProps={{ placeholder: 'Título del post' }}
