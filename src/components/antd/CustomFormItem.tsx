@@ -24,12 +24,13 @@ const patternOnlyNumbers = '^[0-9 -,]+$'
 const patternAlfaNumeric = '^[a-z A-Z ZÀ-ÿ 0-9]+$'
 
 const CustomFormItem: React.FC<CustomFormItemProps> = ({
-  onlyString,
-  onlyNumber,
-  noSymbol,
-  uppercase,
-  required,
   name,
+  noSpaces,
+  noSymbol,
+  onlyNumber,
+  onlyString,
+  required,
+  uppercase,
   valuePropName = 'value',
   ...props
 }) => {
@@ -69,6 +70,10 @@ const CustomFormItem: React.FC<CustomFormItemProps> = ({
       typeof value?.toUpperCase == 'function' && (uppercase ?? ctx?.uppercase)
         ? value.toUpperCase()
         : value
+  }
+
+  if (noSpaces) {
+    props.normalize = (value: string) => value?.replace(/\s/g, '')
   }
 
   const checkRequiredRule = () =>

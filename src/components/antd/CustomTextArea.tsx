@@ -6,7 +6,7 @@ import { TextAreaRef } from 'antd/es/input/TextArea'
 const { TextArea } = Input
 
 const CustomTextArea = React.forwardRef<TextAreaRef, TextAreaProps>(
-  ({ maxLength = 200, showCount = true, ...props }, ref) => {
+  ({ maxLength = 500, showCount = true, ...props }, ref) => {
     return (
       <TextArea
         maxLength={maxLength}
@@ -15,7 +15,7 @@ const CustomTextArea = React.forwardRef<TextAreaRef, TextAreaProps>(
         {...props}
       />
     )
-  }
+  },
 )
 
 CustomTextArea.displayName = 'CustomTextArea'

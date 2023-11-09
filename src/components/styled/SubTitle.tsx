@@ -2,14 +2,15 @@ import styled from 'styled-components'
 
 interface SubtitleProps extends React.HTMLAttributes<HTMLSpanElement> {
   decorator?: string
+  size?: number
+  upper?: boolean
 }
 
 const Subtitle = styled.span<SubtitleProps>`
-  font-size: 14px;
-  // font-weight: 300;
+  font-size: ${({ size }) => size} px;
   color: rgba(0, 0, 0, 0.4);
   margin-bottom: 1rem;
-  text-transform: uppercase;
+  ${({ upper }) => upper && `text-transform: uppercase;`}
 
   ${({ decorator }) =>
     decorator &&

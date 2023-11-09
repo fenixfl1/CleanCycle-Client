@@ -2,10 +2,12 @@ import { createAction, createSlice } from '@reduxjs/toolkit'
 
 export interface Comment {
   COMMENT_ID: number
-  CONTENT: string
+  COMMENT: string
   USERNAME: string
   CREATED_AT: string
   AVATAR: string
+  POST_ID: number
+  USER_ID: number
 }
 
 export interface Post {
@@ -19,6 +21,7 @@ export interface Post {
   POST_ID: number
   STATE: string
   TITLE: string
+  ABOUT_AUTHOR: string
 }
 
 export interface PostsState {

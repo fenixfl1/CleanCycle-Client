@@ -167,6 +167,7 @@ const NewPost: React.FC = () => {
               </div>
             </ConditionalComponent>
             <ButtonActions
+              isEditing
               preview={preview}
               onPreview={handleOnPreview}
               onPublish={handleOnCreatePost}

@@ -15,6 +15,7 @@ import Subtitle from './styled/SubTitle'
 import CustomDivider from './antd/CustomDivider'
 import Link from 'next/link'
 import { truncateText } from '@/helpers/truncateText'
+import { useRouter } from 'next/router'
 
 interface PostPreviewProps {
   post: Post
@@ -65,14 +66,14 @@ const Paragraph = styled(CustomParagraph)`
 
 const Container = styled(CustomCol)`
   position: relative;
+  padding: 10px;
+  background-color: ${({ theme }) => theme.backgroundColor};
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   &:hover {
-    .floating-btn {
-      display: block;
-    }
-    border-radius: ${({ theme }) => theme.borderRadius};
-    transition: all 0.3s ease-in-out;
     position: relative;
+    box-shadow: ${({ theme }) => theme.boxShadow};
+    cursor: pointer;
 
     &:after {
       content: '';
@@ -82,11 +83,6 @@ const Container = styled(CustomCol)`
       bottom: 0;
       left: 0;
       border-radius: ${({ theme }) => theme.borderRadius};
-      background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0) 0%,
-        ${({ theme }) => theme.secondaryTextColor} 100%
-      );
     }
   }
 `
@@ -101,30 +97,54 @@ const Divider = styled(CustomDivider)`
 const getPostDescription = (content: string) => {
   const description = content.replace(/<img[^>]*>/g, '')
   const regex = /<h[1-6]>(.*?)<\/h[1-6]>/g
-  return description.replace(regex, '')
+  return truncateText(description.replace(regex, ''), 500)
 }
 
 const PostPreview: React.FC<PostPreviewProps> = ({ post }) => {
+  const router = useRouter()
+
+  const handleOnClick = () => {
+    router.push(`/posts/${post?.POST_ID}`)
+  }
+
   return (
     <CustomCol xs={24}>
-      <CustomRow style={{ position: 'relative' }}>
-        <PostContainer>
-          <Title level={1}>{post?.TITLE}</Title>
-          <Divider />
-          <Paragraph>
-            <ImageContainer>
-              <img src={post?.FRONT_PAGE} alt={post?.TITLE} />
-            </ImageContainer>
-            <SubTitleContainer>
-              <Subtitle>
-                <Subtitle>{post?.AUTHOR}</Subtitle>
-              </Subtitle>
-              <Subtitle>{dateTransform(post?.CREATED_AT ?? '')}</Subtitle>
-            </SubTitleContainer>
-            <div dangerouslySetInnerHTML={{ __html: post?.CONTENT || '' }} />
-          </Paragraph>
-        </PostContainer>
-      </CustomRow>
+      <Container onClick={handleOnClick}>
+        <CustomRow style={{ position: 'relative' }}>
+          <PostContainer>
+            <Title level={1}>{post?.TITLE}</Title>
+            <Divider />
+            <Paragraph>
+              <ImageContainer>
+                <img src={post?.FRONT_PAGE} alt={post?.TITLE} />
+              </ImageContainer>
+              <SubTitleContainer>
+                <Subtitle>
+                  <CustomSpace direction={'horizontal'}>
+                    <Subtitle>{post?.AUTHOR}</Subtitle>
+                    <CustomBadge count={post?.COMMENTS}>
+                      <CustomTooltip title="Comentarios">
+                        <CommentOutlined />
+                      </CustomTooltip>
+                    </CustomBadge>
+                    <CustomBadge count={post?.LIKED_BY?.length}>
+                      <CustomTooltip title="Likes">
+                        <HeartOutlined style={{ fontSize: 18 }} />
+                      </CustomTooltip>
+                    </CustomBadge>
+                  </CustomSpace>
+                </Subtitle>
+                <Subtitle>{dateTransform(post?.CREATED_AT ?? '')}</Subtitle>
+              </SubTitleContainer>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: getPostDescription(post?.CONTENT || ''),
+                }}
+              />
+            </Paragraph>
+          </PostContainer>
+        </CustomRow>
+      </Container>
       <br />
       <br />
       <br />
