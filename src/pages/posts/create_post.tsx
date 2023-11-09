@@ -87,12 +87,14 @@ const NewPost: React.FC = () => {
 
   const handleOnCreatePost = async () => {
     try {
+      window.onbeforeunload = null
       const post = await form.validateFields()
 
       post.FRONT_PAGE = frontPageImage
 
       await createPost(post).unwrap()
       router.push(PATH_HOME)
+      router.reload()
       customNotification({
         title: 'Post creado',
         description:
