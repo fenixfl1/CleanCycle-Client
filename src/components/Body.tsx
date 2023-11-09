@@ -10,7 +10,7 @@ interface BodyProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const Container = styled.div<BodyProps>`
   width: 100%;
-  max-width: ${({ fullSize }) => (fullSize ? '100%' : '816px')};
+  max-width: ${({ fullSize }) => (fullSize ? '100%' : '916px')};
 
   margin: 0 auto;
   padding: 0 20px;
@@ -21,7 +21,6 @@ const Container = styled.div<BodyProps>`
     background-color: ${background};
   `};
 
-  // media queries para monitor de 22 pulgadas
   @media (max-width: 1819px) {
     max-width: 1000px;
   }

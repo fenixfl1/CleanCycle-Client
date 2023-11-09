@@ -25,6 +25,7 @@ import {
   RightOutlined,
 } from '@ant-design/icons'
 import { defaultTheme } from '@/themes/themes'
+import { useRouter } from 'next/router'
 
 // array of locations of dominican republic to show on the map
 const locations: Location[] = [
@@ -96,6 +97,7 @@ const googleApiUrl = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_URL
 
 const Points: React.FC = () => {
   const [form] = Form.useForm()
+  const router = useRouter()
   const userLocation = useGetLocation()
   const [closestLocation, setClosestLocation] = React.useState<Location>()
 
@@ -141,7 +143,11 @@ const Points: React.FC = () => {
           <PointsContainer>
             <CustomFlex wrap={'wrap'} gap={10}>
               {points.map((item) => (
-                <Card hoverable>
+                <Card
+                  key={item.id}
+                  hoverable
+                  onClick={() => router.push(`${router.asPath}/${item.id}`)}
+                >
                   <CustomFlex align={'center'}>
                     <CustomParagraph style={{ padding: 5, width: '100%' }}>
                       <CustomTitle level={5}>{item.city}</CustomTitle>
