@@ -90,11 +90,15 @@ const NewPost: React.FC = () => {
       const post = await form.validateFields()
 
       post.FRONT_PAGE = frontPageImage
-      post.TITLE = postTitle
 
       await createPost(post).unwrap()
       router.push(PATH_HOME)
-      router.reload()
+      customNotification({
+        title: 'Post creado',
+        description:
+          'El post se ha creado correctamente. el post esta siendo revisado por un administrador. será avisado  cuando sea aprobado',
+        type: 'success',
+      })
     } catch (error) {
       customNotification({
         title: 'Error',
