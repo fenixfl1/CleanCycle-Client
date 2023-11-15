@@ -93,7 +93,10 @@ const NewPost: React.FC = () => {
       post.FRONT_PAGE = frontPageImage
 
       await createPost(post).unwrap()
-      router.push(PATH_HOME)
+
+      // redirect to home page
+      await router.push(PATH_HOME)
+
       router.reload()
       customNotification({
         title: 'Post creado',

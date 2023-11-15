@@ -42,9 +42,11 @@ const Paragraph = styled(CustomParagraph)`
 
 const About = styled.div`
   width: 100%;
+  max-width: 816px;
   background-color: ${({ theme }) => theme.backgroundColor};
   border-radius: ${({ theme }) => theme.borderRadius};
   padding: 20px;
+  margin: 0 auto;
 `
 
 const PostContainer = styled.div`
@@ -66,10 +68,13 @@ const CommentContent = styled.div`
   background-color: ${({ theme }) => theme.backgroundColor};
   padding: 10px;
   width: 100%;
+  max-width: 816px;
+  margin: auto;
 `
 
 const CommentSection = styled.div`
   width: '100%';
+  max-width: 816px;
   margin-bottom: 20px;
   padding: 20px;
   margin-top: 20px;
@@ -80,6 +85,7 @@ const CommentSection = styled.div`
   right: '5.5%';
   background-color: ${({ theme }) => theme.backgroundColor};
   border-radius: ${({ theme }) => theme.borderRadius};
+  margin: 0 auto;
 `
 
 const CommentContainer = styled.div`
@@ -117,7 +123,9 @@ const Post: React.FC = () => {
   const router = useRouter()
   const postId = Number(router.query.post_id)
 
-  const { data: post } = useGetPostById(postId, { skip: isNaN(postId) })
+  const { data: post, isLoading } = useGetPostById(postId, {
+    skip: isNaN(postId),
+  })
   const [getPostComment, { data: comments }] = useGetPostComments()
   const [commentPost] = useCommentPost()
 
@@ -145,8 +153,8 @@ const Post: React.FC = () => {
   }
 
   return (
-    <Body>
-      <CustomRow gap={10}>
+    <Body loading={isLoading}>
+      <CustomRow gap={10} justify={'center'}>
         <PostContainer>
           <Title level={1}>{post?.TITLE}</Title>
           <Divider />

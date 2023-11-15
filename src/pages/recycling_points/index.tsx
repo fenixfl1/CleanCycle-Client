@@ -3,7 +3,7 @@ import Body from '@/components/Body'
 import CustomFlex from '@/components/antd/CustomFlex'
 import CustomRow from '@/components/antd/CustomRow'
 import useGetLocation from '@/hooks/useGetLocation'
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { Location } from '@/constants/types'
 import { getRequest } from '@/services/api'
 import CustomCol from '@/components/antd/CustomCol'
@@ -23,9 +23,13 @@ import {
   EnvironmentOutlined,
   PhoneOutlined,
   RightOutlined,
+  ShopOutlined,
 } from '@ant-design/icons'
 import { defaultTheme } from '@/themes/themes'
 import { useRouter } from 'next/router'
+import { useGetCitiesInfoListMutation } from '@/services/recycling_points'
+import useDebounce from '@/hooks/useDebounce'
+import CustomSpin from '@/components/antd/CustomSpin'
 
 // array of locations of dominican republic to show on the map
 const locations: Location[] = [
@@ -42,54 +46,9 @@ const Card = styled(CustomCard)`
   width: 100%;
 `
 
-const points = [
-  {
-    id: 1,
-    city: 'Centro Santiago',
-    address: 'Calle 30 de Marzo',
-    phone: '809-123-4567',
-    schedule: 'Lunes a Viernes 8:00am - 5:00pm',
-  },
-  {
-    id: 2,
-    city: 'Centro La Vega',
-    address:
-      'García Godoy N0. 81, Plaza Estela en modulo 213, LA VEGA, La Vega · < 1 km',
-    phone: '809-123-4567',
-    schedule: 'Lunes a Viernes 8:00am - 5:00pm',
-  },
-  {
-    id: 3,
-    city: 'Centro Puerto Plata',
-    address: 'Av. Manolo Tavarez Justo',
-    phone: '809-123-4567',
-    schedule: 'Lunes a Viernes 8:00am - 5:00pm',
-  },
-  {
-    id: 4,
-    city: 'Centro Samana',
-    address: 'Av. Manolo Tavarez Justo',
-    phone: '809-123-4567',
-    schedule: 'Lunes a Viernes 8:00am - 5:00pm',
-  },
-  {
-    id: 5,
-    city: 'Centro Santo Domingo',
-    address: 'Av. 27 de Febrero',
-    phone: '809-123-4567',
-    schedule: 'Lunes a Viernes 8:00am - 5:00pm',
-  },
-  {
-    id: 6,
-    city: 'Centro San Cristobal',
-    address: 'Av. Constitucion',
-    phone: '809-123-4567',
-    schedule: 'Lunes a Viernes 8:00am - 5:00pm',
-  },
-]
-
 const PointsContainer = styled.div`
-  max-height: 500px;
+  max-height: 300px;
+  min-height: 250px;
   overflow: auto;
 `
 
@@ -100,6 +59,19 @@ const Points: React.FC = () => {
   const router = useRouter()
   const userLocation = useGetLocation()
   const [closestLocation, setClosestLocation] = React.useState<Location>()
+  const [searchValue, setSearchValue] = React.useState<string>('')
+  const debounce = useDebounce(searchValue)
+
+  const [getCitiesInfoList, { data: points, isLoading }] =
+    useGetCitiesInfoListMutation()
+
+  const handleGetCitiesInfoList = useCallback(() => {
+    getCitiesInfoList({
+      CITY: debounce,
+    })
+  }, [debounce])
+
+  useEffect(handleGetCitiesInfoList, [handleGetCitiesInfoList])
 
   // find location most close to user
   useEffect(() => {
@@ -138,39 +110,52 @@ const Points: React.FC = () => {
             closestLocation={closestLocation}
           />
 
-          <SearchComponent />
+          <SearchComponent onSearch={setSearchValue} />
 
-          <PointsContainer>
-            <CustomFlex wrap={'wrap'} gap={10}>
-              {points.map((item) => (
-                <Card
-                  key={item.id}
-                  hoverable
-                  onClick={() => router.push(`${router.asPath}/${item.id}`)}
-                >
-                  <CustomFlex align={'center'}>
-                    <CustomParagraph style={{ padding: 5, width: '100%' }}>
-                      <CustomTitle level={5}>{item.city}</CustomTitle>
-                      <CustomSpace>
-                        <CustomText>
-                          <EnvironmentOutlined style={iconStyle} />{' '}
-                          {item.address}
-                        </CustomText>
-                        <CustomText>
-                          <PhoneOutlined style={iconStyle} /> {item.phone}
-                        </CustomText>
-                        <CustomText>
-                          <ClockCircleOutlined style={iconStyle} />{' '}
-                          {item.schedule}
-                        </CustomText>
-                      </CustomSpace>
-                    </CustomParagraph>{' '}
-                    <RightOutlined style={iconStyle} />
-                  </CustomFlex>
-                </Card>
-              ))}
-            </CustomFlex>
-          </PointsContainer>
+          <CustomSpin size={'large'} spinning={isLoading}>
+            <PointsContainer>
+              <CustomFlex wrap={'wrap'} gap={10}>
+                {points?.map((item) => (
+                  <Card
+                    key={item.CITY_ID}
+                    hoverable
+                    onClick={() =>
+                      router.push(`${router.asPath}/${item.CITY_ID}`)
+                    }
+                  >
+                    <CustomRow justify={'space-between'}>
+                      <CustomCol span={12}>
+                        <CustomSpace direction={'horizontal'}>
+                          <ShopOutlined style={{ ...iconStyle }} />
+                          <span>{item.NAME}</span>
+                        </CustomSpace>
+                      </CustomCol>
+
+                      <RightOutlined style={iconStyle} />
+                    </CustomRow>
+                    {/* <CustomFlex align={'center'}>
+                      <CustomParagraph style={{ padding: 5, width: '100%' }}>
+                        <CustomTitle level={5}>{item.NAME}</CustomTitle>
+                        <CustomSpace>
+                          <CustomText>
+                            <EnvironmentOutlined style={iconStyle} />{' '}
+                            {item.CANT_RECYCLING_POINTS}
+                          </CustomText>
+                          <CustomText>
+                            <PhoneOutlined style={iconStyle} /> . .
+                          </CustomText>
+                          <CustomText>
+                            <ClockCircleOutlined style={iconStyle} /> None
+                          </CustomText>
+                        </CustomSpace>
+                      </CustomParagraph>{' '}
+                      <RightOutlined style={iconStyle} />
+                    </CustomFlex> */}  
+                  </Card>
+                ))}
+              </CustomFlex>
+            </PointsContainer>
+          </CustomSpin>
         </CustomSpace>
         <div style={{ width: '100%', height: '30px' }} />
       </CustomRow>

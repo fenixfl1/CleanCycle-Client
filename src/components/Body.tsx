@@ -1,11 +1,14 @@
 import React from 'react'
 import CustomContent from './antd/CustomContent'
 import styled from 'styled-components'
+import CustomSpin from './antd/CustomSpin'
+import { ConditionalComponent, Fallback } from '.'
 
 interface BodyProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
   fullSize?: boolean
   background?: string
+  loading?: boolean
 }
 
 const Container = styled.div<BodyProps>`
@@ -27,17 +30,25 @@ const Container = styled.div<BodyProps>`
 `
 
 const Body: React.FC<BodyProps> = ({
+  background,
   children,
   fullSize,
-  background,
+  loading,
   ...props
 }) => {
   return (
-    <CustomContent {...props}>
-      <Container fullSize={fullSize} background={background}>
-        {children}
-      </Container>
-    </CustomContent>
+    <ConditionalComponent
+      condition={!loading}
+      fallback={
+        <Fallback width={'100wh'} height={'80vh'} tip={'Cargando...'} />
+      }
+    >
+      <CustomContent {...props}>
+        <Container fullSize={fullSize} background={background}>
+          {children}
+        </Container>
+      </CustomContent>
+    </ConditionalComponent>
   )
 }
 

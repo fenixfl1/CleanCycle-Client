@@ -31,3 +31,7 @@ export interface ResponseInterface<T> {
     }
   }
 }
+
+export interface Condition<T = unknown> {
+  condition: { [P in keyof Partial<T>]: T[P] }
+}

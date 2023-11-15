@@ -5,11 +5,13 @@ import CustomSpin from './antd/CustomSpin'
 interface FallbackProp {
   width?: string | number
   height?: string | number
+  tip?: string
 }
 
 const Fallback: React.FC<FallbackProp> = ({
   width = '100%',
   height = '100vh',
+  tip,
 }) => {
   return (
     <CustomRow
@@ -18,7 +20,7 @@ const Fallback: React.FC<FallbackProp> = ({
       height={height}
       justify={'center'}
     >
-      <CustomSpin spinning size={'large'}>
+      <CustomSpin spinning size={'large'} tip={tip}>
         {' '}
       </CustomSpin>
     </CustomRow>

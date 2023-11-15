@@ -121,7 +121,9 @@ const PostPreview: React.FC<PostPreviewProps> = ({ post }) => {
               <SubTitleContainer>
                 <Subtitle>
                   <CustomSpace direction={'horizontal'}>
-                    <Subtitle>{post?.AUTHOR}</Subtitle>
+                    <Subtitle upper decorator={'@'}>
+                      {post?.AUTHOR}
+                    </Subtitle>
                     <CustomBadge count={post?.COMMENTS}>
                       <CustomTooltip title="Comentarios">
                         <CommentOutlined />

@@ -17,10 +17,10 @@ const Space = styled(CustomSpace)`
 
 const Home = () => {
   const router = useRouter()
-  const { data } = useGetPostsList('')
+  const { data, isLoading } = useGetPostsList('')
 
   return (
-    <Body>
+    <Body loading={isLoading}>
       <Space>{data?.map((post) => <PostPreview post={post} />)}</Space>
       <ConditionalComponent condition={isLoggedIn()}>
         <CustomFloatButton
