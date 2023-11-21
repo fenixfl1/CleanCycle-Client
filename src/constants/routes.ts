@@ -15,6 +15,8 @@ export const WEB_API_PATH_GET_CITIES_INFO_LIST =
   'recycling_points/get_cities_info_list'
 export const WEB_API_PATH_GET_RECYCLING_POINTS =
   'recycling_points/get_recycling_points'
+export const WEB_API_PATH_GET_RECYCLING_POINTS_BY_CITY =
+  'recycling_points/get_cycling_point_by_city'
 
 export const WEB_API_RANDOM_USER_AVATAR =
   'https://xsgames.co/randomusers/assets/avatars/pixel/[index].jpg'

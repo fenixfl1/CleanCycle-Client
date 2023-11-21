@@ -39,10 +39,11 @@ const Card = styled(CustomCard)`
 const CoverContainer = styled.div`
   width: 28rem;
   margin-left: 1rem;
+  display: flex;
+  align-items: center;
 
   img {
     width: 100%;
-    height: 597px;
     border-radius: ${({ theme }) => theme.borderRadius};
   }
 `

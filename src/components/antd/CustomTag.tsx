@@ -1,12 +1,16 @@
-import { Tag, TagProps } from 'antd'
-import React from 'react'
+import { defaultTheme } from '@/themes/themes';
+import { Tag, TagProps } from 'antd';
+import React from 'react';
 
-const CustomTag: React.FC<TagProps> = ({ color = '#d3adf7', ...props }) => {
+const CustomTag: React.FC<TagProps> = ({
+  color = defaultTheme.secondaryColor,
+  ...props
+}) => {
   return (
     <Tag color={color} {...props}>
       {props.children}
     </Tag>
-  )
-}
+  );
+};
 
-export default CustomTag
+export default CustomTag;

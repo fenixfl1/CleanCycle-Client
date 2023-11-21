@@ -1,4 +1,4 @@
-import { GoogleMap, SearchComponent } from '@/components'
+import { CustomGoogleMap, SearchComponent } from '@/components'
 import Body from '@/components/Body'
 import CustomFlex from '@/components/antd/CustomFlex'
 import CustomRow from '@/components/antd/CustomRow'
@@ -30,6 +30,7 @@ import { useRouter } from 'next/router'
 import { useGetCitiesInfoListMutation } from '@/services/recycling_points'
 import useDebounce from '@/hooks/useDebounce'
 import CustomSpin from '@/components/antd/CustomSpin'
+import Subtitle from '@/components/styled/SubTitle'
 
 // array of locations of dominican republic to show on the map
 const locations: Location[] = [
@@ -104,7 +105,7 @@ const Points: React.FC = () => {
           <CustomTitle>Puntos de reciclaje más cercanos a ti</CustomTitle>
         </CustomDivider>
         <CustomSpace size={20}>
-          <GoogleMap
+          <CustomGoogleMap
             center={userLocation}
             locations={locations}
             closestLocation={closestLocation}
@@ -123,12 +124,19 @@ const Points: React.FC = () => {
                       router.push(`${router.asPath}/${item.CITY_ID}`)
                     }
                   >
-                    <CustomRow justify={'space-between'}>
+                    <CustomRow justify={'space-between'} align={'middle'}>
                       <CustomCol span={12}>
-                        <CustomSpace direction={'horizontal'}>
-                          <ShopOutlined style={{ ...iconStyle }} />
-                          <span>{item.NAME}</span>
-                        </CustomSpace>
+                        <CustomRow gap={5}>
+                          <CustomSpace direction={'horizontal'}>
+                            <CustomTitle level={4}>
+                              <ShopOutlined style={{ ...iconStyle }} />
+                            </CustomTitle>
+                            <CustomTitle level={4}>{item.NAME}</CustomTitle>
+                          </CustomSpace>
+                          <Subtitle>
+                            {item.CANT_RECYCLING_POINTS} Puntos de reciclajes
+                          </Subtitle>
+                        </CustomRow>
                       </CustomCol>
 
                       <RightOutlined style={iconStyle} />
@@ -150,7 +158,7 @@ const Points: React.FC = () => {
                         </CustomSpace>
                       </CustomParagraph>{' '}
                       <RightOutlined style={iconStyle} />
-                    </CustomFlex> */}  
+                    </CustomFlex> */}
                   </Card>
                 ))}
               </CustomFlex>
