@@ -4,26 +4,26 @@ import {
   FrontPage,
   PostPreview,
   TextEditor,
-} from '@/components'
-import EditableInput from '@/components/EditableInput'
-import CustomCol from '@/components/antd/CustomCol'
-import CustomForm from '@/components/antd/CustomForm'
-import CustomFormItem from '@/components/antd/CustomFormItem'
-import CustomRow from '@/components/antd/CustomRow'
-import CustomSpace from '@/components/antd/CustomSpace'
-import CustomSpin from '@/components/antd/CustomSpin'
-import { CustomParagraph } from '@/components/antd/CustomTypography'
-import customNotification from '@/components/antd/customNotification'
-import { PATH_HOME } from '@/constants/routes'
-import getBase64 from '@/helpers/getBase64'
-import sleep from '@/helpers/sleep'
-import { Post } from '@/redux/slices/postsSlice'
-import { useCreatePost } from '@/services/posts'
-import { colBreakpoints } from '@/themes/breakpoints'
-import { Form, UploadFile } from 'antd'
-import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
+} from '@/components';
+import EditableInput from '@/components/EditableInput';
+import CustomCol from '@/components/antd/CustomCol';
+import CustomForm from '@/components/antd/CustomForm';
+import CustomFormItem from '@/components/antd/CustomFormItem';
+import CustomRow from '@/components/antd/CustomRow';
+import CustomSpace from '@/components/antd/CustomSpace';
+import CustomSpin from '@/components/antd/CustomSpin';
+import { CustomParagraph } from '@/components/antd/CustomTypography';
+import customNotification from '@/components/antd/customNotification';
+import { PATH_HOME } from '@/constants/routes';
+import getBase64 from '@/helpers/getBase64';
+import sleep from '@/helpers/sleep';
+import { Post } from '@/redux/slices/postsSlice';
+import { useCreatePost } from '@/services/posts';
+import { colBreakpoints } from '@/themes/breakpoints';
+import { Form, UploadFile } from 'antd';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
 const EditorContainer = styled.div`
   width: 816px;
@@ -51,74 +51,74 @@ const EditorContainer = styled.div`
     display: flex !important;
     justify-content: center !important;
   }
-`
+`;
 
 const NewPost: React.FC = () => {
-  const router = useRouter()
-  const [form] = Form.useForm<Post>()
-  const content = Form.useWatch('CONTENT', form)
-  const [postTitle, setPostTitle] = useState<string>('')
-  const [isEditingTitle, setIsEditingTitle] = useState<boolean>()
-  const [loadingFrontPage, setLoadingFrontPage] = useState<boolean>(false)
-  const [frontPageImage, setFrontPageImage] = useState<string>('')
-  const [record, setRecord] = useState<Partial<Post>>({})
-  const [preview, setPreview] = useState<boolean>(false)
+  const router = useRouter();
+  const [form] = Form.useForm<Post>();
+  const content = Form.useWatch('CONTENT', form);
+  const [postTitle, setPostTitle] = useState<string>('');
+  const [isEditingTitle, setIsEditingTitle] = useState<boolean>();
+  const [loadingFrontPage, setLoadingFrontPage] = useState<boolean>(false);
+  const [frontPageImage, setFrontPageImage] = useState<string>('');
+  const [record, setRecord] = useState<Partial<Post>>({});
+  const [preview, setPreview] = useState<boolean>(false);
 
-  const [createPost, { isLoading }] = useCreatePost()
+  const [createPost, { isLoading }] = useCreatePost();
 
   useEffect(() => {
-    window.onbeforeunload = () => true
+    window.onbeforeunload = () => true;
     return () => {
-      window.onbeforeunload = null
-    }
-  }, [])
+      window.onbeforeunload = null;
+    };
+  }, []);
 
   const handleOnUpload = async (file: UploadFile): Promise<boolean> => {
-    setLoadingFrontPage(true)
-    const image = await getBase64(file)
+    setLoadingFrontPage(true);
+    const image = await getBase64(file);
 
-    await sleep(1)
-    setLoadingFrontPage(false)
-    setFrontPageImage(`${image}`)
+    await sleep(1);
+    setLoadingFrontPage(false);
+    setFrontPageImage(`${image}`);
     return new Promise((resolve) => {
-      return resolve(true)
-    })
-  }
+      return resolve(true);
+    });
+  };
 
   const handleOnCreatePost = async () => {
     try {
-      window.onbeforeunload = null
-      const post = await form.validateFields()
+      window.onbeforeunload = null;
+      const post = await form.validateFields();
 
-      post.FRONT_PAGE = frontPageImage
+      post.FRONT_PAGE = frontPageImage;
 
-      await createPost(post).unwrap()
+      await createPost(post).unwrap();
 
       // redirect to home page
-      await router.push(PATH_HOME)
-
-      router.reload()
+      router.push(PATH_HOME);
+      sleep(1);
+      router.reload();
       customNotification({
         title: 'Post creado',
         description:
           'El post se ha creado correctamente. el post esta siendo revisado por un administrador. será avisado  cuando sea aprobado',
         type: 'success',
-      })
+      });
     } catch (error) {
       customNotification({
         title: 'Error',
         description: 'Ocurrió un error al crear el post',
         type: 'error',
-      })
+      });
     }
-  }
+  };
 
   const handleOnPreview = () => {
     if (preview) {
-      setPreview(false)
-      setRecord({})
+      setPreview(false);
+      setRecord({});
 
-      return
+      return;
     }
 
     setRecord({
@@ -130,9 +130,9 @@ const NewPost: React.FC = () => {
       AVATAR: 'https://i.imgur.com/3tC8p0Z.png',
       STATE: 'false',
       POST_ID: 0,
-    })
-    setPreview(!preview)
-  }
+    });
+    setPreview(!preview);
+  };
 
   return (
     <CustomSpin spinning={isLoading}>
@@ -191,7 +191,7 @@ const NewPost: React.FC = () => {
         </CustomCol>
       </CustomRow>
     </CustomSpin>
-  )
-}
+  );
+};
 
-export default NewPost
+export default NewPost;

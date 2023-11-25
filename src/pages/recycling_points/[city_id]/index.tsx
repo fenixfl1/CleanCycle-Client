@@ -7,7 +7,7 @@ import CustomFlex from '@/components/antd/CustomFlex';
 import CustomRow from '@/components/antd/CustomRow';
 import CustomSpace from '@/components/antd/CustomSpace';
 import CustomTitle from '@/components/antd/CustomTitle';
-import { CustomLink, CustomText } from '@/components/antd/CustomTypography';
+import { CustomText } from '@/components/antd/CustomTypography';
 import useGetLocation from '@/hooks/useGetLocation';
 import { useGetRecyclingPointsByCityQuery } from '@/services/recycling_points';
 import { useRouter } from 'next/router';
@@ -20,12 +20,15 @@ import useGetNearestLocation from '@/hooks/useGetNearestLocation';
 
 const Card = styled(CustomCard)`
   background-color: ${({ theme }) => theme.backgroundColor};
-  width: 22em;
+  width: 25.8em;
+  height: 100%;
+  min-height: 12em;
 `;
 
 const Img = styled.img`
-  width: 12rem;
+  width: 100%;
   object-fit: cover;
+
   border-radius: ${({ theme }) => theme.borderRadius};
 `;
 
@@ -74,8 +77,8 @@ const RecyclingPoint: React.FC = () => {
           recyclingPoints={recyclingPoints}
         />
         <CustomRow justify={'space-between'}>
-          <CustomCol xs={7}>
-            <Card width={'80%'}>
+          <div style={{ width: 'max-content' }}>
+            <Card>
               <CustomTitle level={3}>
                 Punto de recolección más cercano
               </CustomTitle>
@@ -113,8 +116,8 @@ const RecyclingPoint: React.FC = () => {
               </CustomFlex>
               <CustomDivider />
             </Card>
-          </CustomCol>
-          <CustomCol xs={17}>
+          </div>
+          <CustomCol xs={14} sm={16}>
             <CustomFlex justify={'start'} gap={20} wrap={'wrap'}>
               {recyclingPoints?.map((point) => (
                 <Card
@@ -124,46 +127,22 @@ const RecyclingPoint: React.FC = () => {
                     router.push(`${router.asPath}/${point.RECYCLE_POINT_ID}`);
                   }}
                 >
-                  <CustomRow justify={'center'}>
-                    <Img src={point.COVER} alt={point.LOCATION_NAME} />
-                    <CustomTitle level={5}>{point.LOCATION_NAME}</CustomTitle>
-                    <CustomDivider />
-                    <CustomRow justify={'start'} width={'100%'}>
-                      <CustomCol>
-                        <CustomText>
-                          Dirección:{' '}
-                          <Subtitle>{point.LOCATION_ADDRESS}</Subtitle>
-                        </CustomText>
-                      </CustomCol>
-                      <CustomCol>
-                        <CustomText>
-                          Horario:{' '}
-                          <Subtitle>
-                            Lunes a viernes de 8:00 AM a 5:00 PM
-                          </Subtitle>
-                        </CustomText>
-                      </CustomCol>
-                    </CustomRow>
-                    <CustomDivider />
-                    <CustomCol xs={24}>
-                      <CustomText>Tipos de residuos que se reciben:</CustomText>
-                      <br />
-                      <ConditionalComponent
-                        condition={!!point.RECYCLING_TYPES.length}
-                        fallback={<CustomTag color={''}>N/A</CustomTag>}
-                      >
-                        <CustomSpace
-                          direction={'horizontal'}
-                          wrap
-                          size={'small'}
-                        >
-                          {point.RECYCLING_TYPES?.map((type) => (
-                            <CustomTag key={type}>
-                              <Subtitle>{type}</Subtitle>
-                            </CustomTag>
-                          ))}
-                        </CustomSpace>
-                      </ConditionalComponent>
+                  <CustomRow justify={'space-between'} align={'middle'}>
+                    <CustomCol xs={8}>
+                      <Img
+                        src={
+                          point.COVER ||
+                          'https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg'
+                        }
+                        alt={point.LOCATION_NAME}
+                      />
+                    </CustomCol>
+
+                    <CustomCol xs={15}>
+                      <p>{point.LOCATION_NAME}</p>
+                      {point.RECYCLING_TYPES?.map((type) => (
+                        <CustomTag key={type}>{type}</CustomTag>
+                      ))}
                     </CustomCol>
                   </CustomRow>
                 </Card>

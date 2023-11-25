@@ -3,6 +3,7 @@
         "centered",
         "darkreader",
         "hoverable",
-        "Popover"
+        "Popover",
+        "Sider"
     ]
 }

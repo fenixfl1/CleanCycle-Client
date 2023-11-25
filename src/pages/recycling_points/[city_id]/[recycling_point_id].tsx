@@ -1,5 +1,7 @@
+import { TruckRoutes } from '@/components';
 import Body from '@/components/Body';
 import CustomCard from '@/components/antd/CustomCard';
+import CustomCol from '@/components/antd/CustomCol';
 import CustomFlex from '@/components/antd/CustomFlex';
 import CustomRow from '@/components/antd/CustomRow';
 import { useRouter } from 'next/router';
@@ -10,17 +12,14 @@ const RecyclingPointPage: React.FC = () => {
   return (
     <Body>
       <CustomRow style={{ width: '100%' }}>
-        <CustomCard
-          style={{
-            width: '22rem',
-            height: '12rem',
-          }}
-        >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis,
-          assumenda alias. Quod a, nobis, atque quibusdam exercitationem ea
-          neque sint magni doloremque rerum nostrum voluptates magnam
-          consequuntur. Eius, autem accusamus!
-        </CustomCard>
+        <CustomCol xs={24} style={{ height: '500px' }}>
+          <TruckRoutes
+            route={{
+              origin: { lat: 18.735693, lng: -70.162651 },
+              destination: { lat: 18.735693, lng: -70.162651 },
+            }}
+          />
+        </CustomCol>
       </CustomRow>
     </Body>
   );

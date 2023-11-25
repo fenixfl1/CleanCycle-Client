@@ -1,11 +1,10 @@
-import { MenuProps } from 'antd'
-import React, { use } from 'react'
-import styled from 'styled-components'
-import CustomHeader from './antd/CustomHeader'
-import CustomMenu from './antd/CustomMenu'
-import CustomSwitch from './antd/CustomSwitch'
-import Link from 'next/link'
-import CustomAvatar from './antd/CustomAvatar'
+import { MenuProps } from 'antd';
+import React from 'react';
+import styled from 'styled-components';
+import CustomHeader from './antd/CustomHeader';
+import CustomMenu from './antd/CustomMenu';
+import Link from 'next/link';
+import CustomAvatar from './antd/CustomAvatar';
 import {
   PATH_ABOUT,
   PATH_CONTACT,
@@ -14,36 +13,35 @@ import {
   PATH_RECYCLING_POINTS,
   PATH_REGISTER_USER,
   WEB_API_RANDOM_USER_AVATAR,
-} from '@/constants/routes'
-import ConditionalComponent from './ConditionalComponent'
-import { getSessionInfo, isLoggedIn } from '@/lib/session'
-import CustomButton from './antd/CustomButton'
-import { useRouter } from 'next/router'
-import Logo from './styled/Logo'
-import CustomPopover from './antd/CustomPopover'
-import CustomSpace from './antd/CustomSpace'
-import { PersonCircleOutlined, GearOutlined, PowerOutlined } from '@/icons'
-import { CustomModalConfirmation } from './antd/ModalMethods'
-import { useAppDispatch } from '@/redux/store'
-import sleep from '@/helpers/sleep'
-import { logout } from '@/redux/slices/userSlice'
+} from '@/constants/routes';
+import ConditionalComponent from './ConditionalComponent';
+import { getSessionInfo, isLoggedIn } from '@/lib/session';
+import CustomButton from './antd/CustomButton';
+import { useRouter } from 'next/router';
+import Logo from './styled/Logo';
+import CustomPopover from './antd/CustomPopover';
+import CustomSpace from './antd/CustomSpace';
+import { PersonCircleOutlined, GearOutlined, PowerOutlined } from '@/icons';
+import { CustomModalConfirmation } from './antd/ModalMethods';
+import { useAppDispatch } from '@/redux/store';
+import sleep from '@/helpers/sleep';
+import { logout } from '@/redux/slices/userSlice';
 import {
   EnvironmentOutlined,
   HomeOutlined,
   InfoCircleOutlined,
   MailOutlined,
-} from '@ant-design/icons'
-import CustomTooltip from './antd/CustomTooltip'
-import { defaultTheme } from '@/themes/themes'
+} from '@ant-design/icons';
+import { Darkreader } from '.';
 
 const getAvatar = (index: number) =>
-  WEB_API_RANDOM_USER_AVATAR.replace('[index]', `${index}`)
+  WEB_API_RANDOM_USER_AVATAR.replace('[index]', `${index}`);
 
 const AvatarContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const Menu = styled(CustomMenu)`
   display: flex;
@@ -60,19 +58,19 @@ const Menu = styled(CustomMenu)`
   @media (max-width: 1819px) {
     width: 40%;
   }
-`
+`;
 
 const Avatar = styled(CustomAvatar)`
   background-color: ${({ theme }) =>
     theme.theme === 'light' ? '#fff' : '#000000'};
   cursor: pointer;
   box-shadow: ${(props) => props.theme.boxShadow};
-`
+`;
 
 const iconStyle: React.CSSProperties = {
   fontSize: '1rem',
   // color: defaultTheme.primaryColor,
-}
+};
 
 const items: MenuProps['items'] = [
   {
@@ -95,18 +93,18 @@ const items: MenuProps['items'] = [
     icon: <MailOutlined style={iconStyle} />,
     label: <Link href={PATH_CONTACT}>Contactos</Link>,
   },
-]
+];
 
 const PageHeader: React.FC = () => {
-  const dispatch = useAppDispatch()
-  const route = useRouter()
+  const dispatch = useAppDispatch();
+  const route = useRouter();
 
   const handleGetLogin = () => {
-    const pathname = route.pathname
+    const pathname = route.pathname;
     route.push(
       pathname !== PATH_HOME ? `${PATH_LOGIN}?next=${pathname}` : PATH_LOGIN,
-    )
-  }
+    );
+  };
 
   const confirmLogout = () => {
     CustomModalConfirmation({
@@ -114,13 +112,13 @@ const PageHeader: React.FC = () => {
       content: '¿Está seguro de cerrar sesión?',
       centered: true,
       onOk: async () => {
-        route.push(PATH_LOGIN)
-        await sleep(1)
-        dispatch(logout())
-        route.reload()
+        route.push(PATH_LOGIN);
+        await sleep(1);
+        dispatch(logout());
+        route.reload();
       },
-    })
-  }
+    });
+  };
 
   const content = (
     <CustomSpace size={5}>
@@ -155,7 +153,7 @@ const PageHeader: React.FC = () => {
         Cerrar sesión
       </CustomButton>
     </CustomSpace>
-  )
+  );
 
   return (
     <CustomHeader className={'main-page-header'}>
@@ -163,33 +161,36 @@ const PageHeader: React.FC = () => {
 
       <Menu mode={'horizontal'} selectable={false} items={items} />
       <AvatarContainer>
-        <ConditionalComponent
-          condition={isLoggedIn()}
-          fallback={
-            <ConditionalComponent
-              condition={
-                route.pathname !== PATH_LOGIN &&
-                route.pathname !== PATH_REGISTER_USER
-              }
-            >
-              <CustomButton onClick={handleGetLogin} type={'primary'}>
-                Iniciar sesión
-              </CustomButton>
-            </ConditionalComponent>
-          }
-        >
-          <CustomPopover content={content}>
-            <Avatar
-              shadow
-              size={44}
-              src={getSessionInfo().AVATAR}
-              icon={<PersonCircleOutlined />}
-            />
-          </CustomPopover>
-        </ConditionalComponent>
+        <CustomSpace size={10} direction="horizontal">
+          <Darkreader />
+          <ConditionalComponent
+            condition={isLoggedIn()}
+            fallback={
+              <ConditionalComponent
+                condition={
+                  route.pathname !== PATH_LOGIN &&
+                  route.pathname !== PATH_REGISTER_USER
+                }
+              >
+                <CustomButton onClick={handleGetLogin} type={'primary'}>
+                  Iniciar sesión
+                </CustomButton>
+              </ConditionalComponent>
+            }
+          >
+            <CustomPopover content={content}>
+              <Avatar
+                shadow
+                size={44}
+                src={getSessionInfo().AVATAR}
+                icon={<PersonCircleOutlined />}
+              />
+            </CustomPopover>
+          </ConditionalComponent>
+        </CustomSpace>
       </AvatarContainer>
     </CustomHeader>
-  )
-}
+  );
+};
 
-export default PageHeader
+export default PageHeader;
