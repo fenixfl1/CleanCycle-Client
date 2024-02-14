@@ -5,18 +5,23 @@ import {
   PostPreview,
   TextEditor,
 } from '@/components';
+import EditableArea from '@/components/EditableArea';
 import EditableInput from '@/components/EditableInput';
 import CustomCol from '@/components/antd/CustomCol';
+import CustomDivider from '@/components/antd/CustomDivider';
 import CustomForm from '@/components/antd/CustomForm';
 import CustomFormItem from '@/components/antd/CustomFormItem';
 import CustomRow from '@/components/antd/CustomRow';
 import CustomSpace from '@/components/antd/CustomSpace';
 import CustomSpin from '@/components/antd/CustomSpin';
+import CustomTitle from '@/components/antd/CustomTitle';
 import { CustomParagraph } from '@/components/antd/CustomTypography';
 import customNotification from '@/components/antd/customNotification';
 import { PATH_HOME } from '@/constants/routes';
 import getBase64 from '@/helpers/getBase64';
+import { getPostDescription } from '@/helpers/getPostDescription';
 import sleep from '@/helpers/sleep';
+import { getSessionInfo } from '@/lib/session';
 import { Post } from '@/redux/slices/postsSlice';
 import { useCreatePost } from '@/services/posts';
 import { colBreakpoints } from '@/themes/breakpoints';
@@ -27,10 +32,15 @@ import styled from 'styled-components';
 
 const EditorContainer = styled.div`
   width: 816px;
-  border: 1px solid #e8e8e8;
+  // border: 1px solid #e8e8e8;
   border-radius: ${({ theme }) => theme.borderRadius};
-  height: calc(100vh - 140px);
+  // height: calc(100vh - 250px);
   font-size: 16px !important;
+  // overflow: hidden;
+
+  .sc-cMljjf {
+    border-radius: ${({ theme }) => theme.borderRadius} !important;
+  }
 
   .quill {
     background-color: ${({ theme }) => theme.whiteBackground} !important;
@@ -57,7 +67,8 @@ const NewPost: React.FC = () => {
   const router = useRouter();
   const [form] = Form.useForm<Post>();
   const content = Form.useWatch('CONTENT', form);
-  const [postTitle, setPostTitle] = useState<string>('');
+  const previewText = Form.useWatch('PREVIEW_TEXT', form);
+  const [postTitle, setPostTitle] = useState<string>('Titulo del post');
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>();
   const [loadingFrontPage, setLoadingFrontPage] = useState<boolean>(false);
   const [frontPageImage, setFrontPageImage] = useState<string>('');
@@ -122,12 +133,12 @@ const NewPost: React.FC = () => {
     }
 
     setRecord({
-      CONTENT: content ?? '',
+      PREVIEW_TEXT: previewText,
       TITLE: postTitle,
       FRONT_PAGE: frontPageImage,
       AUTHOR: 'Yo',
       CREATED_AT: new Date().toISOString(),
-      AVATAR: 'https://i.imgur.com/3tC8p0Z.png',
+      AVATAR: getSessionInfo().AVATAR || '',
       STATE: 'false',
       POST_ID: 0,
     });
@@ -139,24 +150,24 @@ const NewPost: React.FC = () => {
       <CustomRow justify={'center'}>
         <CustomCol {...colBreakpoints}>
           <CustomRow justify={'center'}>
-            <ConditionalComponent
-              condition={!preview}
-              fallback={<PostPreview post={record as Post} />}
-            >
-              <div style={{ width: '816px' }}>
-                <CustomSpace size={20}>
-                  <FrontPage
-                    loading={loadingFrontPage}
-                    height={frontPageImage ? '200px' : '80px'}
-                    placeholder={'Aquí la portada del post'}
-                    onUpload={handleOnUpload}
-                    image={frontPageImage}
-                    alt={'Logo'}
-                  />
-                  <div
-                    style={{ minWidth: isEditingTitle ? '400px' : undefined }}
-                  >
-                    <CustomForm form={form}>
+            <CustomForm form={form}>
+              <ConditionalComponent
+                condition={!preview}
+                fallback={<PostPreview post={record as Post} />}
+              >
+                <div style={{ width: '816px' }}>
+                  <CustomSpace size={20}>
+                    <FrontPage
+                      loading={loadingFrontPage}
+                      height={frontPageImage ? '200px' : '80px'}
+                      placeholder={'Aquí la portada del post'}
+                      onUpload={handleOnUpload}
+                      image={frontPageImage}
+                      alt={'Logo'}
+                    />
+                    <div
+                      style={{ minWidth: isEditingTitle ? '400px' : undefined }}
+                    >
                       <EditableInput
                         name={'TITLE'}
                         editable={true}
@@ -166,20 +177,39 @@ const NewPost: React.FC = () => {
                         onEdit={(_, editing) => setIsEditingTitle(editing)}
                       />
                       <CustomFormItem hidden name={'CONTENT'} />
-                    </CustomForm>
-                  </div>
-                  <EditorContainer>
-                    <TextEditor
-                      htmlContent={content}
-                      onChange={(content) =>
-                        form.setFieldsValue({ CONTENT: content })
-                      }
-                      style={{ width: '100%', height: '1000px' }}
-                    />
-                  </EditorContainer>
-                </CustomSpace>
-              </div>
-            </ConditionalComponent>
+                    </div>
+                    <EditorContainer>
+                      <TextEditor
+                        htmlContent={content}
+                        style={{ width: '100%', height: '1000px' }}
+                        onChange={(content) =>
+                          form.setFieldsValue({
+                            CONTENT: content,
+                            PREVIEW_TEXT: getPostDescription(content ?? ''),
+                          })
+                        }
+                      />
+                    </EditorContainer>
+
+                    <div style={{ height: '20px' }} />
+                    <CustomDivider>
+                      <CustomTitle level={4}>Resumen del post</CustomTitle>
+                    </CustomDivider>
+                    <div style={{ width: '100%', height: '200px' }}>
+                      <TextEditor
+                        htmlContent={previewText}
+                        style={{ width: '100%', height: '100%' }}
+                        onChange={(content) => {
+                          form.setFieldsValue({ PREVIEW_TEXT: content });
+                        }}
+                      />
+                    </div>
+                    <div style={{ height: '20px' }} />
+                    <CustomFormItem hidden name={'PREVIEW_TEXT'} />
+                  </CustomSpace>
+                </div>
+              </ConditionalComponent>
+            </CustomForm>
             <ButtonActions
               isEditing
               preview={preview}

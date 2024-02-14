@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import CustomFlex from './antd/CustomFlex'
-import CustomButton from './antd/CustomButton'
+import React, { useEffect, useState } from 'react';
+import CustomFlex from './antd/CustomFlex';
+import CustomButton from './antd/CustomButton';
 import {
   CheckOutlined,
   CloseOutlined,
@@ -9,30 +9,31 @@ import {
   HeartOutlined,
   HeartTwoTone,
   UserOutlined,
-} from '@ant-design/icons'
-import CustomAvatar from './antd/CustomAvatar'
-import styled from 'styled-components'
-import { getSessionInfo } from '@/lib/session'
-import { ConditionalComponent } from '.'
-import { useLikePost } from '@/services/posts'
-import { useRouter } from 'next/router'
-import CustomBadge from './antd/CustomBadge'
-import CustomTooltip from './antd/CustomTooltip'
-import CustomPopover from './antd/CustomPopover'
-import CustomCol from './antd/CustomCol'
-import { CustomParagraph } from './antd/CustomTypography'
+} from '@ant-design/icons';
+import CustomAvatar from './antd/CustomAvatar';
+import styled from 'styled-components';
+import { getSessionInfo, isLoggedIn } from '@/lib/session';
+import { ConditionalComponent } from '.';
+import { useLikePost } from '@/services/posts';
+import { useRouter } from 'next/router';
+import CustomBadge from './antd/CustomBadge';
+import CustomTooltip from './antd/CustomTooltip';
+import CustomPopover from './antd/CustomPopover';
+import CustomCol from './antd/CustomCol';
+import { CustomParagraph } from './antd/CustomTypography';
+import { CustomModalInfo } from './antd/ModalMethods';
 
 interface ButtonActionsProps {
-  author?: { USERNAME?: string; ABOUT?: string; AVATAR?: string }
-  comments?: number
-  isEditing?: boolean
-  likes?: string[]
-  onComment?: () => void
-  onLike?: () => void
-  onPreview?: () => void
-  onPublish?: () => void
-  position?: {}
-  preview?: boolean
+  author?: { USERNAME?: string; ABOUT?: string; AVATAR?: string };
+  comments?: number;
+  isEditing?: boolean;
+  likes?: string[];
+  onComment?: () => void;
+  onLike?: () => void;
+  onPreview?: () => void;
+  onPublish?: () => void;
+  position?: {};
+  preview?: boolean;
 }
 
 const Container = styled.div<ButtonActionsProps>`
@@ -51,7 +52,7 @@ const Container = styled.div<ButtonActionsProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const ButtonActions: React.FC<ButtonActionsProps> = ({
   author,
@@ -65,38 +66,45 @@ const ButtonActions: React.FC<ButtonActionsProps> = ({
   position,
   preview,
 }) => {
-  const route = useRouter()
+  const route = useRouter();
 
-  const [likes, setLikes] = useState<string[]>(likedBy)
+  const [likes, setLikes] = useState<string[]>(likedBy);
 
   useEffect(() => {
-    setLikes(likedBy)
-  }, [likedBy])
+    setLikes(likedBy);
+  }, [likedBy]);
 
-  const { USERNAME } = getSessionInfo()
-  const ILiked = likes?.includes(USERNAME)
+  const { USERNAME } = getSessionInfo();
+  const ILiked = likes?.includes(USERNAME);
 
-  const postId = String(route.query.post_id)
+  const postId = String(route.query.post_id);
 
-  const [likePost] = useLikePost()
+  const [likePost] = useLikePost();
 
   const handleLike = async () => {
     try {
+      if (!isLoggedIn()) {
+        return CustomModalInfo({
+          title: 'Inicia sesión',
+          content: 'Para dar like a una publicación debes iniciar sesión',
+        });
+      }
+
       const data = await likePost({
         POST_ID: postId,
         USERNAME,
         OPTION: ILiked ? 1 : 0,
-      }).unwrap()
-      setLikes(data)
-      onLike?.()
+      }).unwrap();
+      setLikes(data);
+      onLike?.();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const iconStyle = {
     fontSize: '24px',
-  }
+  };
 
   return (
     <Container position={position}>
@@ -183,7 +191,7 @@ const ButtonActions: React.FC<ButtonActionsProps> = ({
         </ConditionalComponent>
       </CustomFlex>
     </Container>
-  )
-}
+  );
+};
 
-export default ButtonActions
+export default ButtonActions;

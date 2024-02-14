@@ -1,4 +1,3 @@
-import { MenuProps } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
 import CustomHeader from './antd/CustomHeader';
@@ -6,19 +5,17 @@ import CustomMenu from './antd/CustomMenu';
 import Link from 'next/link';
 import CustomAvatar from './antd/CustomAvatar';
 import {
-  PATH_ABOUT,
   PATH_CONTACT,
+  PATH_HELP,
   PATH_HOME,
   PATH_LOGIN,
-  PATH_RECYCLING_POINTS,
   PATH_REGISTER_USER,
+  PATH_USER_PROFILE,
   WEB_API_RANDOM_USER_AVATAR,
 } from '@/constants/routes';
 import ConditionalComponent from './ConditionalComponent';
 import { getSessionInfo, isLoggedIn } from '@/lib/session';
-import CustomButton from './antd/CustomButton';
 import { useRouter } from 'next/router';
-import Logo from './styled/Logo';
 import CustomPopover from './antd/CustomPopover';
 import CustomSpace from './antd/CustomSpace';
 import { PersonCircleOutlined, GearOutlined, PowerOutlined } from '@/icons';
@@ -26,16 +23,20 @@ import { CustomModalConfirmation } from './antd/ModalMethods';
 import { useAppDispatch } from '@/redux/store';
 import sleep from '@/helpers/sleep';
 import { logout } from '@/redux/slices/userSlice';
-import {
-  EnvironmentOutlined,
-  HomeOutlined,
-  InfoCircleOutlined,
-  MailOutlined,
-} from '@ant-design/icons';
 import { Darkreader } from '.';
-
-const getAvatar = (index: number) =>
-  WEB_API_RANDOM_USER_AVATAR.replace('[index]', `${index}`);
+import CustomRow from './antd/CustomRow';
+import Logo from './styled/Logo';
+import CustomButton from '@/components/antd/CustomButton';
+import {
+  InfoCircleOutlined,
+  LogoutOutlined,
+  MailOutlined,
+  QuestionCircleOutlined,
+} from '@ant-design/icons';
+import CustomTooltip from './antd/CustomTooltip';
+import CustomCol from './antd/CustomCol';
+import { defaultTheme } from '@/themes/themes';
+import { MenuProps } from 'antd';
 
 const AvatarContainer = styled.div`
   display: flex;
@@ -44,20 +45,8 @@ const AvatarContainer = styled.div`
 `;
 
 const Menu = styled(CustomMenu)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 30%;
   background: ${({ theme }) => theme.secondaryColor} !important;
-  color: #fff;
-
-  .ant-menu-item {
-    background: ${({ theme }) => theme.secondaryColor} !important;
-  }
-
-  @media (max-width: 1819px) {
-    width: 40%;
-  }
+  width: 100% !important;
 `;
 
 const Avatar = styled(CustomAvatar)`
@@ -66,34 +55,6 @@ const Avatar = styled(CustomAvatar)`
   cursor: pointer;
   box-shadow: ${(props) => props.theme.boxShadow};
 `;
-
-const iconStyle: React.CSSProperties = {
-  fontSize: '1rem',
-  // color: defaultTheme.primaryColor,
-};
-
-const items: MenuProps['items'] = [
-  {
-    key: '1',
-    icon: <HomeOutlined style={iconStyle} />,
-    label: <Link href={PATH_HOME}>Inicio</Link>,
-  },
-  {
-    key: '2',
-    icon: <EnvironmentOutlined style={iconStyle} />,
-    label: <Link href={PATH_RECYCLING_POINTS}>Puntos de reciclaje</Link>,
-  },
-  {
-    key: '3',
-    icon: <InfoCircleOutlined style={iconStyle} />,
-    label: <Link href={PATH_ABOUT}>Sobre nosotros</Link>,
-  },
-  {
-    key: '4',
-    icon: <MailOutlined style={iconStyle} />,
-    label: <Link href={PATH_CONTACT}>Contactos</Link>,
-  },
-];
 
 const PageHeader: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -128,9 +89,16 @@ const PageHeader: React.FC = () => {
         size={'large'}
         type={'text'}
         icon={<PersonCircleOutlined size={20} />}
-        // onClick={() => getUser(userId)}
       >
-        Perfil
+        <Link
+          href={PATH_USER_PROFILE}
+          as={PATH_USER_PROFILE.replace(
+            '[username]',
+            getSessionInfo().USERNAME,
+          )}
+        >
+          Perfil
+        </Link>
       </CustomButton>
 
       <CustomButton
@@ -155,40 +123,97 @@ const PageHeader: React.FC = () => {
     </CustomSpace>
   );
 
+  const iconStyle: React.CSSProperties = {
+    fontSize: '1.3rem',
+    color: defaultTheme.primaryColor,
+  };
+
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <CustomTooltip title={'Contacto'}>
+          <Link href={PATH_CONTACT}>
+            <MailOutlined style={iconStyle} />
+          </Link>
+        </CustomTooltip>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <CustomTooltip title={'Pagina de ayuda'}>
+          <Link href={PATH_HELP}>
+            <QuestionCircleOutlined style={iconStyle} />
+          </Link>
+        </CustomTooltip>
+      ),
+    },
+    {
+      disabled: !isLoggedIn(),
+      key: '3',
+      label: (
+        <CustomTooltip title={'Cerrar Sesión'}>
+          <CustomButton
+            type={'link'}
+            onClick={confirmLogout}
+            icon={<LogoutOutlined style={iconStyle} />}
+          />
+        </CustomTooltip>
+      ),
+    },
+    {
+      disabled: isLoggedIn(),
+      key: '4',
+      label: (
+        <CustomTooltip title={'Modo Oscuro'}>
+          <CustomButton onClick={handleGetLogin} type={'primary'}>
+            Iniciar sesión
+          </CustomButton>
+        </CustomTooltip>
+      ),
+    },
+  ].filter((item) => !item?.disabled);
+
   return (
     <CustomHeader className={'main-page-header'}>
-      <Logo />
+      <CustomRow justify={'space-between'} align={'middle'} width={'100%'}>
+        <Logo />
 
-      <Menu mode={'horizontal'} selectable={false} items={items} />
-      <AvatarContainer>
-        <CustomSpace size={10} direction="horizontal">
-          <Darkreader />
-          <ConditionalComponent
-            condition={isLoggedIn()}
-            fallback={
-              <ConditionalComponent
-                condition={
-                  route.pathname !== PATH_LOGIN &&
-                  route.pathname !== PATH_REGISTER_USER
-                }
-              >
-                <CustomButton onClick={handleGetLogin} type={'primary'}>
-                  Iniciar sesión
-                </CustomButton>
-              </ConditionalComponent>
-            }
-          >
-            <CustomPopover content={content}>
-              <Avatar
-                shadow
-                size={44}
-                src={getSessionInfo().AVATAR}
-                icon={<PersonCircleOutlined />}
-              />
-            </CustomPopover>
-          </ConditionalComponent>
-        </CustomSpace>
-      </AvatarContainer>
+        <CustomCol xs={4}>
+          <Menu mode="horizontal" items={items} />
+        </CustomCol>
+      </CustomRow>
+      {/* <CustomRow justify={'end'} align={'middle'} width={'100%'}>
+        <AvatarContainer>
+          <CustomSpace size={10} direction="horizontal">
+            <ConditionalComponent
+              condition={isLoggedIn()}
+              fallback={
+                <ConditionalComponent
+                  condition={
+                    route.pathname !== PATH_LOGIN &&
+                    route.pathname !== PATH_REGISTER_USER
+                  }
+                >
+                  <CustomButton onClick={handleGetLogin} type={'primary'}>
+                    Iniciar sesión
+                  </CustomButton>
+                </ConditionalComponent>
+              }
+            >
+              <CustomPopover content={content}>
+                <Avatar
+                  shadow
+                  size={44}
+                  src={getSessionInfo().AVATAR}
+                  icon={<PersonCircleOutlined />}
+                />
+              </CustomPopover>
+            </ConditionalComponent>
+          </CustomSpace>
+        </AvatarContainer>
+      </CustomRow> */}
     </CustomHeader>
   );
 };

@@ -1,13 +1,9 @@
 import React, { useEffect } from 'react';
 import {
   GoogleMap,
-  LoadScript,
-  Marker,
-  InfoWindow,
   GoogleMapProps,
   useJsApiLoader,
 } from '@react-google-maps/api';
-import GoogleMapLoader from './GoogleMapLoader';
 import { ConditionalComponent, Fallback } from '.';
 import initMap from '@/helpers/initMap';
 
@@ -17,13 +13,20 @@ interface CustomMapProps extends GoogleMapProps {
   children?: React.ReactNode | React.ReactNode[];
 }
 
-const CustomMap: React.FC<CustomMapProps> = ({ children, ...props }) => {
+const CustomMap: React.FC<CustomMapProps> = ({
+  children,
+  options = {
+    zoomControl: false,
+    fullscreenControl: false,
+    streetViewControl: false,
+    mapTypeControl: false,
+  },
+  ...props
+}) => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: key,
   });
-
-  window.initMap = initMap;
 
   useEffect(() => {
     initMap();
@@ -31,7 +34,9 @@ const CustomMap: React.FC<CustomMapProps> = ({ children, ...props }) => {
 
   return (
     <ConditionalComponent condition={isLoaded} fallback={<Fallback />}>
-      <GoogleMap {...props}>{children}</GoogleMap>
+      <GoogleMap {...props} options={options}>
+        {children}
+      </GoogleMap>
     </ConditionalComponent>
   );
 };

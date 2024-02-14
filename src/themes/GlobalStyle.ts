@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
     @font-face {
@@ -38,6 +38,45 @@ const GlobalStyle = createGlobalStyle`
     pre {
         border-radius: ${({ theme }) => theme.borderRadius} !important;
     }
-`
 
-export default GlobalStyle
+    @media all and (min-width: 320px) {
+        .grid-gallery {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
+
+    @media all and (min-width: 768px) {
+        .grid-gallery {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media all and (min-width: 1024px) {
+        .grid-gallery {
+            grid-template-columns: repeat(6, 1fr);
+        }
+    }
+
+    .ant-image-preview-img {
+        border-radius: ${({ theme }) => theme.borderRadius} !important;
+    }
+
+    .EmojiPickerReact {
+        border: none !important;
+    }
+
+    .sider {
+        background: ${(props) => props.theme.baseBgColor};
+        box-shadow: ${(props) => props.theme.boxShadow};
+        margin: 20px 5px 20px 20px;
+        border-radius: ${(props) => props.theme.borderRadius};
+        overflow: 'auto',
+        height: '100vh',
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        bottom: 0,
+    }
+`;
+
+export default GlobalStyle;

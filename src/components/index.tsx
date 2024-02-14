@@ -9,11 +9,14 @@ import ButtonActions from './ButtonActions';
 import AvatarSelector from './AvatarSelector';
 import CustomGoogleMap from './CustomGoogleMap';
 import SearchComponent from './SearchComponents';
-import CustomMap from './CustomMap';
 import TruckRoutes from './TruckRoutes';
+import NearestCenter from './NearestCenter';
+import RecyclingPointsCard from './RecyclingPointsCard';
+import CommentBox from './CommentBox';
 
 const TextEditor = dynamic(() => import('./TextEditor'), { ssr: false });
 const Darkreader = dynamic(() => import('./Darkreader'), { ssr: false });
+const CustomMap = dynamic(() => import('./CustomMap'), { ssr: false });
 
 export {
   TextEditor,
@@ -30,4 +33,7 @@ export {
   CustomMap,
   TruckRoutes,
   Darkreader,
+  NearestCenter,
+  RecyclingPointsCard,
+  CommentBox,
 };

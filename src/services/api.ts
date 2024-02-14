@@ -1,15 +1,15 @@
-import { BaseQueryFn, createApi } from '@reduxjs/toolkit/query/react'
-import axios, { AxiosError, AxiosRequestConfig } from 'axios'
-import { BASE_WEB_API_URL } from '@/constants/routes'
-import { ApiResponse, ResponseInterface } from '@/interfaces/general'
-import assert from '@/helpers/assert'
-import { getSessionToken } from '@/lib/session'
+import { BaseQueryFn, createApi } from '@reduxjs/toolkit/query/react';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import { BASE_WEB_API_URL } from '@/constants/routes';
+import { ApiResponse, ResponseInterface } from '@/interfaces/general';
+import assert from '@/helpers/assert';
+import { getSessionToken } from '@/lib/session';
 
 interface BaseQueryWithRetryArgs {
-  url: string
-  method: AxiosRequestConfig['method']
-  data?: AxiosRequestConfig['data']
-  params?: AxiosRequestConfig['params']
+  url: string;
+  method: AxiosRequestConfig['method'];
+  data?: AxiosRequestConfig['data'];
+  params?: AxiosRequestConfig['params'];
 }
 
 export const axiosApi = axios.create({
@@ -18,7 +18,7 @@ export const axiosApi = axios.create({
     'Content-Type': 'application/json',
     Authorization: `Token ${getSessionToken()}`,
   },
-})
+});
 
 const axiosBaseQuery =
   (): BaseQueryFn<BaseQueryWithRetryArgs> =>
@@ -29,19 +29,19 @@ const axiosBaseQuery =
         method,
         data,
         params,
-      })
+      });
 
-      return response
+      return response;
     } catch (error) {
-      assert<AxiosError>(error)
+      assert<AxiosError>(error);
       return {
         error: {
           status: error?.response?.status,
           data: error?.response?.data ?? error.message,
         },
-      }
+      };
     }
-  }
+  };
 
 export const api = createApi({
   baseQuery: axiosBaseQuery(),
@@ -53,26 +53,38 @@ export const api = createApi({
   refetchOnReconnect: true,
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === 'REHYDRATE') {
-      return action.payload[reducerPath]
+      return action.payload[reducerPath];
     }
   },
-})
+});
 
-export const enhancedApi = api.enhanceEndpoints({})
+export const enhancedApi = api.enhanceEndpoints({});
 
 export async function postRequest<RType, PType = any>(
   url: string,
   data: PType,
   config?: AxiosRequestConfig,
 ): Promise<ResponseInterface<RType>> {
-  return axiosApi.post(url, data, { ...config })
+  return axiosApi.post(url, data, { ...config });
 }
 
 export async function getRequest<T>(
   url: string,
   config?: AxiosRequestConfig,
 ): Promise<ApiResponse<T>> {
-  return axiosApi.get(url, { ...config })
+  try {
+    const { data } = await axiosApi.get(url, { ...config });
+    return data;
+  } catch (error) {
+    // Handle Axios errors
+    const axiosError = error as AxiosError;
+
+    // Example: Log the error for debugging
+    console.error('Axios error:', axiosError);
+
+    // Re-throw the error or return a custom error response
+    throw axiosError;
+  }
 }
 
 export async function putRequest<RType, PType = any>(
@@ -80,5 +92,5 @@ export async function putRequest<RType, PType = any>(
   data: PType,
   config?: AxiosRequestConfig,
 ): Promise<ApiResponse<RType>> {
-  return axiosApi.put(url, data, { ...config })
+  return axiosApi.put(url, data, { ...config });
 }

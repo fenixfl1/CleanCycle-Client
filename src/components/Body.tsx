@@ -1,14 +1,14 @@
-import React from 'react'
-import CustomContent from './antd/CustomContent'
-import styled from 'styled-components'
-import CustomSpin from './antd/CustomSpin'
-import { ConditionalComponent, Fallback } from '.'
+import React from 'react';
+import CustomContent from './antd/CustomContent';
+import styled from 'styled-components';
+import CustomSpin from './antd/CustomSpin';
+import { ConditionalComponent, Fallback } from '.';
 
 interface BodyProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
-  fullSize?: boolean
-  background?: string
-  loading?: boolean
+  children: React.ReactNode;
+  fullSize?: boolean;
+  background?: string;
+  loading?: boolean;
 }
 
 const Container = styled.div<BodyProps>`
@@ -27,7 +27,7 @@ const Container = styled.div<BodyProps>`
   @media (max-width: 1819px) {
     max-width: 1000px;
   }
-`
+`;
 
 const Body: React.FC<BodyProps> = ({
   background,
@@ -49,7 +49,7 @@ const Body: React.FC<BodyProps> = ({
         </Container>
       </CustomContent>
     </ConditionalComponent>
-  )
-}
+  );
+};
 
-export default Body
+export default Body;

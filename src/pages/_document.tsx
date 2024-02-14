@@ -14,6 +14,8 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
+        <div id="start"></div>
+        <div id="end"></div>
         <div id="map"></div>
       </body>
     </Html>

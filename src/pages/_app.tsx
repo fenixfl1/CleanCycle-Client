@@ -13,6 +13,7 @@ import { ThemeProvider } from 'styled-components';
 import LayoutWrapper from '@/components/LayoutWrapper';
 import moment from 'moment';
 import 'moment/locale/es';
+import Wrapper from '@/components/Wrapper';
 
 moment.locale('es');
 
@@ -28,12 +29,12 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
       <Provider store={store}>
         <ThemeProvider theme={defaultTheme}>
           <CustomAntProvider>
-            <LayoutWrapper>
+            <Wrapper>
               <GlobalStyle />
               <MotionComponent>
                 <Component {...pageProps} />
               </MotionComponent>
-            </LayoutWrapper>
+            </Wrapper>
           </CustomAntProvider>
         </ThemeProvider>
       </Provider>

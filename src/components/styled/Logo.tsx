@@ -1,8 +1,12 @@
-import styled from 'styled-components'
-import ConditionalComponent from '../ConditionalComponent'
+import styled from 'styled-components';
+import ConditionalComponent from '../ConditionalComponent';
+import CustomRow from '../antd/CustomRow';
+import CustomCol from '../antd/CustomCol';
+import { useRouter } from 'next/router';
+import { PATH_HOME } from '@/constants/routes';
 
 interface LogoProps {
-  showText?: boolean
+  showText?: boolean;
 }
 
 const LogoContainer = styled.div`
@@ -52,19 +56,35 @@ const LogoContainer = styled.div`
     top: -8px;
     left: 22px;
   }
-`
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    span {
+      display: none;
+    }
+  }
+`;
 
 const Logo: React.FC<LogoProps> = ({ showText = true }) => {
+  const route = useRouter();
+
   return (
-    <LogoContainer>
-      <>
-        <div className="circle-icon" />
+    <LogoContainer onClick={() => route.push(PATH_HOME)}>
+      <CustomRow justify={'center'} align={'middle'}>
+        {/* <CustomCol xs={24}> */}
+        <CustomRow justify={'center'}>
+          <div className="circle-icon" />
+        </CustomRow>
+        {/* </CustomCol> */}
         <ConditionalComponent condition={showText} fallback={null}>
           <span>CleanCycle</span>
         </ConditionalComponent>
-      </>
+      </CustomRow>
     </LogoContainer>
-  )
-}
+  );
+};
 
-export default Logo
+export default Logo;

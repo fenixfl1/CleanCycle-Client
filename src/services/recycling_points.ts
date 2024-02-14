@@ -2,10 +2,11 @@ import {
   WEB_API_PATH_GET_CITIES_INFO_LIST,
   WEB_API_PATH_GET_RECYCLING_POINTS,
   WEB_API_PATH_GET_RECYCLING_POINTS_BY_CITY,
-} from '@/constants/routes'
-import { Condition } from '@/interfaces/general'
-import { City, RecyclingPoint } from '@/redux/slices/recyclingPointsSlice'
-import { api } from '@/services/api'
+  WEB_API_PATH_GET_RECYCLING_POINT_BY_ID,
+} from '@/constants/routes';
+import { Condition } from '@/interfaces/general';
+import { City, RecyclingPoint } from '@/redux/slices/recyclingPointsSlice';
+import { api } from '@/services/api';
 
 export const recyclingPointApiHelper = api.injectEndpoints({
   endpoints: (build) => ({
@@ -32,11 +33,18 @@ export const recyclingPointApiHelper = api.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getRecyclingPointsById: build.query<RecyclingPoint, string>({
+      query: (pointId) => ({
+        url: `${WEB_API_PATH_GET_RECYCLING_POINT_BY_ID}/${pointId}`,
+        method: 'GET',
+      }),
+    }),
   }),
-})
+});
 
 export const {
   useGetCitiesInfoListMutation,
   useGetRecyclingPointsMutation,
   useGetRecyclingPointsByCityQuery,
-} = recyclingPointApiHelper
+  useGetRecyclingPointsByIdQuery,
+} = recyclingPointApiHelper;

@@ -1,5 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { ConditionalComponent, CustomGoogleMap } from '@/components';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  ConditionalComponent,
+  CustomGoogleMap,
+  NearestCenter,
+  RecyclingPointsCard,
+} from '@/components';
 import Body from '@/components/Body';
 import CustomCard from '@/components/antd/CustomCard';
 import CustomDivider from '@/components/antd/CustomDivider';
@@ -17,12 +22,19 @@ import CustomCol from '@/components/antd/CustomCol';
 import Subtitle from '@/components/styled/SubTitle';
 import CustomTag from '@/components/antd/CustomTag';
 import useGetNearestLocation from '@/hooks/useGetNearestLocation';
+import { DirectionsRenderer, GoogleMap, Marker } from '@react-google-maps/api';
+import { defaultTheme } from '@/themes/themes';
+import { CarOutlined } from '@ant-design/icons';
+import { RecyclingPoint } from '@/redux/slices/recyclingPointsSlice';
 
 const Card = styled(CustomCard)`
   background-color: ${({ theme }) => theme.backgroundColor};
   width: 25.8em;
   height: 100%;
-  min-height: 12em;
+  min-height: 10rem;
+  display: flex;
+  justify-content: start;
+  align-items: center;
 `;
 
 const Img = styled.img`
@@ -32,11 +44,15 @@ const Img = styled.img`
   border-radius: ${({ theme }) => theme.borderRadius};
 `;
 
-const RecyclingPoint: React.FC = () => {
+const RecyclePoint: React.FC = () => {
   const router = useRouter();
   const { city_id } = router.query;
   const userLocation = useGetLocation();
-
+  const [directionsResponse, setDirectionsResponse] =
+    useState<google.maps.DirectionsResult>();
+  const [distance, setDistance] = useState<string>();
+  const [duration, setDuration] = useState<string>();
+  const [center, setCenter] = useState(userLocation);
   const [locations, setLocations] = useState<Location[]>([]);
 
   const nearest = useGetNearestLocation(locations);
@@ -59,6 +75,10 @@ const RecyclingPoint: React.FC = () => {
   }, [nearest, recyclingPoints]);
 
   useEffect(() => {
+    setCenter(userLocation);
+  }, [userLocation]);
+
+  useEffect(() => {
     if (recyclingPoints) {
       const locations = recyclingPoints.map((recyclingPoint) => ({
         lat: Number(recyclingPoint.LATITUDE),
@@ -68,84 +88,39 @@ const RecyclingPoint: React.FC = () => {
     }
   }, [recyclingPoints]);
 
+  const showRecyclePointInfo = (point: RecyclingPoint) => {
+    router.push(`${router.asPath}/${point.RECYCLE_POINT_ID}`);
+  };
+
   return (
     <Body fullSize>
       <CustomSpace size={20}>
         <CustomGoogleMap
-          center={userLocation}
+          center={center}
           locations={locations}
           recyclingPoints={recyclingPoints}
+          zoom={18}
         />
+        <GoogleMap
+          zoom={15}
+          mapContainerStyle={{ borderRadius: defaultTheme.borderRadius }}
+        >
+          <Marker position={userLocation} />
+          <ConditionalComponent condition={!!directionsResponse}>
+            <DirectionsRenderer directions={directionsResponse} />
+          </ConditionalComponent>
+        </GoogleMap>
         <CustomRow justify={'space-between'}>
-          <div style={{ width: 'max-content' }}>
-            <Card>
-              <CustomTitle level={3}>
-                Punto de recolección más cercano
-              </CustomTitle>
-              <CustomDivider />
-              <CustomFlex justify={'start'} align="center">
-                <CustomTitle level={4}>
-                  Nombre:
-                  <br />
-                  <Subtitle>{nearestLocation?.LOCATION_NAME}</Subtitle>
-                </CustomTitle>
-              </CustomFlex>
-              <CustomDivider />
-              <CustomFlex justify={'start'} align="center">
-                <CustomTitle level={4}>
-                  Dirección:
-                  <br />
-                  <Subtitle>{nearestLocation?.LOCATION_ADDRESS}</Subtitle>
-                </CustomTitle>
-              </CustomFlex>
-              <CustomDivider />
-              <CustomFlex justify={'start'} align="center">
-                <CustomTitle level={4}>
-                  Horario:
-                  <br />
-                  <Subtitle>Lunes a viernes de 8:00 AM a 5:00 PM</Subtitle>
-                </CustomTitle>
-              </CustomFlex>
-              <CustomDivider />
-              <CustomFlex justify={'start'} align="center">
-                <CustomTitle level={4}>
-                  Contacto: <br />
-                  Tel: <Subtitle>{nearestLocation?.PHONE}</Subtitle> <br />
-                  Email: <Subtitle>{nearestLocation?.EMAIL}</Subtitle>
-                </CustomTitle>
-              </CustomFlex>
-              <CustomDivider />
-            </Card>
-          </div>
+          <NearestCenter onShow={setCenter} point={nearestLocation} />
           <CustomCol xs={14} sm={16}>
             <CustomFlex justify={'start'} gap={20} wrap={'wrap'}>
               {recyclingPoints?.map((point) => (
-                <Card
+                <RecyclingPointsCard
+                  point={point}
                   key={point.RECYCLE_POINT_ID}
-                  hoverable
-                  onClick={() => {
-                    router.push(`${router.asPath}/${point.RECYCLE_POINT_ID}`);
-                  }}
-                >
-                  <CustomRow justify={'space-between'} align={'middle'}>
-                    <CustomCol xs={8}>
-                      <Img
-                        src={
-                          point.COVER ||
-                          'https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg'
-                        }
-                        alt={point.LOCATION_NAME}
-                      />
-                    </CustomCol>
-
-                    <CustomCol xs={15}>
-                      <p>{point.LOCATION_NAME}</p>
-                      {point.RECYCLING_TYPES?.map((type) => (
-                        <CustomTag key={type}>{type}</CustomTag>
-                      ))}
-                    </CustomCol>
-                  </CustomRow>
-                </Card>
+                  onShow={setCenter}
+                  onShowInfo={showRecyclePointInfo}
+                />
               ))}
             </CustomFlex>
           </CustomCol>
@@ -155,4 +130,4 @@ const RecyclingPoint: React.FC = () => {
   );
 };
 
-export default RecyclingPoint;
+export default RecyclePoint;

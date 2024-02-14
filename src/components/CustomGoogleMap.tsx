@@ -30,12 +30,14 @@ interface GoogleMapProps {
   locations?: Location[];
   center: Location;
   recyclingPoints?: RecyclingPoint[];
+  zoom?: number;
 }
 
 const CustomGoogleMap: React.FC<GoogleMapProps> = ({
   locations,
   center,
   recyclingPoints,
+  zoom = 15,
 }) => {
   const [selectedLocation, setSelectedLocation] = useState<Location>();
   const userLocation = useGetLocation();
@@ -47,8 +49,8 @@ const CustomGoogleMap: React.FC<GoogleMapProps> = ({
   const currentSelectedLocation = useMemo(() => {
     const data = recyclingPoints?.find(
       (location) =>
-        Number(location.LATITUDE) === selectedLocation?.lat &&
-        Number(location.LONGITUDE) === selectedLocation?.lng,
+        Number(location?.LATITUDE) === selectedLocation?.lat &&
+        Number(location?.LONGITUDE) === selectedLocation?.lng,
     );
 
     return data;
@@ -57,7 +59,7 @@ const CustomGoogleMap: React.FC<GoogleMapProps> = ({
   return (
     <CustomMap
       center={center}
-      zoom={15}
+      zoom={zoom}
       mapContainerStyle={{
         width: '100%',
         height: '400px',
@@ -74,7 +76,6 @@ const CustomGoogleMap: React.FC<GoogleMapProps> = ({
 
       {locations?.map((location, index) => (
         <Marker
-          draggable
           icon={(<EnvironmentOutlined />) as never}
           key={index}
           position={{ lat: location.lat, lng: location.lng }}

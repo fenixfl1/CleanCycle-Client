@@ -1,40 +1,40 @@
-import { AvatarSelector, ConditionalComponent } from '@/components'
-import Body from '@/components/Body'
-import CustomAlert from '@/components/antd/CustomAlert'
-import CustomAvatar from '@/components/antd/CustomAvatar'
-import CustomButton from '@/components/antd/CustomButton'
-import CustomCard from '@/components/antd/CustomCard'
-import CustomCol from '@/components/antd/CustomCol'
-import CustomDivider from '@/components/antd/CustomDivider'
-import CustomFlex from '@/components/antd/CustomFlex'
-import CustomForm from '@/components/antd/CustomForm'
-import CustomFormItem from '@/components/antd/CustomFormItem'
-import CustomInput from '@/components/antd/CustomInput'
-import CustomPasswordInput from '@/components/antd/CustomPasswordInput'
-import CustomRow from '@/components/antd/CustomRow'
-import CustomSpin from '@/components/antd/CustomSpin'
-import CustomTextArea from '@/components/antd/CustomTextArea'
-import { CustomText } from '@/components/antd/CustomTypography'
-import Logo from '@/components/styled/Logo'
-import { PATH_LOGIN } from '@/constants/routes'
-import useAnonymousUserRequired from '@/hooks/useAnonymousUserRequired'
-import useDebounce from '@/hooks/useDebounce'
+import { AvatarSelector, ConditionalComponent } from '@/components';
+import Body from '@/components/Body';
+import CustomAlert from '@/components/antd/CustomAlert';
+import CustomAvatar from '@/components/antd/CustomAvatar';
+import CustomButton from '@/components/antd/CustomButton';
+import CustomCard from '@/components/antd/CustomCard';
+import CustomCol from '@/components/antd/CustomCol';
+import CustomDivider from '@/components/antd/CustomDivider';
+import CustomFlex from '@/components/antd/CustomFlex';
+import CustomForm from '@/components/antd/CustomForm';
+import CustomFormItem from '@/components/antd/CustomFormItem';
+import CustomInput from '@/components/antd/CustomInput';
+import CustomPasswordInput from '@/components/antd/CustomPasswordInput';
+import CustomRow from '@/components/antd/CustomRow';
+import CustomSpin from '@/components/antd/CustomSpin';
+import CustomTextArea from '@/components/antd/CustomTextArea';
+import { CustomText } from '@/components/antd/CustomTypography';
+import Logo from '@/components/styled/Logo';
+import { PATH_LOGIN } from '@/constants/routes';
+import useAnonymousUserRequired from '@/hooks/useAnonymousUserRequired';
+import useDebounce from '@/hooks/useDebounce';
 import {
   useRegisterUser,
   useValidateEmail,
   useValidateUsername,
-} from '@/services/user'
-import { defaultBreakpoints, formItemLayout } from '@/themes/breakpoints'
-import { UploadOutlined, UserOutlined } from '@ant-design/icons'
-import { Form } from 'antd'
-import Link from 'next/link'
-import React, { useState } from 'react'
-import styled from 'styled-components'
+} from '@/services/user';
+import { defaultBreakpoints, formItemLayout } from '@/themes/breakpoints';
+import { UploadOutlined, UserOutlined } from '@ant-design/icons';
+import { Form } from 'antd';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 const Card = styled(CustomCard)`
   box-shadow: ${({ theme }) => theme.boxShadow};
   margin: 0 auto;
-`
+`;
 
 const CoverContainer = styled.div`
   width: 28rem;
@@ -46,7 +46,7 @@ const CoverContainer = styled.div`
     width: 100%;
     border-radius: ${({ theme }) => theme.borderRadius};
   }
-`
+`;
 
 const AvatarContainer = styled.div`
   position: relative;
@@ -71,78 +71,78 @@ const AvatarContainer = styled.div`
     border-radius: 50%;
     z-index: 1;
   }
-`
+`;
 
-type Status = '' | 'error' | 'validating' | 'success' | 'warning' | undefined
+type Status = '' | 'error' | 'validating' | 'success' | 'warning' | undefined;
 
 const RegisterUser: React.FC = () => {
-  const [form] = Form.useForm()
+  const [form] = Form.useForm();
 
-  const [visible, setVisible] = useState(false)
-  const [avatar, setAvatar] = useState<string>()
-  const [usernameStatus, setUsernameStatus] = useState<Status>()
-  const [emailStatus, setEmailStatus] = useState<Status>()
+  const [visible, setVisible] = useState(false);
+  const [avatar, setAvatar] = useState<string>();
+  const [usernameStatus, setUsernameStatus] = useState<Status>();
+  const [emailStatus, setEmailStatus] = useState<Status>();
 
-  const [registerUser, { isLoading, isError }] = useRegisterUser()
-  const [validateEmail] = useValidateEmail()
-  const [validateUsername] = useValidateUsername()
+  const [registerUser, { isLoading, isError }] = useRegisterUser();
+  const [validateEmail] = useValidateEmail();
+  const [validateUsername] = useValidateUsername();
 
-  useAnonymousUserRequired()
+  useAnonymousUserRequired();
 
   const handleOnFinish = async () => {
     try {
-      const data = await form.validateFields()
+      const data = await form.validateFields();
 
-      data.AVATAR = avatar
-      data.USERNAME = data.USERNAME.toLowerCase()
+      data.AVATAR = avatar;
+      data.USERNAME = data.USERNAME.toLowerCase();
 
-      delete data._PASSWORD
-      await registerUser(data).unwrap()
+      delete data._PASSWORD;
+      await registerUser(data).unwrap();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const handleBlurUsername = async (
     event: React.FocusEvent<HTMLInputElement, Element>,
   ) => {
     try {
-      setUsernameStatus('validating')
+      setUsernameStatus('validating');
       await validateUsername({
         USERNAME: event.target.value,
-      }).unwrap()
-      setUsernameStatus('success')
+      }).unwrap();
+      setUsernameStatus('success');
     } catch ({ data }) {
-      setUsernameStatus('error')
+      setUsernameStatus('error');
       form.setFields([
         {
           name: 'USERNAME',
           errors: [data.error.message],
           validating: false,
         },
-      ])
+      ]);
     }
-  }
+  };
 
   const handleBlurEmail = async (
     event: React.FocusEvent<HTMLInputElement, Element>,
   ) => {
     try {
-      setEmailStatus('validating')
+      setEmailStatus('validating');
       await validateEmail({
         EMAIL: event.target.value,
-      }).unwrap()
-      setEmailStatus('success')
+      }).unwrap();
+      setEmailStatus('success');
     } catch (error) {
-      setEmailStatus('error')
+      setEmailStatus('error');
       form.setFields([
         {
           name: 'EMAIL',
           errors: [error.message],
         },
-      ])
+      ]);
     }
-  }
+  };
 
   return (
     <>
@@ -167,10 +167,7 @@ const RegisterUser: React.FC = () => {
                           />
                         </CustomCol>
                       </ConditionalComponent>
-                      <CustomRow justify={'center'}>
-                        {/* <Logo showText={false} /> */}
-                      </CustomRow>
-                      {/* <CustomDivider /> */}
+                      <CustomRow justify={'center'}></CustomRow>
                       <CustomCol xs={24}>
                         <CustomRow justify={'center'}>
                           <AvatarContainer>
@@ -195,6 +192,15 @@ const RegisterUser: React.FC = () => {
                       <br />
                       <br />
                       <br />
+                      <CustomCol xs={24}>
+                        <CustomFormItem
+                          label={'Nombre completo'}
+                          name={'FULL_NAME'}
+                          rules={[{ required: true }]}
+                        >
+                          <CustomInput placeholder="Nombre completo" />
+                        </CustomFormItem>
+                      </CustomCol>
                       <CustomCol xs={24}>
                         <CustomFormItem
                           hasFeedback
@@ -249,13 +255,13 @@ const RegisterUser: React.FC = () => {
                                   !value ||
                                   getFieldValue('PASSWORD') === value
                                 ) {
-                                  return Promise.resolve()
+                                  return Promise.resolve();
                                 }
                                 return Promise.reject(
                                   new Error(
                                     'Las contraseñas no coinciden, por favor intente de nuevo',
                                   ),
-                                )
+                                );
                               },
                             }),
                           ]}
@@ -306,7 +312,7 @@ const RegisterUser: React.FC = () => {
         onClose={setVisible}
       />
     </>
-  )
-}
+  );
+};
 
-export default RegisterUser
+export default RegisterUser;

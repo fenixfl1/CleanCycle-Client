@@ -1,8 +1,12 @@
 import { Location } from '@/constants/types';
-import React from 'react';
+import React, { useState } from 'react';
 import CustomCard from './antd/CustomCard';
-import { CustomMap } from '.';
-import { DirectionsRenderer, DirectionsService } from '@react-google-maps/api';
+import { ConditionalComponent, CustomMap } from '.';
+import {
+  DirectionsRenderer,
+  DirectionsService,
+  Marker,
+} from '@react-google-maps/api';
 
 interface TruckRoutesProps {
   route: {
@@ -14,19 +18,23 @@ interface TruckRoutesProps {
 const TruckRoutes: React.FC<TruckRoutesProps> = ({
   route: { origin, destination },
 }) => {
+  const [direction, setDirection] = useState<google.maps.DirectionsResult>();
+  const [map, setMap] = useState<google.maps.Map>();
   const style = {
     width: '100%',
     height: '100%',
   };
 
-  const center = {
-    lat: (origin.lat + destination.lat) / 2,
-    lng: (origin.lng + destination.lng) / 2,
-  };
-
   return (
     <CustomCard>
-      <CustomMap mapContainerStyle={style} center={center}>
+      <CustomMap
+        mapContainerStyle={style}
+        onLoad={setMap}
+        center={{
+          lat: (origin.lat + destination.lat) / 2,
+          lng: (origin.lng + destination.lng) / 2,
+        }}
+      >
         <DirectionsService
           key={JSON.stringify({ origin, destination })}
           options={{
@@ -36,33 +44,13 @@ const TruckRoutes: React.FC<TruckRoutesProps> = ({
           }}
           callback={(response) => {
             if (response !== null) {
-              console.log({ response, route: { origin, destination } });
+              setDirection(response);
             }
           }}
         />
-        <DirectionsRenderer
-          directions={
-            {
-              routes: [
-                {
-                  legs: [
-                    {
-                      start_location: origin,
-                      end_location: destination,
-                      steps: [],
-                    },
-                  ],
-                },
-              ],
-              request: {
-                origin: origin,
-                destination: destination,
-                travelMode: 'DRIVING' as never,
-              },
-              status: 'OK',
-            } as never
-          }
-        />
+        <ConditionalComponent condition={!!direction}>
+          <DirectionsRenderer directions={direction} />
+        </ConditionalComponent>
       </CustomMap>
     </CustomCard>
   );

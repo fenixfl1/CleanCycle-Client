@@ -20,7 +20,7 @@ function calculateAndDisplayRoute(
 
 declare global {
   interface Window {
-    initMap: () => void;
+    initMap(): void;
   }
 }
 
@@ -41,14 +41,16 @@ function initMap(): void {
     calculateAndDisplayRoute(directionsService, directionsRenderer);
   };
 
-  (document.getElementById('start') as HTMLElement)?.addEventListener(
+  (document.getElementById('start') as HTMLElement).addEventListener(
     'change',
     onChangeHandler,
   );
-  (document.getElementById('end') as HTMLElement)?.addEventListener(
+  (document.getElementById('end') as HTMLElement).addEventListener(
     'change',
     onChangeHandler,
   );
 }
+
+window.initMap = initMap;
 
 export default initMap;

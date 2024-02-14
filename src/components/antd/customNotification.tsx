@@ -1,14 +1,21 @@
-import { NotificationType } from '@/constants/types'
-import { notification as message } from 'antd'
+import { NotificationType } from '@/constants/types';
+import { notification as message } from 'antd';
 
 type NotificationParametersType = {
-  title: string
-  description: React.ReactNode
-  type: NotificationType
-  duration?: number
-  onClick?: () => void
-  icon?: React.ReactNode
-}
+  title: string;
+  description: React.ReactNode;
+  type: NotificationType;
+  duration?: number;
+  onClick?: () => void;
+  icon?: React.ReactNode;
+  placement?:
+    | 'top'
+    | 'topLeft'
+    | 'topRight'
+    | 'bottom'
+    | 'bottomLeft'
+    | 'bottomRight';
+};
 
 const customNotification = ({
   duration = 10,
@@ -20,7 +27,7 @@ const customNotification = ({
     description: parameters.description,
     onClick: parameters.onClick,
     duration: duration,
-  })
-}
+  });
+};
 
-export default customNotification
+export default customNotification;

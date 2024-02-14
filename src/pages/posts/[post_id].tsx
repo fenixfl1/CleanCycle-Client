@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ButtonActions, ConditionalComponent } from '@/components';
+import { ButtonActions, CommentBox, ConditionalComponent } from '@/components';
 import Body from '@/components/Body';
 import CustomCard from '@/components/antd/CustomCard';
 import CustomCol from '@/components/antd/CustomCol';
@@ -22,7 +22,7 @@ import styled from 'styled-components';
 import CustomAvatar from '@/components/antd/CustomAvatar';
 import CustomSpace from '@/components/antd/CustomSpace';
 import CustomTextArea from '@/components/antd/CustomTextArea';
-import { getSessionInfo } from '@/lib/session';
+import { getSessionInfo, isLoggedIn } from '@/lib/session';
 import CustomButton from '@/components/antd/CustomButton';
 import { CaretRightOutlined, UserOutlined } from '@ant-design/icons';
 import { Form } from 'antd';
@@ -30,6 +30,8 @@ import CustomFormItem from '@/components/antd/CustomFormItem';
 import CustomForm from '@/components/antd/CustomForm';
 import CustomTooltip from '@/components/antd/CustomTooltip';
 import { DATE_TIME_FORMAT } from '@/constants/formats';
+import { CustomModalInfo } from '../../components/antd/ModalMethods';
+import { defaultTheme } from '@/themes/themes';
 
 const Divider = styled(CustomDivider)`
   margin-top: 10px !important;
@@ -68,7 +70,7 @@ const PostContainer = styled.div`
 
 const CommentContent = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
-  background-color: ${({ theme }) => theme.backgroundColor};
+  background-color: ${({ theme }) => theme.baseBgColor};
   padding: 10px;
   width: 100%;
   max-width: 816px;
@@ -92,7 +94,7 @@ const CommentSection = styled.div`
 `;
 
 const CommentContainer = styled.div`
-  background-color: ${({ theme }) => theme.baseBgColor};
+  background-color: ${({ theme }) => theme.backgroundColor};
   border-radius: ${({ theme }) => theme.borderRadius};
   padding: 10px;
   display: flex;
@@ -139,11 +141,17 @@ const Post: React.FC = () => {
       });
   }, [postId]);
 
-  const handleOnComment = async () => {
+  const handleOnComment = async (comment: string) => {
     try {
-      const { COMMENT } = await form.validateFields();
+      if (!isLoggedIn()) {
+        return CustomModalInfo({
+          title: 'Inicia sesión',
+          content: 'Debes iniciar sesión para comentar',
+        });
+      }
+
       await commentPost({
-        COMMENT,
+        COMMENT: comment,
         POST_ID: postId,
         USERNAME: getSessionInfo().USERNAME,
       }).unwrap();
@@ -181,43 +189,47 @@ const Post: React.FC = () => {
 
         <CustomCol>
           <About>
-            <CustomRow width={'100%'}>
+            <CustomRow width={'100%'} align={'top'} gap={10}>
               <CustomCol xs={24}>
                 <CustomText strong>Acerca del author</CustomText>
                 <CustomDivider />
               </CustomCol>
 
-              <CustomSpace direction={'horizontal'} align={'center'}>
-                <CustomAvatar size={60} src={post?.AVATAR} />
-                <CustomParagraph>
+              {/* <CustomSpace direction={'horizontal'} align={'center'}> */}
+              <CustomAvatar shadow size={60} src={post?.AVATAR} />
+              <CustomCol xs={20}>
+                <CustomParagraph
+                  style={{
+                    backgroundColor: '#fff',
+                    padding: '10px',
+                    borderRadius: defaultTheme.borderRadius,
+                  }}
+                >
                   <CustomText strong>@{post?.AUTHOR}</CustomText>
                   <p>{post?.ABOUT_AUTHOR}</p>
                 </CustomParagraph>
-              </CustomSpace>
+              </CustomCol>
+              {/* </CustomSpace> */}
             </CustomRow>
           </About>
         </CustomCol>
 
-        <CustomCol xs={24}>
+        <CustomCol>
           <CommentSection>
             <CustomSpace width={'100%'}>
               <ConditionalComponent condition={!!comments?.length}>
                 <CommentContainer>
                   {comments?.map((comment) => (
-                    <CustomRow width={'100%'}>
-                      <CustomSpace
-                        direction={'horizontal'}
-                        width={'max-content'}
-                        align={'center'}
-                      >
-                        <CustomTooltip title={comment?.USERNAME}>
-                          <CustomAvatar
-                            shadow
-                            size={30}
-                            src={comment?.AVATAR}
-                            icon={<UserOutlined />}
-                          />
-                        </CustomTooltip>
+                    <CustomRow width={'100%'} align={'top'} gap={10}>
+                      <CustomTooltip title={comment?.USERNAME}>
+                        <CustomAvatar
+                          shadow
+                          size={36}
+                          src={comment?.AVATAR}
+                          icon={<UserOutlined />}
+                        />
+                      </CustomTooltip>
+                      <CustomCol xs={21}>
                         <CommentContent>
                           <CustomParagraph>
                             <CustomRow
@@ -225,6 +237,7 @@ const Post: React.FC = () => {
                               height={'20px'}
                               width={'100%'}
                               gap={15}
+                              align={'top'}
                             >
                               <Subtitle>@{comment.USERNAME}</Subtitle>
                               <Subtitle>
@@ -237,29 +250,13 @@ const Post: React.FC = () => {
                             {comment?.COMMENT}
                           </CustomParagraph>
                         </CommentContent>
-                      </CustomSpace>
+                      </CustomCol>
                     </CustomRow>
                   ))}
                 </CommentContainer>
               </ConditionalComponent>
-              <CustomRow justify={'space-between'} align={'middle'}>
-                <CustomAvatar size={36} src={getSessionInfo().AVATAR} />
-                <CustomCol xs={21}>
-                  <CustomForm form={form}>
-                    <CustomFormItem noStyle name={'COMMENT'}>
-                      <CustomTextArea
-                        placeholder={'Deja un comentario'}
-                        showCount={false}
-                      />
-                    </CustomFormItem>
-                  </CustomForm>
-                </CustomCol>
-                <CustomButton
-                  onClick={handleOnComment}
-                  type={'text'}
-                  icon={<CaretRightOutlined style={{ fontSize: 22 }} />}
-                />
-              </CustomRow>
+
+              <CommentBox onComment={handleOnComment} />
             </CustomSpace>
           </CommentSection>
         </CustomCol>

@@ -1,24 +1,25 @@
-import { Post } from '@/redux/slices/postsSlice'
-import React from 'react'
-import CustomCol from './antd/CustomCol'
-import { CustomParagraph } from './antd/CustomTypography'
-import CustomTitle from './antd/CustomTitle'
-import CustomRow from './antd/CustomRow'
-import styled from 'styled-components'
-import CustomCarousel from './antd/CustomCarousel'
-import { dateTransform } from '@/helpers/dateTransform'
-import { CommentOutlined, HeartOutlined } from '@ant-design/icons'
-import CustomBadge from './antd/CustomBadge'
-import CustomTooltip from './antd/CustomTooltip'
-import CustomSpace from './antd/CustomSpace'
-import Subtitle from './styled/SubTitle'
-import CustomDivider from './antd/CustomDivider'
-import Link from 'next/link'
-import { truncateText } from '@/helpers/truncateText'
-import { useRouter } from 'next/router'
+import { Post } from '@/redux/slices/postsSlice';
+import React from 'react';
+import CustomCol from './antd/CustomCol';
+import { CustomParagraph } from './antd/CustomTypography';
+import CustomTitle from './antd/CustomTitle';
+import CustomRow from './antd/CustomRow';
+import styled from 'styled-components';
+import CustomCarousel from './antd/CustomCarousel';
+import { dateTransform } from '@/helpers/dateTransform';
+import { CommentOutlined, HeartOutlined } from '@ant-design/icons';
+import CustomBadge from './antd/CustomBadge';
+import CustomTooltip from './antd/CustomTooltip';
+import CustomSpace from './antd/CustomSpace';
+import Subtitle from './styled/SubTitle';
+import CustomDivider from './antd/CustomDivider';
+import Link from 'next/link';
+import { truncateText } from '@/helpers/truncateText';
+import { useRouter } from 'next/router';
+import { getPostDescription } from '@/helpers/getPostDescription';
 
 interface PostPreviewProps {
-  post: Post
+  post: Post;
 }
 
 const PostContainer = styled.div`
@@ -30,7 +31,7 @@ const PostContainer = styled.div`
   @media (max-width: 1819px) {
     max-width: 700px;
   }
-`
+`;
 
 const ImageContainer = styled.div`
   width: 100%;
@@ -41,12 +42,12 @@ const ImageContainer = styled.div`
     object-fit: cover;
     border-radius: ${({ theme }) => theme.borderRadius};
   }
-`
+`;
 
 const SubTitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 
 const Paragraph = styled(CustomParagraph)`
   position: relative;
@@ -62,7 +63,7 @@ const Paragraph = styled(CustomParagraph)`
     z-index: 1;
     display: none;
   }
-`
+`;
 
 const Container = styled(CustomCol)`
   position: relative;
@@ -85,27 +86,21 @@ const Container = styled(CustomCol)`
       border-radius: ${({ theme }) => theme.borderRadius};
     }
   }
-`
+`;
 const Title = styled(CustomTitle)`
   margin-bottom: 0 !important;
-`
+`;
 
 const Divider = styled(CustomDivider)`
   margin-top: 10px !important;
-`
-
-const getPostDescription = (content: string) => {
-  const description = content.replace(/<img[^>]*>/g, '')
-  const regex = /<h[1-6]>(.*?)<\/h[1-6]>/g
-  return truncateText(description.replace(regex, ''), 500)
-}
+`;
 
 const PostPreview: React.FC<PostPreviewProps> = ({ post }) => {
-  const router = useRouter()
+  const router = useRouter();
 
   const handleOnClick = () => {
-    router.push(`/posts/${post?.POST_ID}`)
-  }
+    router.push(`/posts/${post?.POST_ID}`);
+  };
 
   return (
     <CustomCol xs={24}>
@@ -140,7 +135,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({ post }) => {
               </SubTitleContainer>
               <div
                 dangerouslySetInnerHTML={{
-                  __html: getPostDescription(post?.CONTENT || ''),
+                  __html: post?.PREVIEW_TEXT,
                 }}
               />
             </Paragraph>
@@ -151,7 +146,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({ post }) => {
       <br />
       <br />
     </CustomCol>
-  )
-}
+  );
+};
 
-export default PostPreview
+export default PostPreview;

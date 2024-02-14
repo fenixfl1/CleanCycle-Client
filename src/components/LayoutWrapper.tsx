@@ -4,6 +4,7 @@ import PageHeader from '@/components/PageHeader';
 import { defaultTheme } from '@/themes/themes';
 import React from 'react';
 import styled from 'styled-components';
+import PageSider from './PageSider';
 
 const Content = styled(CustomContent)`
   height: 85vh;
@@ -17,7 +18,7 @@ const Content = styled(CustomContent)`
   }
 `;
 
-const StyledLayout = styled(CustomLayout)`
+const Body = styled(CustomLayout)`
   min-height: 100vh;
   max-height: 100vh;
   overflow: auto;
@@ -35,16 +36,30 @@ const StyledLayout = styled(CustomLayout)`
   }
 `;
 
+const Layout = styled(CustomLayout)`
+  background: ${({ theme }) => theme.baseBgColor};
+`;
+
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const LayoutWrapper: React.FC<LayoutProps> = ({ children }) => {
+  // return (
+  //   <CustomLayout style={{ background: defaultTheme.baseBgColor }}>
+  //     <PageSider />
+  //     <PageHeader />
+  //     <Content>{children}</Content>
+  //   </CustomLayout>
+  // );
   return (
-    <CustomLayout style={{ background: defaultTheme.baseBgColor }}>
-      <PageHeader />
-      <Content>{children}</Content>
-    </CustomLayout>
+    <Layout hasSider>
+      <PageSider />
+      <Body>
+        <PageHeader />
+        <Content>{children}</Content>
+      </Body>
+    </Layout>
   );
 };
 
