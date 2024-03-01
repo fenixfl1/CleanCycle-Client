@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import CustomHeader from './antd/CustomHeader';
-import CustomMenu from './antd/CustomMenu';
 import Link from 'next/link';
 import CustomAvatar from './antd/CustomAvatar';
 import {
@@ -11,49 +10,50 @@ import {
   PATH_LOGIN,
   PATH_REGISTER_USER,
   PATH_USER_PROFILE,
-  WEB_API_RANDOM_USER_AVATAR,
+  PATH_USER_SETTINGS,
 } from '@/constants/routes';
-import ConditionalComponent from './ConditionalComponent';
 import { getSessionInfo, isLoggedIn } from '@/lib/session';
 import { useRouter } from 'next/router';
-import CustomPopover from './antd/CustomPopover';
 import CustomSpace from './antd/CustomSpace';
 import { PersonCircleOutlined, GearOutlined, PowerOutlined } from '@/icons';
 import { CustomModalConfirmation } from './antd/ModalMethods';
 import { useAppDispatch } from '@/redux/store';
 import sleep from '@/helpers/sleep';
 import { logout } from '@/redux/slices/userSlice';
-import { Darkreader } from '.';
 import CustomRow from './antd/CustomRow';
 import Logo from './styled/Logo';
 import CustomButton from '@/components/antd/CustomButton';
 import {
   InfoCircleOutlined,
+  LoginOutlined,
   LogoutOutlined,
   MailOutlined,
   QuestionCircleOutlined,
+  SettingOutlined,
 } from '@ant-design/icons';
 import CustomTooltip from './antd/CustomTooltip';
-import CustomCol from './antd/CustomCol';
 import { defaultTheme } from '@/themes/themes';
 import { MenuProps } from 'antd';
+import CustomDivider from './antd/CustomDivider';
+import CustomDropdown from './antd/CustomDropdown';
+import ConditionalComponent from './ConditionalComponent';
+import { CustomLink } from './antd/CustomTypography';
+import { UserOutlined } from '@ant-design/icons';
 
-const AvatarContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const Dropdown = styled(CustomDropdown)`
+  .ant-dropdown-menu-item {
+    width: 180px !important;
+  }
+
+  .ant-dropdown-menu {
+    background-color: ${({ theme }) => theme.secondaryColor} !important;
+    width: 400x !important;
+  }
 `;
 
-const Menu = styled(CustomMenu)`
-  background: ${({ theme }) => theme.secondaryColor} !important;
-  width: 100% !important;
-`;
-
-const Avatar = styled(CustomAvatar)`
-  background-color: ${({ theme }) =>
-    theme.theme === 'light' ? '#fff' : '#000000'};
-  cursor: pointer;
-  box-shadow: ${(props) => props.theme.boxShadow};
+const DropdownContent = styled.div`
+  // padding: 10px 20px;
+  width: 200px;
 `;
 
 const PageHeader: React.FC = () => {
@@ -110,6 +110,35 @@ const PageHeader: React.FC = () => {
       >
         Configuraciones
       </CustomButton>
+      <CustomDivider />
+      <CustomButton
+        block
+        size={'large'}
+        type={'text'}
+        icon={<MailOutlined size={20} />}
+        style={{ textAlign: 'left', display: 'flex', alignItems: 'center' }}
+      >
+        Contáctanos
+      </CustomButton>
+      <CustomButton
+        block
+        size={'large'}
+        type={'text'}
+        icon={<InfoCircleOutlined size={20} />}
+        style={{ textAlign: 'left', display: 'flex', alignItems: 'center' }}
+      >
+        Sobre Nosotros
+      </CustomButton>
+      <CustomButton
+        block
+        size={'large'}
+        type={'text'}
+        icon={<QuestionCircleOutlined size={20} />}
+        style={{ textAlign: 'left', display: 'flex', alignItems: 'center' }}
+      >
+        Página de Ayuda
+      </CustomButton>
+      <CustomDivider />
       <CustomButton
         style={{ textAlign: 'left', display: 'flex', alignItems: 'center' }}
         onClick={confirmLogout}
@@ -125,51 +154,93 @@ const PageHeader: React.FC = () => {
 
   const iconStyle: React.CSSProperties = {
     fontSize: '1.3rem',
-    color: defaultTheme.primaryColor,
+    color: defaultTheme.textColor,
   };
 
   const items: MenuProps['items'] = [
     {
-      key: '1',
-      label: (
-        <CustomTooltip title={'Contacto'}>
-          <Link href={PATH_CONTACT}>
-            <MailOutlined style={iconStyle} />
-          </Link>
-        </CustomTooltip>
+      disabled: !isLoggedIn(),
+      key: 'profile',
+      icon: (
+        <CustomAvatar shadow src={getSessionInfo().AVATAR} style={iconStyle} />
       ),
-    },
-    {
-      key: '2',
       label: (
-        <CustomTooltip title={'Pagina de ayuda'}>
-          <Link href={PATH_HELP}>
-            <QuestionCircleOutlined style={iconStyle} />
+        <CustomTooltip title={'Perfil'}>
+          <Link
+            style={{ marginLeft: '10px' }}
+            href={PATH_USER_PROFILE}
+            as={PATH_USER_PROFILE.replace(
+              '[username]',
+              getSessionInfo().USERNAME,
+            )}
+          >
+            Perfil
           </Link>
         </CustomTooltip>
       ),
     },
     {
       disabled: !isLoggedIn(),
-      key: '3',
+      key: 'settings',
+      icon: <SettingOutlined style={iconStyle} />,
       label: (
-        <CustomTooltip title={'Cerrar Sesión'}>
-          <CustomButton
-            type={'link'}
-            onClick={confirmLogout}
-            icon={<LogoutOutlined style={iconStyle} />}
-          />
+        <CustomTooltip title={'Configuraciones'}>
+          <Link
+            style={{ marginLeft: '10px' }}
+            href={PATH_USER_SETTINGS}
+            as={PATH_USER_SETTINGS.replace(
+              '[username]',
+              getSessionInfo().USERNAME,
+            )}
+          >
+            Configuraciones
+          </Link>
         </CustomTooltip>
       ),
     },
     {
-      disabled: isLoggedIn(),
-      key: '4',
+      type: 'divider',
+      key: 'divider',
+      label: 'divider',
+      disabled: !isLoggedIn(),
+    },
+    {
+      key: 'contact',
+      icon: <MailOutlined style={iconStyle} />,
       label: (
-        <CustomTooltip title={'Modo Oscuro'}>
-          <CustomButton onClick={handleGetLogin} type={'primary'}>
-            Iniciar sesión
-          </CustomButton>
+        <CustomTooltip title={'Contacto'}>
+          <Link style={{ marginLeft: '10px' }} href={PATH_CONTACT}>
+            Contáctanos
+          </Link>
+        </CustomTooltip>
+      ),
+    },
+    {
+      key: 'help',
+      icon: <QuestionCircleOutlined style={iconStyle} />,
+      label: (
+        <CustomTooltip title={'Pagina de ayuda'}>
+          <Link style={{ marginLeft: '10px' }} href={PATH_HELP}>
+            Pagina de ayuda
+          </Link>
+        </CustomTooltip>
+      ),
+    },
+    {
+      type: 'divider',
+      key: 'divider',
+      label: 'divider',
+      disabled: !isLoggedIn(),
+    },
+    {
+      disabled: !isLoggedIn(),
+      key: 'sign-out',
+      icon: <LogoutOutlined style={iconStyle} />,
+      label: (
+        <CustomTooltip title={'Cerrar Sesión'}>
+          <CustomLink style={{ marginLeft: '10px' }} onClick={confirmLogout}>
+            Cerrar Sesión
+          </CustomLink>
         </CustomTooltip>
       ),
     },
@@ -179,41 +250,44 @@ const PageHeader: React.FC = () => {
     <CustomHeader className={'main-page-header'}>
       <CustomRow justify={'space-between'} align={'middle'} width={'100%'}>
         <Logo />
-
-        <CustomCol xs={4}>
-          <Menu mode="horizontal" items={items} />
-        </CustomCol>
-      </CustomRow>
-      {/* <CustomRow justify={'end'} align={'middle'} width={'100%'}>
-        <AvatarContainer>
-          <CustomSpace size={10} direction="horizontal">
-            <ConditionalComponent
-              condition={isLoggedIn()}
-              fallback={
-                <ConditionalComponent
-                  condition={
-                    route.pathname !== PATH_LOGIN &&
-                    route.pathname !== PATH_REGISTER_USER
-                  }
-                >
-                  <CustomButton onClick={handleGetLogin} type={'primary'}>
-                    Iniciar sesión
-                  </CustomButton>
-                </ConditionalComponent>
-              }
+        <CustomSpace
+          size={10}
+          direction="horizontal"
+          split={<CustomDivider type="vertical" />}
+          width={'max-content'}
+        >
+          <ConditionalComponent condition={!isLoggedIn()}>
+            <CustomButton
+              icon={<LoginOutlined />}
+              type={'primary'}
+              onClick={handleGetLogin}
             >
-              <CustomPopover content={content}>
-                <Avatar
-                  shadow
-                  size={44}
-                  src={getSessionInfo().AVATAR}
-                  icon={<PersonCircleOutlined />}
-                />
-              </CustomPopover>
-            </ConditionalComponent>
-          </CustomSpace>
-        </AvatarContainer>
-      </CustomRow> */}
+              Iniciar Sesión
+            </CustomButton>
+          </ConditionalComponent>
+          <Dropdown
+            menu={{ items }}
+            dropdownRender={(menu) => {
+              return (
+                <DropdownContent className={'dropdown-content'}>
+                  {React.cloneElement(menu as React.ReactElement, {
+                    boxShadow: 'none',
+                    marginRight: '10px',
+                  })}
+                </DropdownContent>
+              );
+            }}
+          >
+            <CustomAvatar
+              shadow
+              style={{ cursor: 'pointer' }}
+              size={44}
+              src={getSessionInfo().AVATAR}
+              icon={<UserOutlined />}
+            />
+          </Dropdown>
+        </CustomSpace>
+      </CustomRow>
     </CustomHeader>
   );
 };

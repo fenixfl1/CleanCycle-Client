@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { ButtonActions, CommentBox, ConditionalComponent } from '@/components';
 import Body from '@/components/Body';
 import CustomCard from '@/components/antd/CustomCard';
@@ -32,6 +32,7 @@ import CustomTooltip from '@/components/antd/CustomTooltip';
 import { DATE_TIME_FORMAT } from '@/constants/formats';
 import { CustomModalInfo } from '../../components/antd/ModalMethods';
 import { defaultTheme } from '@/themes/themes';
+import { Post } from '@/redux/slices/postsSlice';
 
 const Divider = styled(CustomDivider)`
   margin-top: 10px !important;
@@ -123,16 +124,24 @@ const Title = styled(CustomTitle)`
   margin-bottom: 0 !important;
 `;
 
-const Post: React.FC = () => {
+interface PostPageProps {
+  post?: Post;
+}
+
+const PostPage: React.FC<PostPageProps> = ({ post: _post }) => {
   const [form] = Form.useForm();
   const router = useRouter();
   const postId = Number(router.query.post_id);
 
-  const { data: post, isLoading } = useGetPostById(postId, {
+  const { data, isLoading } = useGetPostById(postId, {
     skip: isNaN(postId),
   });
   const [getPostComment, { data: comments }] = useGetPostComments();
   const [commentPost] = useCommentPost();
+
+  const post = useMemo(() => {
+    return _post || data;
+  }, [data, _post]);
 
   useEffect(() => {
     postId &&
@@ -274,4 +283,4 @@ const Post: React.FC = () => {
   );
 };
 
-export default Post;
+export default PostPage;

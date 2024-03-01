@@ -4,6 +4,7 @@ import {
   WEB_API_PATH_LOGIN,
   WEB_API_PATH_REGISTER_USER,
   WEB_API_PATH_UNFOLLOW_USER,
+  WEB_API_PATH_UPDATE_USER,
   WEB_API_PATH_VALIDATE_EMAIL,
   WEB_API_PATH_VALIDATE_USERNAME,
 } from '@/constants/routes';
@@ -30,6 +31,13 @@ export const authApiHelper = api.injectEndpoints({
       query: (payload) => ({
         url: WEB_API_PATH_REGISTER_USER,
         method: 'POST',
+        data: { ...payload },
+      }),
+    }),
+    updateUser: build.mutation<User, Partial<User>>({
+      query: (payload) => ({
+        url: WEB_API_PATH_UPDATE_USER,
+        method: 'PUT',
         data: { ...payload },
       }),
     }),
@@ -73,7 +81,10 @@ export const authApiHelper = api.injectEndpoints({
 export const {
   useAuthenticateMutation: useAuthenticateUser,
   useRegisterUserMutation: useRegisterUser,
+  useUpdateUserMutation: useUpdateUser,
   useValidateEmailMutation: useValidateEmail,
   useValidateUsernameMutation: useValidateUsername,
   useGetUserQuery: useGetUser,
+  useFollowUserMutation: useFollowUser,
+  useUnfollowUserMutation: useUnfollowUser,
 } = authApiHelper;

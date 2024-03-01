@@ -13,6 +13,8 @@ import TruckRoutes from './TruckRoutes';
 import NearestCenter from './NearestCenter';
 import RecyclingPointsCard from './RecyclingPointsCard';
 import CommentBox from './CommentBox';
+import ExchangeItemForm from './ExchangeItemForm';
+import ProposalSection from './ProposalSection';
 
 const TextEditor = dynamic(() => import('./TextEditor'), { ssr: false });
 const Darkreader = dynamic(() => import('./Darkreader'), { ssr: false });
@@ -36,4 +38,6 @@ export {
   NearestCenter,
   RecyclingPointsCard,
   CommentBox,
+  ExchangeItemForm,
+  ProposalSection,
 };

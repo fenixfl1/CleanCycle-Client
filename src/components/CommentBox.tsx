@@ -15,8 +15,10 @@ import CustomPopover from './antd/CustomPopover';
 import CustomSpace from './antd/CustomSpace';
 import { defaultTheme } from '@/themes/themes';
 import CustomUpload from './antd/CustomUpload';
-import { UploadFile } from 'antd';
+import { Form, FormInstance, UploadFile } from 'antd';
 import getBase64 from '@/helpers/getBase64';
+import CustomForm from './antd/CustomForm';
+import CustomFormItem from './antd/CustomFormItem';
 
 const Container = styled(CustomRow)`
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -54,14 +56,16 @@ const Textarea = styled.div`
 
 interface CommentBoxProps {
   onComment?(comment: string): Promise<void>;
+  form?: FormInstance<{ COMMENT: string }>;
 }
 
-const CommentBox: React.FC<CommentBoxProps> = ({ onComment }) => {
+const CommentBox: React.FC<CommentBoxProps> = ({ onComment, form }) => {
+  const comment = Form.useWatch('COMMENT', form);
   const textAreaRef = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLDivElement>(null);
 
   const disabled = useMemo(() => {
-    return !textAreaRef.current?.innerText;
+    return !textAreaRef.current?.innerText && !comment;
   }, [textAreaRef.current?.innerText]);
 
   const insertEmoji = (emoji) => {
@@ -124,11 +128,17 @@ const CommentBox: React.FC<CommentBoxProps> = ({ onComment }) => {
       <CustomAvatar shadow size={36} src={getSessionInfo().AVATAR} />
       <CustomCol xs={21}>
         <Container justify={'end'} gap={10}>
-          <Textarea
-            ref={textAreaRef}
-            contentEditable
-            placeholder={'Escribe un comentario...'}
-          />
+          <CustomCol xs={24}>
+            <CustomForm form={form} layout={'vertical'}>
+              <CustomFormItem name={'COMMENT'} noStyle>
+                <Textarea
+                  ref={textAreaRef}
+                  contentEditable
+                  placeholder={'Escribe un comentario...'}
+                />
+              </CustomFormItem>
+            </CustomForm>
+          </CustomCol>
           <CustomRow
             width={'100%'}
             justify={'space-between'}
@@ -186,7 +196,7 @@ const CommentBox: React.FC<CommentBoxProps> = ({ onComment }) => {
             </CustomCol>
             <CustomTooltip title={'Comentar'}>
               <CustomButton
-                disabled={disabled}
+                // disabled={!comment}
                 onClick={handleOnComment}
                 size={'large'}
                 type={'text'}

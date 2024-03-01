@@ -9,6 +9,7 @@ import { getSessionInfo, isLoggedIn } from '@/lib/session';
 import { useGetPostsList } from '@/services/posts';
 import { EditOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 const Space = styled(CustomSpace)`

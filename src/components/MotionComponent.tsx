@@ -6,6 +6,7 @@ interface MotionComponentProps {
   children: React.ReactNode;
   delay?: number;
   style?: React.CSSProperties;
+  key?: string;
 }
 
 const MotionComponent: React.FC<MotionComponentProps> = ({
@@ -27,7 +28,7 @@ const MotionComponent: React.FC<MotionComponentProps> = ({
   return (
     <AnimatePresence initial presenceAffectsLayout mode="wait">
       <motion.div
-        key={router.route}
+        key={props.key ?? router.route}
         initial="initial"
         animate="animate"
         exit="exit"

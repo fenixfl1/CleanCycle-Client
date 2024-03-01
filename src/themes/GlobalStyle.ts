@@ -65,6 +65,10 @@ const GlobalStyle = createGlobalStyle`
         border: none !important;
     }
 
+    .ant-image-mask {
+        border-radius: ${({ theme }) => theme.borderRadius};
+    }
+
     .sider {
         background: ${(props) => props.theme.baseBgColor};
         box-shadow: ${(props) => props.theme.boxShadow};

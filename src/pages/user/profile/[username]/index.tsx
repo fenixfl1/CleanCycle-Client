@@ -3,7 +3,7 @@ import { WEB_API_PATH_GET_USER } from '@/constants/routes';
 import { User } from '@/redux/slices/userSlice';
 import { getRequest } from '@/services/api';
 import { GetServerSidePropsContext, NextPage } from 'next';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import CustomAvatar from '@/components/antd/CustomAvatar';
 import CustomButton from '@/components/antd/CustomButton';
@@ -14,6 +14,8 @@ import {
   TagsOutlined,
   SettingOutlined,
   RightOutlined,
+  HeartOutlined,
+  CommentOutlined,
 } from '@ant-design/icons';
 import { AvatarSelector, ConditionalComponent } from '@/components';
 import {
@@ -38,6 +40,11 @@ import CustomCol from '@/components/antd/CustomCol';
 import CustomCard from '@/components/antd/CustomCard';
 import Link from 'next/link';
 import PostPreview from '@/components/PostPreviewV2';
+import { useUpdateUser } from '@/services/user';
+import CustomSpin from '@/components/antd/CustomSpin';
+import CustomModal from '@/components/antd/CustomModal';
+import PostPage from '@/pages/posts/[post_id]';
+import CustomCardMeta from '@/components/antd/CustomCardMeta';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -148,48 +155,76 @@ const PostGallery = styled.div`
   gap: 10px;
   width: 100%;
   padding: 10px;
-  box-sizing: border-box;
-  position: relative;
 
   .gallery-item {
     img {
       width: 100%;
-      height: 100%;
+      min-height: 200px;
+      max-height: 200px;
       object-fit: cover;
-      border-radius: ${({ theme }) => theme.borderRadius};
-    }
-
-    span {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: ${({ theme }) => theme.whiteBackground};
-      font-weight: bold;
-      text-shadow: 1px 1px 2px #333;
     }
   }
 `;
 
-const PosGallery: React.FC<{ posts: Post[] }> = ({ posts }) => {
+interface PosGalleryProps {
+  posts: Post[];
+}
+
+const PosGallery: React.FC<PosGalleryProps> = ({ posts }) => {
+  const [showPost, setShowPost] = useState(false);
+  const [selectPost, setSelectPost] = useState<Post>();
+
+  const handleSelectPost = (post: Post) => {
+    setSelectPost(post);
+    setShowPost(true);
+  };
+
   return (
-    <Container>
-      <Wrapper>
-        <ConditionalComponent
-          condition={!!posts?.length}
-          fallback={<Empty description={'No tiene posts en esta lista'} />}
-        >
-          <PostGallery>
-            {posts?.map((post) => (
-              <div key={post.POST_ID} className="gallery-item">
-                <CustomText type={'secondary'}>{post.TITLE}</CustomText>
-                <img src={post.FRONT_PAGE} alt={post.TITLE} />
-              </div>
-            ))}
-          </PostGallery>
-        </ConditionalComponent>
-      </Wrapper>
-    </Container>
+    <>
+      <Container>
+        <Wrapper>
+          <ConditionalComponent
+            condition={!!posts?.length}
+            fallback={<Empty description={'No tiene posts en esta lista'} />}
+          >
+            <PostGallery>
+              {posts?.map((post) => (
+                <CustomCard
+                  hoverable
+                  key={post.POST_ID}
+                  className="gallery-item"
+                  cover={<img src={post.FRONT_PAGE} alt={post.TITLE} />}
+                >
+                  {/* <div
+                    key={post.POST_ID}
+                    className="gallery-item"
+                    onClick={() => handleSelectPost(post)}
+                  > */}
+                  {/* <CustomText type={'secondary'}>{post.TITLE}</CustomText> */}
+                  <CustomCardMeta
+                    title={post.TITLE}
+                    description={
+                      <CustomSpace direction="horizontal">
+                        <HeartOutlined />
+                        <CommentOutlined />
+                      </CustomSpace>
+                    }
+                  />
+                  {/* <img src={post.FRONT_PAGE} alt={post.TITLE} /> */}
+                  {/* </div> */}
+                </CustomCard>
+              ))}
+            </PostGallery>
+          </ConditionalComponent>
+        </Wrapper>
+      </Container>
+
+      <CustomModal open={showPost}>
+        <CustomRow justify={'center'}>
+          <PostPage post={selectPost} />
+        </CustomRow>
+      </CustomModal>
+    </>
   );
 };
 
@@ -199,126 +234,162 @@ interface ProfileProps {
 
 const Profile: NextPage<ProfileProps> = ({ user }) => {
   const [visible, setVisible] = useState(false);
-  const [avatar, setAvatar] = useState<string>();
+  const [about, setAbout] = useState<string>();
 
   const { data: posts } = useGetMyPosts(getSessionInfo().USERNAME);
   const { data: savedPosts } = useGetSavedPosts('');
   const { data } = useGetPostsList('');
+  const [updateUser, { data: updatedUser, isLoading: fetchingUpdateUser }] =
+    useUpdateUser();
 
-  const userPosts = data?.filter((post) => post.AUTHOR === user.USERNAME);
+  const currentUser = useMemo(() => {
+    if (updatedUser) {
+      return updatedUser;
+    }
 
-  const isMyProfile = user.USER_ID === getSessionInfo().USER_ID;
+    return user;
+  }, [user, updatedUser]);
+
+  const userPosts = data?.filter(
+    (post) => post.AUTHOR === currentUser.USERNAME,
+  );
+  const isMyProfile = currentUser.USER_ID === getSessionInfo().USER_ID;
+
+  const handleUpdateAvatar = (url: string) => {
+    updateUser({ USER_ID: currentUser.USER_ID, AVATAR: url });
+  };
 
   const editable = {
     maxLength: 1000,
     text: user.ABOUT,
     autoSize: true,
     enterIcon: null,
+    onChange: setAbout,
+    onEnd: () => {
+      if (about) {
+        updateUser({ USER_ID: currentUser.USER_ID, ABOUT: about });
+      }
+    },
   };
 
   return (
-    <>
+    <CustomSpin spinning={fetchingUpdateUser}>
       <Body style={{ marginTop: 20 }}>
-        <CustomSpace direction="vertical" size={20} width={'100%'}>
-          <Container>
-            <CustomRow
-              justify={'start'}
-              align={'middle'}
-              height={'80px'}
-              style={{ alignSelf: 'flex-start', paddingLeft: 20 }}
-            >
-              <CustomTitle style={{ display: 'flex', flexDirection: 'column' }}>
-                {user.FULL_NAME}{' '}
-                <CustomText type={'secondary'}> @{user.USERNAME}</CustomText>
-              </CustomTitle>
-            </CustomRow>
-            <AvatarContainer>
-              <CustomAvatar
-                icon={<UserOutlined />}
-                size={100}
-                src={user.AVATAR}
-                shadow
-              />
-              <CustomButton
-                shape={'circle'}
-                className={'upload-button'}
-                icon={<UploadOutlined />}
-                onClick={() => setVisible(true)}
-              />
-            </AvatarContainer>
-            <div className="avatar-shadow" />
-          </Container>
-          <ConditionalComponent condition={isMyProfile}>
-            <Link href={`${getSessionInfo().USERNAME}/settings`}>
-              <Card hoverable>
-                <CustomRow
-                  justify={'space-between'}
-                  width={'100%'}
-                  align={'middle'}
-                  style={{ padding: 10 }}
+        <CustomRow justify={'center'} gap={10} width={'100%'}>
+          <CustomCol xs={20}>
+            <Container>
+              <CustomRow
+                justify={'start'}
+                align={'middle'}
+                height={'80px'}
+                style={{ alignSelf: 'flex-start', paddingLeft: 20 }}
+              >
+                <CustomTitle
+                  style={{ display: 'flex', flexDirection: 'column' }}
                 >
-                  <CustomCol xs={22}>
-                    <CustomSpace direction="horizontal" size={10}>
-                      <CustomText type={'secondary'}>
-                        <SettingOutlined style={{ fontSize: 22 }} />
-                      </CustomText>
-                      <CustomText strong>Configuración</CustomText>
-                    </CustomSpace>
-                  </CustomCol>
+                  {currentUser.FULL_NAME}{' '}
                   <CustomText type={'secondary'}>
-                    <RightOutlined style={{ fontSize: 22 }} />
+                    {' '}
+                    @{currentUser.USERNAME}
                   </CustomText>
-                </CustomRow>
-              </Card>
-            </Link>
-          </ConditionalComponent>
-          <Container>
-            <Paragraph
-              editable={
-                user.USER_ID === getSessionInfo().USER_ID ? editable : false
-              }
-            >
-              <div dangerouslySetInnerHTML={{ __html: user.ABOUT }} />
-            </Paragraph>
-          </Container>
+                </CustomTitle>
+              </CustomRow>
+              <AvatarContainer>
+                <CustomAvatar
+                  icon={<UserOutlined />}
+                  size={100}
+                  src={currentUser.AVATAR}
+                  shadow
+                />
+                <CustomButton
+                  shape={'circle'}
+                  className={'upload-button'}
+                  icon={<UploadOutlined />}
+                  onClick={() => setVisible(true)}
+                />
+              </AvatarContainer>
+              <div className="avatar-shadow" />
+            </Container>
+          </CustomCol>
+          <CustomCol xs={20}>
+            <ConditionalComponent condition={isMyProfile}>
+              <Link href={`${getSessionInfo().USERNAME}/settings`}>
+                <Card hoverable>
+                  <CustomRow
+                    justify={'space-between'}
+                    width={'100%'}
+                    align={'middle'}
+                    style={{ padding: 10 }}
+                  >
+                    <CustomCol xs={22}>
+                      <CustomSpace direction="horizontal" size={10}>
+                        <CustomText type={'secondary'}>
+                          <SettingOutlined style={{ fontSize: 22 }} />
+                        </CustomText>
+                        <CustomText strong>Configuración</CustomText>
+                      </CustomSpace>
+                    </CustomCol>
+                    <CustomText type={'secondary'}>
+                      <RightOutlined style={{ fontSize: 22 }} />
+                    </CustomText>
+                  </CustomRow>
+                </Card>
+              </Link>
+            </ConditionalComponent>
+          </CustomCol>
+          <CustomCol xs={20}>
+            <Container>
+              <Paragraph
+                editable={
+                  currentUser.USER_ID === getSessionInfo().USER_ID
+                    ? editable
+                    : false
+                }
+              >
+                <div dangerouslySetInnerHTML={{ __html: currentUser.ABOUT }} />
+              </Paragraph>
+            </Container>
+          </CustomCol>
           <ConditionalComponent
             condition={isMyProfile}
             fallback={<PostPreview posts={userPosts} />}
           >
-            <CustomTabs
-              items={[
-                {
-                  children: <PosGallery posts={posts ?? []} />,
-                  key: '1',
-                  label: (
-                    <CustomSpace size={5} direction="horizontal">
-                      <AppstoreOutlined style={{ fontSize: 16 }} />
-                      <span style={{ fontSize: 16 }}>Posts</span>
-                    </CustomSpace>
-                  ),
-                },
-                {
-                  children: <PosGallery posts={savedPosts ?? []} />,
-                  key: '2',
-                  label: (
-                    <CustomSpace size={5} direction="horizontal">
-                      <TagsOutlined style={{ fontSize: 16 }} />
-                      <span style={{ fontSize: 16 }}>Guardados</span>
-                    </CustomSpace>
-                  ),
-                },
-              ]}
-            />
+            <CustomCol xs={20}>
+              <CustomTabs
+                items={[
+                  {
+                    children: <PosGallery posts={posts ?? []} />,
+                    key: '1',
+                    label: (
+                      <CustomSpace size={5} direction="horizontal">
+                        <AppstoreOutlined style={{ fontSize: 16 }} />
+                        <span style={{ fontSize: 16 }}>Posts</span>
+                      </CustomSpace>
+                    ),
+                  },
+                  {
+                    children: <PosGallery posts={savedPosts ?? []} />,
+                    key: '2',
+                    label: (
+                      <CustomSpace size={5} direction="horizontal">
+                        <TagsOutlined style={{ fontSize: 16 }} />
+                        <span style={{ fontSize: 16 }}>Guardados</span>
+                      </CustomSpace>
+                    ),
+                  },
+                ]}
+              />
+            </CustomCol>
           </ConditionalComponent>
-        </CustomSpace>
+        </CustomRow>
       </Body>
 
       <AvatarSelector
         open={visible}
-        onSelect={setAvatar}
+        onSelect={handleUpdateAvatar}
         onClose={setVisible}
       />
-    </>
+    </CustomSpin>
   );
 };
 

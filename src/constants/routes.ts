@@ -13,6 +13,7 @@ export const WEB_API_PATH_LIKE_POST = 'posts/like_post';
 export const WEB_API_PATH_COMMENT_POST = 'posts/comment_post';
 export const WEB_API_PATH_GET_COMMENTS = 'posts/get_post_comments';
 export const WEB_API_PATH_REGISTER_USER = 'users/register_user';
+export const WEB_API_PATH_UPDATE_USER = 'users/update_user';
 export const WEB_API_PATH_VALIDATE_EMAIL = 'users/validate_email';
 export const WEB_API_PATH_VALIDATE_USERNAME = 'users/validate_username';
 export const WEB_API_PATH_GET_USER = 'users/get_user';
@@ -28,6 +29,27 @@ export const WEB_API_PATH_GET_RECYCLING_POINTS_BY_CITY =
   'recycling_points/get_cycling_point_by_city';
 export const WEB_API_PATH_GET_RECYCLING_POINT_BY_ID =
   'recycling_points/get_recycling_point_by_id';
+export const WEB_API_PATH_GET_EXCHANGES_ITEMS = 'exchanges/get_exchange_items';
+export const WEB_API_PATH_GET_EXCHANGE_ITEM = 'exchanges/get_exchange_item';
+export const WEB_API_PATH_CREATE_EXCHANGE_ITEM =
+  'exchanges/create_exchange_item';
+export const WEB_API_PATH_UPDATE_EXCHANGE_ITEM =
+  'exchanges/update_exchange_item';
+export const WEB_API_PATH_CREATE_TAGS = 'exchanges/create_tags';
+export const WEB_API_PATH_GET_TAGS = 'exchanges/get_tags';
+export const WEB_API_PATH_ADD_EXCHANGE_ITEM_PROPOSAL =
+  'exchanges/add_exchange_item_proposal';
+export const WEB_API_PATH_GET_EXCHANGE_ITEM_PROPOSALS =
+  'exchanges/get_exchange_item_proposals';
+export const WEB_API_PATH_REACT_TO_EXCHANGE_ITEM =
+  'exchanges/react_to_exchange_item';
+export const WEB_API_PATH_GET_EXCHANGE_ITEM_COMMENTS =
+  'exchanges/get_exchange_item_comments';
+export const WEB_API_PATH_ADD_COMMENT_TO_EXCHANGE_ITEM =
+  'exchanges/add_comment_to_exchange_item';
+export const WEB_API_PATH_LIKE_EXCHANGE_ITEM = 'exchanges/like_exchange_item';
+export const WEB_API_PATH_EXCHANGE_ITEM_LIKES =
+  'exchanges/get_exchange_item_likes';
 
 export const WEB_API_RANDOM_USER_AVATAR =
   'https://xsgames.co/randomusers/assets/avatars/pixel/[index].jpg';
@@ -43,3 +65,4 @@ export const PATH_ABOUT = '/about';
 export const PATH_CONTACT = '/contacts';
 export const PATH_HELP = '/help';
 export const PATH_USER_PROFILE = '/user/profile/[username]';
+export const PATH_USER_SETTINGS = '/user/profile/[username]/settings';

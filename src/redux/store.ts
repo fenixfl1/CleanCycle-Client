@@ -1,11 +1,13 @@
-import { api } from '@/services/api'
-import { AnyAction, MiddlewareArray, configureStore } from '@reduxjs/toolkit'
-import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore'
-import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux'
-import userReducer, { UserState } from './slices/userSlice'
+import { api } from '@/services/api';
+import { AnyAction, MiddlewareArray, configureStore } from '@reduxjs/toolkit';
+import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore';
+import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux';
+import userReducer, { UserState } from './slices/userSlice';
+import exchangeReducer, { ExchangesState } from './slices/exchangesSlice';
 
 export interface StoreState {
-  user: UserState
+  user: UserState;
+  exchanges: ExchangesState;
 }
 
 const createStore = (): ToolkitStore<
@@ -17,18 +19,19 @@ const createStore = (): ToolkitStore<
     reducer: {
       [api.reducerPath]: api.reducer,
       user: userReducer,
+      exchanges: exchangeReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(api.middleware),
     devTools: process.env.NODE_ENV !== 'production',
-  }) as never
-}
+  }) as never;
+};
 
-const store = createStore()
+const store = createStore();
 
-export type AppDispatch = typeof store.dispatch
+export type AppDispatch = typeof store.dispatch;
 
-export const useAppDispatch: () => AppDispatch = useDispatch
-export const useAppSelector: TypedUseSelectorHook<StoreState> = useSelector
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<StoreState> = useSelector;
 
-export default store
+export default store;
