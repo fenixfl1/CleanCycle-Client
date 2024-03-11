@@ -26,6 +26,7 @@ import {
   BookOutlined,
   StopOutlined,
   EllipsisOutlined,
+  UserAddOutlined,
 } from '@ant-design/icons';
 import CustomPopover from './antd/CustomPopover';
 import CustomBadge from './antd/CustomBadge';
@@ -40,6 +41,8 @@ import CustomTextArea from './antd/CustomTextArea';
 import CustomFormItem from './antd/CustomFormItem';
 import CustomForm from './antd/CustomForm';
 import { Form } from 'antd';
+import ConditionalComponent from './ConditionalComponent';
+import { useFollowUser } from '@/services/user';
 
 const Card = styled(CustomCard)`
   background-color: ${({ theme }) => theme.backgroundColor};
@@ -90,6 +93,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({ posts = [] }) => {
     useState<boolean>();
   const [savePost] = useSavePosts();
   const [blockAuthor] = useBlockAuthor();
+  const [followUser] = useFollowUser();
 
   const handleSavePost = async (postId: number) => {
     try {
@@ -118,10 +122,26 @@ const PostPreview: React.FC<PostPreviewProps> = ({ posts = [] }) => {
     }
   };
 
+  const handleFollowUser = async (username: string) => {
+    followUser({ USERNAME: username }).unwrap();
+  };
+
   const options = (post: Post) => (
     <CustomRow gap={10} justify={'center'} width={'140px'}>
+      <ConditionalComponent
+        condition={!post.FOLLOWERS?.includes(getSessionInfo().USERNAME)}
+        fallback={<CustomText type={'secondary'}>Siguiendo</CustomText>}
+      >
+        <Button
+          block
+          type={'text'}
+          icon={<UserAddOutlined />}
+          onClick={() => handleFollowUser(post.AUTHOR)}
+        >
+          Seguir
+        </Button>
+      </ConditionalComponent>
       <Button
-        style={{ boxSizing: 'border-box' }}
         block
         type="text"
         icon={<BookOutlined style={{ fontSize: 16 }} />}

@@ -1,20 +1,29 @@
-import React from 'react'
-import { Typography, TypographyProps } from 'antd'
-import { TextProps } from 'antd/es/typography/Text'
-import { ParagraphProps } from 'antd/es/typography/Paragraph'
-import { LinkProps } from 'antd/es/typography/Link'
+import React from 'react';
+import { Typography, TypographyProps } from 'antd';
+import { TextProps } from 'antd/es/typography/Text';
+import { ParagraphProps } from 'antd/es/typography/Paragraph';
+import { LinkProps } from 'antd/es/typography/Link';
+import styled from 'styled-components';
 
-const { Paragraph, Text, Link } = Typography
+const { Paragraph, Text, Link } = Typography;
 
-export const CustomText = React.forwardRef<HTMLSpanElement, TextProps>(
-  ({ ...props }, ref) => {
+interface CustomTextProps extends TextProps {
+  decorator?: string;
+}
+
+const StyledText = styled(Text)<CustomTextProps>`
+  ${({ decorator }) => decorator && `::before { content: '${decorator}'; }`}
+`;
+
+export const CustomText = React.forwardRef<HTMLSpanElement, CustomTextProps>(
+  ({ decorator, ...props }, ref) => {
     return (
-      <Text {...props} ref={ref}>
+      <StyledText decorator={decorator} {...props} ref={ref}>
         {props.children}
-      </Text>
-    )
+      </StyledText>
+    );
   },
-)
+);
 
 export const CustomLink = React.forwardRef<HTMLElement, LinkProps>(
   ({ target = '_blank', ...props }, ref) => {
@@ -22,9 +31,9 @@ export const CustomLink = React.forwardRef<HTMLElement, LinkProps>(
       <Link target={target} {...props} ref={ref}>
         {props.children}
       </Link>
-    )
+    );
   },
-)
+);
 
 export const CustomParagraph = React.forwardRef<HTMLElement, ParagraphProps>(
   (props, ref) => {
@@ -32,6 +41,6 @@ export const CustomParagraph = React.forwardRef<HTMLElement, ParagraphProps>(
       <Paragraph {...props} ref={ref}>
         {props.children}
       </Paragraph>
-    )
+    );
   },
-)
+);

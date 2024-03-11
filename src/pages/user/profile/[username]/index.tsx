@@ -3,7 +3,7 @@ import { WEB_API_PATH_GET_USER } from '@/constants/routes';
 import { User } from '@/redux/slices/userSlice';
 import { getRequest } from '@/services/api';
 import { GetServerSidePropsContext, NextPage } from 'next';
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import CustomAvatar from '@/components/antd/CustomAvatar';
 import CustomButton from '@/components/antd/CustomButton';
@@ -27,8 +27,7 @@ import CustomSpace from '@/components/antd/CustomSpace';
 import CustomDivider from '@/components/antd/CustomDivider';
 import CustomTitle from '@/components/antd/CustomTitle';
 import { getSessionInfo } from '@/lib/session';
-import CustomFlex from '@/components/antd/CustomFlex';
-import { Empty, Image } from 'antd';
+import { Empty } from 'antd';
 import CustomTabs from '@/components/antd/CustomTabs';
 import {
   useGetMyPosts,
@@ -40,11 +39,12 @@ import CustomCol from '@/components/antd/CustomCol';
 import CustomCard from '@/components/antd/CustomCard';
 import Link from 'next/link';
 import PostPreview from '@/components/PostPreviewV2';
-import { useUpdateUser } from '@/services/user';
+import { useFollowUser, useGetFollowers, useUpdateUser } from '@/services/user';
 import CustomSpin from '@/components/antd/CustomSpin';
 import CustomModal from '@/components/antd/CustomModal';
 import PostPage from '@/pages/posts/[post_id]';
 import CustomCardMeta from '@/components/antd/CustomCardMeta';
+import { useRouter } from 'next/router';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -195,12 +195,6 @@ const PosGallery: React.FC<PosGalleryProps> = ({ posts }) => {
                   className="gallery-item"
                   cover={<img src={post.FRONT_PAGE} alt={post.TITLE} />}
                 >
-                  {/* <div
-                    key={post.POST_ID}
-                    className="gallery-item"
-                    onClick={() => handleSelectPost(post)}
-                  > */}
-                  {/* <CustomText type={'secondary'}>{post.TITLE}</CustomText> */}
                   <CustomCardMeta
                     title={post.TITLE}
                     description={
@@ -210,8 +204,6 @@ const PosGallery: React.FC<PosGalleryProps> = ({ posts }) => {
                       </CustomSpace>
                     }
                   />
-                  {/* <img src={post.FRONT_PAGE} alt={post.TITLE} /> */}
-                  {/* </div> */}
                 </CustomCard>
               ))}
             </PostGallery>
@@ -233,6 +225,7 @@ interface ProfileProps {
 }
 
 const Profile: NextPage<ProfileProps> = ({ user }) => {
+  const router = useRouter();
   const [visible, setVisible] = useState(false);
   const [about, setAbout] = useState<string>();
 
@@ -241,6 +234,19 @@ const Profile: NextPage<ProfileProps> = ({ user }) => {
   const { data } = useGetPostsList('');
   const [updateUser, { data: updatedUser, isLoading: fetchingUpdateUser }] =
     useUpdateUser();
+
+  const [followUser] = useFollowUser();
+  const { data: follow, refetch: getFollowers } = useGetFollowers(
+    user.USERNAME,
+  );
+
+  const iFollow = useMemo(() => {
+    return !!follow?.FOLLOWERS?.find((follower) => {
+      // eslint-disable-next-line no-console
+      console.log({ follower, session: getSessionInfo() });
+      return follower.USERNAME === getSessionInfo().USERNAME;
+    });
+  }, [follow?.FOLLOWERS]);
 
   const currentUser = useMemo(() => {
     if (updatedUser) {
@@ -272,6 +278,12 @@ const Profile: NextPage<ProfileProps> = ({ user }) => {
     },
   };
 
+  const handleFollowUser = async () => {
+    await followUser({ USERNAME: currentUser.USERNAME }).unwrap();
+
+    await getFollowers();
+  };
+
   return (
     <CustomSpin spinning={fetchingUpdateUser}>
       <Body style={{ marginTop: 20 }}>
@@ -281,18 +293,40 @@ const Profile: NextPage<ProfileProps> = ({ user }) => {
               <CustomRow
                 justify={'start'}
                 align={'middle'}
-                height={'80px'}
                 style={{ alignSelf: 'flex-start', paddingLeft: 20 }}
               >
-                <CustomTitle
-                  style={{ display: 'flex', flexDirection: 'column' }}
-                >
-                  {currentUser.FULL_NAME}{' '}
-                  <CustomText type={'secondary'}>
-                    {' '}
-                    @{currentUser.USERNAME}
-                  </CustomText>
-                </CustomTitle>
+                <CustomCol xs={24}>
+                  <CustomRow
+                    gap={10}
+                    justify={'space-between'}
+                    width={'max-content'}
+                    height={'max-content'}
+                    align="middle"
+                  >
+                    <CustomTitle style={{ height: 'max-content' }}>
+                      {currentUser?.FULL_NAME}
+                    </CustomTitle>
+                    <CustomDivider type="vertical" style={{ marginTop: 18 }} />
+                    <CustomText type={'secondary'} style={{ marginTop: 15 }}>
+                      <CustomText strong>
+                        {follow?.FOLLOWERS?.length}
+                      </CustomText>{' '}
+                      Seguidores
+                    </CustomText>
+                    <ConditionalComponent condition={!isMyProfile}>
+                      <CustomButton
+                        onClick={handleFollowUser}
+                        style={{ marginTop: 15 }}
+                        type={'primary'}
+                      >
+                        {iFollow ? 'Dejar de seguir' : 'Seguir'}
+                      </CustomButton>
+                    </ConditionalComponent>
+                  </CustomRow>
+                </CustomCol>
+                <CustomText type={'secondary'} style={{ marginTop: -10 }}>
+                  @{currentUser?.USERNAME}
+                </CustomText>
               </CustomRow>
               <AvatarContainer>
                 <CustomAvatar
@@ -314,7 +348,12 @@ const Profile: NextPage<ProfileProps> = ({ user }) => {
           <CustomCol xs={20}>
             <ConditionalComponent condition={isMyProfile}>
               <Link href={`${getSessionInfo().USERNAME}/settings`}>
-                <Card hoverable>
+                <Card
+                  hoverable
+                  onClick={() => {
+                    router.push(`${getSessionInfo().USERNAME}/settings`);
+                  }}
+                >
                   <CustomRow
                     justify={'space-between'}
                     width={'100%'}

@@ -2,6 +2,11 @@ import { createSession, removeSession } from '@/lib/session';
 import { authApiHelper } from '@/services/user';
 import { createAction, createSlice } from '@reduxjs/toolkit';
 
+export interface Follow {
+  FOLLOWERS: User[];
+  FOLLOWINGS: User[];
+}
+
 export interface User {
   USER_ID: number;
   USERNAME: string;
@@ -10,6 +15,11 @@ export interface User {
   IS_SUPERUSER: boolean;
   FULL_NAME: string;
   ABOUT: string;
+  CREATED_AT: string;
+  POSTS: string[];
+  FOLLOWERS: string[];
+  FOLLOWING: string[];
+  PASSWORD?: string;
 }
 
 export interface SessionPayload extends User {

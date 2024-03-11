@@ -123,6 +123,10 @@ const ProposalSection: React.FC<ProposalSectionProps> = ({
     setModalVisibilityState(true);
   };
 
+  const handleOnAcceptProposal = () => {
+    console.log('Accept proposal');
+  };
+
   const renderItem = (item: ExchangeItem) => (
     <CustomListItem>
       <CustomListItemMeta
@@ -183,6 +187,8 @@ const ProposalSection: React.FC<ProposalSectionProps> = ({
         onCancel={() => setModalVisibilityState(false)}
         title={selectedItem?.ITEM_NAME}
         okText={'Aceptar Propuesta'}
+        onOk={handleOnAcceptProposal}
+        footer={selectedItem?.CREATED_BY !== getSessionInfo().USERNAME && []}
       >
         <Paragraph>
           <CustomRow justify={'space-between'} align={'middle'}>

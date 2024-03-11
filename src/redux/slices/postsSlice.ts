@@ -24,6 +24,7 @@ export interface Post {
   SAVED?: boolean;
   STATE: string;
   TITLE: string;
+  FOLLOWERS?: string[];
 }
 
 export interface PostsState {

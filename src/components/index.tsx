@@ -15,6 +15,8 @@ import RecyclingPointsCard from './RecyclingPointsCard';
 import CommentBox from './CommentBox';
 import ExchangeItemForm from './ExchangeItemForm';
 import ProposalSection from './ProposalSection';
+import UserInfo from './UserInfo';
+import UserListRender from './UserListRender';
 
 const TextEditor = dynamic(() => import('./TextEditor'), { ssr: false });
 const Darkreader = dynamic(() => import('./Darkreader'), { ssr: false });
@@ -40,4 +42,6 @@ export {
   CommentBox,
   ExchangeItemForm,
   ProposalSection,
+  UserInfo,
+  UserListRender,
 };

@@ -158,10 +158,7 @@ const Login: React.FC = () => {
                           name={'password'}
                           rules={[{ required: true }]}
                         >
-                          <CustomPasswordInput
-                            prefix={<LockOutlined />}
-                            placeholder={'Contraseña'}
-                          />
+                          <CustomPasswordInput placeholder={'Contraseña'} />
                         </CustomFormItem>
                       </CustomFormItem>
                     </CustomCol>

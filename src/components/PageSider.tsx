@@ -201,7 +201,9 @@ const PageSider: React.FC = () => {
               </CustomRow>
             </CustomCol>
             <Menu mode={'inline'} items={items} />
-            <CustomDivider />
+            <div style={{ padding: '0 10px', width: '100%' }}>
+              <CustomDivider />
+            </div>
             <ActionContainer>
               <MotionComponent>
                 <ConditionalComponent condition={isLoggedIn()}>

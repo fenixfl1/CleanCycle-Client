@@ -24,6 +24,8 @@ export interface ExchangeItem {
   AVATAR?: string;
   CONTACT_TYPE: string;
   CONTACT: string;
+  LIKES?: string[];
+  COMMENT_COUNT?: number;
 }
 
 export interface ExchangesState {

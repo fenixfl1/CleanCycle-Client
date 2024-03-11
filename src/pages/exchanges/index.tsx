@@ -76,9 +76,8 @@ const Exchanges: React.FC = () => {
   const [getExchangeItems, { isLoading }] = useGetExchangesItemsMutation();
 
   const handleOnSearch = useCallback(() => {
-    const condition = {
-      ITEM_NAME: debounce,
-      STATE: true,
+    const condition: any = {
+      item_name: debounce,
     };
 
     getExchangeItems({ condition });
@@ -102,7 +101,7 @@ const Exchanges: React.FC = () => {
         }
         actions={[
           <CustomBadge
-            count={item.REACTIONS?.LIKES?.COUNT}
+            count={item.LIKES?.length}
             key={'0'}
             showZero
             size={'small'}
@@ -110,7 +109,7 @@ const Exchanges: React.FC = () => {
             <HeartOutlined style={{ fontSize: '18px' }} />
           </CustomBadge>,
           <CustomBadge
-            count={item.REACTIONS?.LIKES?.COUNT}
+            count={item?.COMMENT_COUNT}
             key={'1'}
             showZero
             size={'small'}
@@ -123,14 +122,7 @@ const Exchanges: React.FC = () => {
         ]}
       >
         <CustomListItemMeta
-          avatar={
-            <CustomAvatar
-              icon={<UserOutlined />}
-              shadow
-              size={64}
-              src={item.AVATAR}
-            />
-          }
+          avatar={<CustomAvatar shadow size={64} src={item.AVATAR} />}
           description={
             <CustomParagraph>
               {truncateText(item.DESCRIPTION, 355)}
@@ -151,13 +143,18 @@ const Exchanges: React.FC = () => {
       <Body>
         <CustomCol xs={24}>
           <CustomRow justify={'space-between'} align={'middle'}>
-            <CustomTooltip title={'Filtrar'}>
-              <CustomButton
-                type={'text'}
-                icon={<FilterOutlined />}
-                size={'large'}
-              />
-            </CustomTooltip>
+            <ConditionalComponent
+              condition={false}
+              fallback={<CustomCol xs={1} />}
+            >
+              <CustomTooltip title={'Filtrar'}>
+                <CustomButton
+                  type={'text'}
+                  icon={<FilterOutlined />}
+                  size={'large'}
+                />
+              </CustomTooltip>
+            </ConditionalComponent>
             <CustomCol xs={20}>
               <SearchComponent onSearch={setSearchValue} />
             </CustomCol>

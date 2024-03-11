@@ -21,6 +21,9 @@ export const WEB_API_PATH_FOLLOW_USER = 'users/follow_user';
 export const WEB_API_PATH_GET_FOLLOW = 'users/get_follow';
 export const WEB_API_PATH_UNFOLLOW_USER = 'users/unfollow_user';
 export const WEB_API_PATH_GET_ALL_USERS = 'users/get_all_users';
+export const WEB_API_PATH_GET_BLOCKED_USERS = 'users/get_blocked_users';
+export const WEB_API_PATH_UNBLOCK_USERS = 'users/unblock_user';
+export const WEB_API_PATH_CHANGE_PASSWORD = 'users/change_password';
 export const WEB_API_PATH_GET_CITIES_INFO_LIST =
   'recycling_points/get_cities_info_list';
 export const WEB_API_PATH_GET_RECYCLING_POINTS =
