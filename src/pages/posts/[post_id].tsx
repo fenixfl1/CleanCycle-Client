@@ -163,7 +163,7 @@ const PostPage: React.FC<PostPageProps> = ({ post: _post }) => {
         COMMENT: comment,
         POST_ID: postId,
         USERNAME: getSessionInfo().USERNAME,
-      }).unwrap();
+      } as never).unwrap();
 
       getPostComment({ POST_ID: postId });
       form.resetFields();
@@ -230,7 +230,7 @@ const PostPage: React.FC<PostPageProps> = ({ post: _post }) => {
                 <CommentContainer>
                   {comments?.map((comment) => (
                     <CustomRow width={'100%'} align={'top'} gap={10}>
-                      <CustomTooltip title={comment?.USERNAME}>
+                      <CustomTooltip title={comment.CREATED_BY}>
                         <CustomAvatar
                           shadow
                           size={36}
@@ -248,7 +248,7 @@ const PostPage: React.FC<PostPageProps> = ({ post: _post }) => {
                               gap={15}
                               align={'top'}
                             >
-                              <Subtitle>@{comment.USERNAME}</Subtitle>
+                              <Subtitle>@{comment.CREATED_BY}</Subtitle>
                               <Subtitle>
                                 {dateTransform(
                                   comment?.CREATED_AT ?? '',
