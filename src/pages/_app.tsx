@@ -7,7 +7,7 @@ import GlobalStyle from '@/themes/GlobalStyle';
 import { defaultTheme } from '@/themes/themes';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import LayoutWrapper from '@/components/LayoutWrapper';

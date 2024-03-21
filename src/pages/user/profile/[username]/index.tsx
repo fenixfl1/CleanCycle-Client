@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Body from '@/components/Body';
 import { WEB_API_PATH_GET_USER } from '@/constants/routes';
 import { User } from '@/redux/slices/userSlice';
@@ -8,14 +9,14 @@ import styled from 'styled-components';
 import CustomAvatar from '@/components/antd/CustomAvatar';
 import CustomButton from '@/components/antd/CustomButton';
 import {
-  UserOutlined,
-  UploadOutlined,
   AppstoreOutlined,
-  TagsOutlined,
-  SettingOutlined,
-  RightOutlined,
-  HeartOutlined,
   CommentOutlined,
+  HeartOutlined,
+  RightOutlined,
+  SettingOutlined,
+  TagsOutlined,
+  UploadOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import { AvatarSelector, ConditionalComponent } from '@/components';
 import {

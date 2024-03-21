@@ -1,3 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable no-console */
 import { Post } from '@/redux/slices/postsSlice';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -20,12 +23,12 @@ import CustomCarousel from './antd/CustomCarousel';
 import { getPostImg } from '@/helpers/getPostImg';
 import CustomButton from './antd/CustomButton';
 import {
-  CommentOutlined,
-  MoreOutlined,
-  HeartOutlined,
   BookOutlined,
-  StopOutlined,
+  CommentOutlined,
   EllipsisOutlined,
+  HeartOutlined,
+  MoreOutlined,
+  StopOutlined,
   UserAddOutlined,
 } from '@ant-design/icons';
 import CustomPopover from './antd/CustomPopover';

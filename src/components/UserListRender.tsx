@@ -30,7 +30,11 @@ const UserListRender: React.FC<UserListRenderProps> = ({
         actions={
           type === 'following' || type === 'blocked'
             ? [
-                <CustomButton type={'link'} onClick={() => onUpdate?.(item)}>
+                <CustomButton
+                  key={0}
+                  type={'link'}
+                  onClick={() => onUpdate?.(item)}
+                >
                   <ConditionalComponent
                     condition={type === 'following'}
                     fallback={<span>Desbloquear</span>}

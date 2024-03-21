@@ -1,5 +1,4 @@
 import { createAction, createSlice } from '@reduxjs/toolkit';
-import RecyclingPoint from '../../pages/recycling_points/[city_id]';
 
 export interface City {
   CANT_RECYCLING_POINTS: number;

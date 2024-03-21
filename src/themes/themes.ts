@@ -1,42 +1,42 @@
-import { ThemeConfig } from 'antd/es/config-provider/context'
-import { theme } from 'antd'
-import { DefaultTheme } from 'styled-components'
-import * as Colors from '@ant-design/colors'
-import { Theme } from '@/constants/types'
+import { ThemeConfig } from 'antd/es/config-provider/context';
+import { theme } from 'antd';
+import { DefaultTheme } from 'styled-components';
+import * as Colors from '@ant-design/colors';
+import { Theme } from '@/constants/types';
 
-type Colors = typeof Colors
+type TColors = typeof Colors;
 
 type BreakpointConfig = {
-  xs: number
-  sm: number
-  md: number
-  lg: number
-  xl: number
-  xxl: number
-}
+  xs: number;
+  sm: number;
+  md: number;
+  lg: number;
+  xl: number;
+  xxl: number;
+};
 
 declare module 'styled-components' {
   export interface DefaultTheme {
-    backgroundColor: string
-    baseBgColor: string
-    bgDark: string
-    borderColor: string
-    borderRadius: string
-    boxShadow: string
-    breakpoints: BreakpointConfig
-    colorPrimaryHover: string
-    colors: Colors
-    compact: boolean
-    primaryColor: string
-    secondaryColor: string
-    textColor: string
-    theme: Theme
-    whiteBackground: string
-    colorPrimaryText: string
-    secondaryColorHover: string
-    paragraphFontSize: string
-    h1FontSize: string
-    secondaryTextColor: string
+    backgroundColor: string;
+    baseBgColor: string;
+    bgDark: string;
+    borderColor: string;
+    borderRadius: string;
+    boxShadow: string;
+    breakpoints: BreakpointConfig;
+    colorPrimaryHover: string;
+    colors: TColors;
+    compact: boolean;
+    primaryColor: string;
+    secondaryColor: string;
+    textColor: string;
+    theme: Theme;
+    whiteBackground: string;
+    colorPrimaryText: string;
+    secondaryColorHover: string;
+    paragraphFontSize: string;
+    h1FontSize: string;
+    secondaryTextColor: string;
   }
 }
 
@@ -69,9 +69,9 @@ export const defaultTheme: DefaultTheme = {
     xl: 1200,
     xxl: 1600,
   },
-}
+};
 
-const { compactAlgorithm, darkAlgorithm, defaultConfig } = theme
+const { compactAlgorithm, darkAlgorithm, defaultConfig } = theme;
 
 export const antTheme: ThemeConfig = {
   ...defaultConfig,
@@ -94,4 +94,4 @@ export const antTheme: ThemeConfig = {
     },
   },
   algorithm: [compactAlgorithm],
-}
+};

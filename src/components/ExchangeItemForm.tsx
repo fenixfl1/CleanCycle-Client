@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useMemo } from 'react';
 import CustomModal from './antd/CustomModal';
 import CustomForm from './antd/CustomForm';
@@ -10,7 +11,6 @@ import CustomTitle from './antd/CustomTitle';
 import CustomDivider from './antd/CustomDivider';
 import CustomTextArea from './antd/CustomTextArea';
 import CustomSelect from './antd/CustomSelect';
-import CustomMentions from './antd/CustomMentions';
 import CustomUpload from './antd/CustomUpload';
 import {
   normalizeFileList,

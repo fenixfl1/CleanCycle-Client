@@ -3,7 +3,7 @@ import { Location } from '@/constants/types';
 import useGetLocation from '@/hooks/useGetLocation';
 import { getSessionInfo } from '@/lib/session';
 import { EnvironmentOutlined } from '@ant-design/icons';
-import { Marker, InfoWindow } from '@react-google-maps/api';
+import { InfoWindow, Marker } from '@react-google-maps/api';
 import Icon from '@/icons/PeopleCircle.svg';
 import { ConditionalComponent, CustomMap } from '.';
 import { RecyclingPoint } from '@/redux/slices/recyclingPointsSlice';
@@ -54,7 +54,7 @@ const CustomGoogleMap: React.FC<GoogleMapProps> = ({
     );
 
     return data;
-  }, [selectedLocation]);
+  }, [selectedLocation, recyclingPoints]);
 
   return (
     <CustomMap

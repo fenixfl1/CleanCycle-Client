@@ -1,7 +1,7 @@
 import { api } from '@/services/api';
-import { AnyAction, MiddlewareArray, configureStore } from '@reduxjs/toolkit';
+import { AnyAction, configureStore, MiddlewareArray } from '@reduxjs/toolkit';
 import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore';
-import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import userReducer, { UserState } from './slices/userSlice';
 import exchangeReducer, { ExchangesState } from './slices/exchangesSlice';
 

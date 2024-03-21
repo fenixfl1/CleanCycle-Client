@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import Body from '@/components/Body';
 import CustomButton from '@/components/antd/CustomButton';
 import CustomCol from '@/components/antd/CustomCol';
@@ -15,10 +16,10 @@ import { getSessionInfo, isLoggedIn } from '@/lib/session';
 import {
   FacebookOutlined,
   InstagramOutlined,
-  WhatsAppOutlined,
-  YoutubeOutlined,
   LinkedinOutlined,
   SendOutlined,
+  WhatsAppOutlined,
+  YoutubeOutlined,
 } from '@ant-design/icons';
 import { Form } from 'antd';
 import Link from 'next/link';
@@ -38,7 +39,7 @@ interface FormProps {
   MENSAJE: string;
 }
 
-const contacts: React.FC = () => {
+const Contacts: React.FC = () => {
   const [form] = Form.useForm<FormProps>();
 
   const iconStyle = {
@@ -50,7 +51,7 @@ const contacts: React.FC = () => {
       const { USERNAME, EMAIL } = getSessionInfo();
       form.setFieldsValue({ USERNAME, EMAIL });
     }
-  }, []);
+  }, [form]);
 
   const handleOnFinish = async () => {
     try {
@@ -146,4 +147,4 @@ const contacts: React.FC = () => {
   );
 };
 
-export default contacts;
+export default Contacts;

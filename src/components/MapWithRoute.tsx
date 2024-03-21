@@ -1,8 +1,8 @@
 import {
   APIProvider,
   Map,
-  useMapsLibrary,
   useMap,
+  useMapsLibrary,
 } from '@vis.gl/react-google-maps';
 import { useEffect, useState } from 'react';
 

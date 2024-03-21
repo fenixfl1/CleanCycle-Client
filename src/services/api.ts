@@ -80,6 +80,7 @@ export async function getRequest<T>(
     const axiosError = error as AxiosError;
 
     // Example: Log the error for debugging
+    // eslint-disable-next-line no-console
     console.error('Axios error:', axiosError);
 
     // Re-throw the error or return a custom error response

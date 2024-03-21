@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import CustomModal from './antd/CustomModal'
-import CustomRow from './antd/CustomRow'
-import CustomFlex from './antd/CustomFlex'
-import CustomAvatar from './antd/CustomAvatar'
-import CustomCard from './antd/CustomCard'
-import { WEB_API_RANDOM_USER_AVATAR } from '@/constants/routes'
-import CustomBadge from './antd/CustomBadge'
-import { CheckCircleFilled, CheckCircleOutlined } from '@ant-design/icons'
-import { defaultTheme } from '@/themes/themes'
+import React, { useEffect, useState } from 'react';
+import CustomModal from './antd/CustomModal';
+import CustomRow from './antd/CustomRow';
+import CustomFlex from './antd/CustomFlex';
+import CustomAvatar from './antd/CustomAvatar';
+import CustomCard from './antd/CustomCard';
+import { WEB_API_RANDOM_USER_AVATAR } from '@/constants/routes';
+import CustomBadge from './antd/CustomBadge';
+import { CheckCircleFilled, CheckCircleOutlined } from '@ant-design/icons';
+import { defaultTheme } from '@/themes/themes';
 
 const getAvatar = (index: number) =>
-  WEB_API_RANDOM_USER_AVATAR.replace('[index]', `${index}`)
+  WEB_API_RANDOM_USER_AVATAR.replace('[index]', `${index}`);
 
 interface AvatarSelectorProps {
-  open: boolean
-  onClose?: (close: boolean) => void
-  onSelect?: (avatar: string) => void
+  open: boolean;
+  onClose?: (close: boolean) => void;
+  onSelect?: (avatar: string) => void;
 }
 
 const AvatarSelector: React.FC<AvatarSelectorProps> = ({
@@ -23,22 +23,22 @@ const AvatarSelector: React.FC<AvatarSelectorProps> = ({
   onSelect,
   onClose,
 }) => {
-  const [visible, setVisible] = useState(open)
-  const [selected, setSelected] = useState<number>()
+  const [visible, setVisible] = useState(open);
+  const [selected, setSelected] = useState<number>();
 
   useEffect(() => {
-    setVisible(open)
-  }, [open])
+    setVisible(open);
+  }, [open]);
 
   const handleOnSelect = (index: number) => {
-    setSelected(index)
-    onSelect?.(getAvatar(index))
-  }
+    setSelected(index);
+    onSelect?.(getAvatar(index));
+  };
 
   const handleOnClose = () => {
-    setVisible(false)
-    onClose?.(false)
-  }
+    setVisible(false);
+    onClose?.(false);
+  };
 
   return (
     <CustomModal
@@ -51,6 +51,7 @@ const AvatarSelector: React.FC<AvatarSelectorProps> = ({
       <CustomFlex wrap={'wrap'} justify={'center'} gap={7}>
         {Array.from({ length: 15 }).map((_, index) => (
           <CustomBadge
+            key={index}
             offset={[-5, 5]}
             count={
               selected === index ? (
@@ -72,7 +73,7 @@ const AvatarSelector: React.FC<AvatarSelectorProps> = ({
         ))}
       </CustomFlex>
     </CustomModal>
-  )
-}
+  );
+};
 
-export default AvatarSelector
+export default AvatarSelector;

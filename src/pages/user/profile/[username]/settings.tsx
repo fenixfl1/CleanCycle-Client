@@ -22,7 +22,7 @@ import {
   useUnblockUser,
   useUpdateUser,
 } from '@/services/user';
-import { UserOutlined, UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined, UserOutlined } from '@ant-design/icons';
 import { CollapseProps, DescriptionsProps } from 'antd';
 import { GetServerSidePropsContext } from 'next';
 import React, { useMemo, useState } from 'react';

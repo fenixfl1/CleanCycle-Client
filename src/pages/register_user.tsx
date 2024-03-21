@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 import { AvatarSelector, ConditionalComponent } from '@/components';
 import Body from '@/components/Body';
 import CustomAlert from '@/components/antd/CustomAlert';
@@ -99,6 +101,7 @@ const RegisterUser: React.FC = () => {
       delete data._PASSWORD;
       await registerUser(data).unwrap();
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error);
     }
   };

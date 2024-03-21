@@ -15,7 +15,7 @@ import {
 import { getSessionInfo, isLoggedIn } from '@/lib/session';
 import { useRouter } from 'next/router';
 import CustomSpace from './antd/CustomSpace';
-import { PersonCircleOutlined, GearOutlined, PowerOutlined } from '@/icons';
+import { GearOutlined, PersonCircleOutlined, PowerOutlined } from '@/icons';
 import { CustomModalConfirmation } from './antd/ModalMethods';
 import { useAppDispatch } from '@/redux/store';
 import sleep from '@/helpers/sleep';

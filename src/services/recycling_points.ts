@@ -1,8 +1,8 @@
 import {
   WEB_API_PATH_GET_CITIES_INFO_LIST,
+  WEB_API_PATH_GET_RECYCLING_POINT_BY_ID,
   WEB_API_PATH_GET_RECYCLING_POINTS,
   WEB_API_PATH_GET_RECYCLING_POINTS_BY_CITY,
-  WEB_API_PATH_GET_RECYCLING_POINT_BY_ID,
 } from '@/constants/routes';
 import { Condition } from '@/interfaces/general';
 import { City, RecyclingPoint } from '@/redux/slices/recyclingPointsSlice';

@@ -1,13 +1,13 @@
-import styled from 'styled-components'
-import CustomUpload from './antd/CustomUpload'
-import ConditionalComponent from './ConditionalComponent'
-import { UploadFile, Image } from 'antd'
-import { useState } from 'react'
-import { CustomText } from './antd/CustomTypography'
-import CustomSpin from './antd/CustomSpin'
+import styled from 'styled-components';
+import CustomUpload from './antd/CustomUpload';
+import ConditionalComponent from './ConditionalComponent';
+import { Image, UploadFile } from 'antd';
+import { useState } from 'react';
+import { CustomText } from './antd/CustomTypography';
+import CustomSpin from './antd/CustomSpin';
 
 interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
-  height?: string | number
+  height?: string | number;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -60,15 +60,15 @@ const Container = styled.div<ContainerProps>`
     font-weight: 600;
     font-family: 'Comic Sans MS', cursive, sans-serif;
   }
-`
+`;
 
 interface FrontPageProps extends ContainerProps {
-  alt?: string
-  image?: string
-  onRemove?(file: UploadFile): Promise<boolean> | boolean
-  onUpload?(file: UploadFile): Promise<boolean>
-  showUploadButton?: boolean
-  loading?: boolean
+  alt?: string;
+  image?: string;
+  onRemove?(file: UploadFile): Promise<boolean> | boolean;
+  onUpload?(file: UploadFile): Promise<boolean>;
+  showUploadButton?: boolean;
+  loading?: boolean;
 }
 
 const FrontPage: React.FC<FrontPageProps> = ({
@@ -116,7 +116,7 @@ const FrontPage: React.FC<FrontPageProps> = ({
         </ConditionalComponent>
       </Container>
     </CustomSpin>
-  )
-}
+  );
+};
 
-export default FrontPage
+export default FrontPage;

@@ -15,12 +15,12 @@ import {
   PATH_USER_PROFILE,
 } from '@/constants/routes';
 import {
-  HomeOutlined,
+  EditOutlined,
   EnvironmentOutlined,
+  HomeOutlined,
+  PlusOutlined,
   SwapOutlined,
   UserOutlined,
-  PlusOutlined,
-  EditOutlined,
 } from '@ant-design/icons';
 import Link from 'next/link';
 import { ConditionalComponent, ExchangeItemForm, MotionComponent } from '.';
