@@ -10,10 +10,8 @@ import CustomMenu from './antd/CustomMenu';
 import {
   PATH_EXCHANGES,
   PATH_HOME,
-  PATH_LOGIN,
   PATH_POSTS_CREATE_POSTS,
   PATH_RECYCLING_POINTS,
-  PATH_REGISTER_USER,
   PATH_USER_PROFILE,
 } from '@/constants/routes';
 import {
@@ -22,17 +20,10 @@ import {
   SwapOutlined,
   UserOutlined,
   PlusOutlined,
-  LoginOutlined,
-  LogoutOutlined,
   EditOutlined,
 } from '@ant-design/icons';
 import Link from 'next/link';
-import {
-  ConditionalComponent,
-  Darkreader,
-  ExchangeItemForm,
-  MotionComponent,
-} from '.';
+import { ConditionalComponent, ExchangeItemForm, MotionComponent } from '.';
 import CustomAvatar from './antd/CustomAvatar';
 import { CustomText } from './antd/CustomTypography';
 import CustomDivider from './antd/CustomDivider';
@@ -232,14 +223,6 @@ const PageSider: React.FC = () => {
                 </ConditionalComponent>
               </MotionComponent>
             </ActionContainer>
-          </CustomRow>
-          <CustomRow
-            justify={'center'}
-            align={'middle'}
-            style={{ padding: '20px' }}
-          >
-            <CustomDivider />
-            <Darkreader />
           </CustomRow>
         </SiderContainer>
       </Sider>

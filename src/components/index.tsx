@@ -19,7 +19,6 @@ import UserInfo from './UserInfo';
 import UserListRender from './UserListRender';
 
 const TextEditor = dynamic(() => import('./TextEditor'), { ssr: false });
-const Darkreader = dynamic(() => import('./Darkreader'), { ssr: false });
 const CustomMap = dynamic(() => import('./CustomMap'), { ssr: false });
 
 export {
@@ -36,7 +35,6 @@ export {
   SearchComponent,
   CustomMap,
   TruckRoutes,
-  Darkreader,
   NearestCenter,
   RecyclingPointsCard,
   CommentBox,
