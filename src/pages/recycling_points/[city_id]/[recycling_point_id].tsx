@@ -1,16 +1,12 @@
-import { CustomGoogleMap, TruckRoutes } from '@/components';
+import { CustomGoogleMap } from '@/components';
 import Body from '@/components/Body';
 import CustomCard from '@/components/antd/CustomCard';
 import CustomCol from '@/components/antd/CustomCol';
 import CustomFlex from '@/components/antd/CustomFlex';
 import CustomRow from '@/components/antd/CustomRow';
 import CustomSpin from '@/components/antd/CustomSpin';
-import {
-  CustomParagraph,
-  CustomText,
-} from '@/components/antd/CustomTypography';
+import { CustomParagraph } from '@/components/antd/CustomTypography';
 import { Location } from '@/constants/types';
-import useCalculateRoute from '@/hooks/useCalculateRoute';
 import { useGetRecyclingPointsByIdQuery } from '@/services/recycling_points';
 import { CarOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
@@ -18,8 +14,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import CustomTitle from '@/components/antd/CustomTitle';
 import CustomDivider from '@/components/antd/CustomDivider';
-import { Image } from 'antd';
-import MapWithRoute from '@/components/MapWithRoute';
 
 const Card = styled(CustomCard)`
   background-color: ${({ theme }) => theme.backgroundColor};

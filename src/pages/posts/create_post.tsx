@@ -5,7 +5,6 @@ import {
   PostPreview,
   TextEditor,
 } from '@/components';
-import EditableArea from '@/components/EditableArea';
 import EditableInput from '@/components/EditableInput';
 import CustomCol from '@/components/antd/CustomCol';
 import CustomDivider from '@/components/antd/CustomDivider';
@@ -15,7 +14,6 @@ import CustomRow from '@/components/antd/CustomRow';
 import CustomSpace from '@/components/antd/CustomSpace';
 import CustomSpin from '@/components/antd/CustomSpin';
 import CustomTitle from '@/components/antd/CustomTitle';
-import { CustomParagraph } from '@/components/antd/CustomTypography';
 import customNotification from '@/components/antd/customNotification';
 import { PATH_HOME } from '@/constants/routes';
 import getBase64 from '@/helpers/getBase64';

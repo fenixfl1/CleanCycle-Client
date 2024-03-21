@@ -5,7 +5,7 @@ import {
   InfoCircleOutlined,
   LoadingOutlined,
 } from '@ant-design/icons';
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import CustomCard from './antd/CustomCard';
 import CustomCol from './antd/CustomCol';

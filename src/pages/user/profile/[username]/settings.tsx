@@ -4,15 +4,12 @@ import CustomAvatar from '@/components/antd/CustomAvatar';
 import CustomButton from '@/components/antd/CustomButton';
 import CustomCol from '@/components/antd/CustomCol';
 import CustomCollapse from '@/components/antd/CustomCollapse';
-import CustomDescription from '@/components/antd/CustomDescription';
 import CustomDivider from '@/components/antd/CustomDivider';
 import CustomRow from '@/components/antd/CustomRow';
-import CustomSpace from '@/components/antd/CustomSpace';
 import CustomTitle from '@/components/antd/CustomTitle';
 import { CustomText } from '@/components/antd/CustomTypography';
 import customNotification from '@/components/antd/customNotification';
 import { WEB_API_PATH_GET_USER } from '@/constants/routes';
-import { dateTransform } from '@/helpers/dateTransform';
 import { User } from '@/redux/slices/userSlice';
 import { getRequest } from '@/services/api';
 import {
@@ -23,7 +20,7 @@ import {
   useUpdateUser,
 } from '@/services/user';
 import { UserOutlined, UploadOutlined } from '@ant-design/icons';
-import { CollapseProps, DescriptionsProps } from 'antd';
+import { CollapseProps } from 'antd';
 import { GetServerSidePropsContext } from 'next';
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';

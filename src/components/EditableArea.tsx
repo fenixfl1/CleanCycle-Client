@@ -2,10 +2,7 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import CustomRow from './antd/CustomRow';
 import CustomSpace from './antd/CustomSpace';
-import CustomInput from './antd/CustomInput';
-import { CheckOutlined } from '@ant-design/icons';
 import CustomButton from './antd/CustomButton';
-import CustomCol from './antd/CustomCol';
 import { ConditionalComponent } from '.';
 import CustomTitle from './antd/CustomTitle';
 

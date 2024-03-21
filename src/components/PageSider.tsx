@@ -10,10 +10,8 @@ import CustomMenu from './antd/CustomMenu';
 import {
   PATH_EXCHANGES,
   PATH_HOME,
-  PATH_LOGIN,
   PATH_POSTS_CREATE_POSTS,
   PATH_RECYCLING_POINTS,
-  PATH_REGISTER_USER,
   PATH_USER_PROFILE,
 } from '@/constants/routes';
 import {
@@ -22,8 +20,6 @@ import {
   SwapOutlined,
   UserOutlined,
   PlusOutlined,
-  LoginOutlined,
-  LogoutOutlined,
   EditOutlined,
 } from '@ant-design/icons';
 import Link from 'next/link';

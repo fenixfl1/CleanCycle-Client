@@ -5,29 +5,14 @@ import CustomRow from '@/components/antd/CustomRow';
 import useGetLocation from '@/hooks/useGetLocation';
 import React, { useCallback, useEffect } from 'react';
 import { Location } from '@/constants/types';
-import { getRequest } from '@/services/api';
 import CustomCol from '@/components/antd/CustomCol';
-import CustomForm from '@/components/antd/CustomForm';
-import CustomSelect from '@/components/antd/CustomSelect';
-import CustomFormItem from '@/components/antd/CustomFormItem';
 import CustomSpace from '@/components/antd/CustomSpace';
 import CustomDivider from '@/components/antd/CustomDivider';
 import CustomTitle from '@/components/antd/CustomTitle';
 import { Form } from 'antd';
-import { cities, wasteTypes } from '@/constants/lists';
 import CustomCard from '@/components/antd/CustomCard';
-import {
-  CustomParagraph,
-  CustomText,
-} from '@/components/antd/CustomTypography';
 import styled from 'styled-components';
-import {
-  ClockCircleOutlined,
-  EnvironmentOutlined,
-  PhoneOutlined,
-  RightOutlined,
-  ShopOutlined,
-} from '@ant-design/icons';
+import { RightOutlined, ShopOutlined } from '@ant-design/icons';
 import { defaultTheme } from '@/themes/themes';
 import { useRouter } from 'next/router';
 import { useGetCitiesInfoListMutation } from '@/services/recycling_points';

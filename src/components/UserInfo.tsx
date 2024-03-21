@@ -9,10 +9,7 @@ import {
 } from './antd/CustomTypography';
 import { DescriptionsProps } from 'antd';
 import ChangePassword from './ChangePassword';
-import CustomSpace from './antd/CustomSpace';
 import { EditOutlined } from '@ant-design/icons';
-import CustomRow from './antd/CustomRow';
-import CustomButton from './antd/CustomButton';
 
 interface UserInfoProps {
   user: User;

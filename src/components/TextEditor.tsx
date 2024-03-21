@@ -1,20 +1,20 @@
-import React, { forwardRef, useRef } from 'react'
-import 'react-quill/dist/quill.snow.css'
-import ReactQuill from 'react-quill'
-import { Sources } from 'quill'
+import React, { forwardRef } from 'react';
+import 'react-quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill';
+import { Sources } from 'quill';
 
 interface TextEditorProps {
-  style?: React.CSSProperties
-  htmlContent?: string
-  title?: React.ReactNode
-  placeholder?: string
-  theme?: 'snow' | 'bubble'
-  onChange?(value: string): void
+  style?: React.CSSProperties;
+  htmlContent?: string;
+  title?: React.ReactNode;
+  placeholder?: string;
+  theme?: 'snow' | 'bubble';
+  onChange?(value: string): void;
   onBlur?(
     previousSelection: ReactQuill.Range,
     source: Sources,
     editor: ReactQuill.UnprivilegedEditor,
-  ): void
+  ): void;
 }
 
 const TextEditor = forwardRef<ReactQuill, TextEditorProps>(
@@ -45,7 +45,7 @@ const TextEditor = forwardRef<ReactQuill, TextEditorProps>(
         ['clean'],
         ['image'],
       ],
-    }
+    };
 
     const formats = [
       'header',
@@ -66,7 +66,7 @@ const TextEditor = forwardRef<ReactQuill, TextEditorProps>(
       'image',
       'color',
       'code-block',
-    ]
+    ];
 
     return (
       <ReactQuill
@@ -80,8 +80,8 @@ const TextEditor = forwardRef<ReactQuill, TextEditorProps>(
         value={htmlContent}
         {...props}
       />
-    )
+    );
   },
-)
+);
 
-export default TextEditor
+export default TextEditor;

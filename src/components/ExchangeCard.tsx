@@ -60,7 +60,7 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
           ]}
           actions={[
             <CustomBadge
-              count={item.REACTIONS?.LIKES?.COUNT}
+              count={item.LIKES?.length}
               key={'0'}
               showZero
               size={'small'}
@@ -68,7 +68,7 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
               <HeartOutlined style={{ fontSize: '18px' }} />
             </CustomBadge>,
             <CustomBadge
-              count={item.REACTIONS?.LIKES?.COUNT}
+              count={item.LIKES?.length}
               key={'1'}
               showZero
               size={'small'}

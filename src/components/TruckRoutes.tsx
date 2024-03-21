@@ -2,11 +2,7 @@ import { Location } from '@/constants/types';
 import React, { useState } from 'react';
 import CustomCard from './antd/CustomCard';
 import { ConditionalComponent, CustomMap } from '.';
-import {
-  DirectionsRenderer,
-  DirectionsService,
-  Marker,
-} from '@react-google-maps/api';
+import { DirectionsRenderer, DirectionsService } from '@react-google-maps/api';
 
 interface TruckRoutesProps {
   route: {
@@ -19,7 +15,7 @@ const TruckRoutes: React.FC<TruckRoutesProps> = ({
   route: { origin, destination },
 }) => {
   const [direction, setDirection] = useState<google.maps.DirectionsResult>();
-  const [map, setMap] = useState<google.maps.Map>();
+  const [, setMap] = useState<google.maps.Map>();
   const style = {
     width: '100%',
     height: '100%',

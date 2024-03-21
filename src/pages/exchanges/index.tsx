@@ -15,7 +15,6 @@ import CustomListItem from '@/components/antd/CustomListItem';
 import CustomListItemMeta from '@/components/antd/CustomListItemMeta';
 import CustomRow from '@/components/antd/CustomRow';
 import CustomSegmented from '@/components/antd/CustomSegmented';
-import CustomSpace from '@/components/antd/CustomSpace';
 import CustomSpin from '@/components/antd/CustomSpin';
 import CustomTitle from '@/components/antd/CustomTitle';
 import CustomTooltip from '@/components/antd/CustomTooltip';
@@ -28,15 +27,11 @@ import { dateTransform } from '@/helpers/dateTransform';
 import renderImage from '@/helpers/renderImage';
 import { truncateText } from '@/helpers/truncateText';
 import useDebounce from '@/hooks/useDebounce';
-import { getSessionInfo } from '@/lib/session';
 import { ExchangeItem, exchangesSelector } from '@/redux/slices/exchangesSlice';
 import { useAppSelector } from '@/redux/store';
 import { useGetExchangesItemsMutation } from '@/services/exchanges';
 import {
-  StarOutlined,
-  LikeOutlined,
   MessageOutlined,
-  UserOutlined,
   FilterOutlined,
   AppstoreOutlined,
   BarsOutlined,

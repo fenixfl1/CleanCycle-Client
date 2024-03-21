@@ -20,8 +20,6 @@ import CustomModal from './antd/CustomModal';
 import CustomSpace from './antd/CustomSpace';
 import { dateTransform } from '@/helpers/dateTransform';
 import { Image } from 'antd';
-import { defaultTheme } from '@/themes/themes';
-import CustomCarousel from './antd/CustomCarousel';
 import CustomCol from './antd/CustomCol';
 import MotionComponent from './MotionComponent';
 

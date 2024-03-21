@@ -3,7 +3,7 @@ import { WEB_API_PATH_GET_USER } from '@/constants/routes';
 import { User } from '@/redux/slices/userSlice';
 import { getRequest } from '@/services/api';
 import { GetServerSidePropsContext, NextPage } from 'next';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import CustomAvatar from '@/components/antd/CustomAvatar';
 import CustomButton from '@/components/antd/CustomButton';

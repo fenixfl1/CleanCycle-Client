@@ -8,7 +8,6 @@ import {
   PATH_HELP,
   PATH_HOME,
   PATH_LOGIN,
-  PATH_REGISTER_USER,
   PATH_USER_PROFILE,
   PATH_USER_SETTINGS,
 } from '@/constants/routes';

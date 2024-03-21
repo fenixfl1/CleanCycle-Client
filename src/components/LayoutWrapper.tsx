@@ -1,7 +1,6 @@
 import CustomContent from '@/components/antd/CustomContent';
 import CustomLayout from '@/components/antd/CustomLayout';
 import PageHeader from '@/components/PageHeader';
-import { defaultTheme } from '@/themes/themes';
 import React from 'react';
 import styled from 'styled-components';
 import PageSider from './PageSider';

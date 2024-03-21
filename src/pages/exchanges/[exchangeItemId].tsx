@@ -8,7 +8,6 @@ import {
 import Body from '@/components/Body';
 import CustomAvatar from '@/components/antd/CustomAvatar';
 import CustomBadge from '@/components/antd/CustomBadge';
-import CustomButton from '@/components/antd/CustomButton';
 import CustomCard from '@/components/antd/CustomCard';
 import CustomCol from '@/components/antd/CustomCol';
 import CustomDivider from '@/components/antd/CustomDivider';
@@ -30,7 +29,6 @@ import { ExchangeItem } from '@/redux/slices/exchangesSlice';
 import {
   useAddCommentToExchangeItemMutation,
   useAddExchangeItemProposalMutation,
-  useCreateExchangeItemMutation,
   useGetExchangeItemCommentsQuery,
   useGetExchangeItemLikesQuery,
   useGetExchangeItemProposalsQuery,
@@ -39,7 +37,6 @@ import {
 } from '@/services/exchanges';
 import { HeartFilled, HeartOutlined, UserOutlined } from '@ant-design/icons';
 import { Form, Image } from 'antd';
-import { create } from 'domain';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';

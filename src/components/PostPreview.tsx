@@ -5,7 +5,6 @@ import { CustomParagraph } from './antd/CustomTypography';
 import CustomTitle from './antd/CustomTitle';
 import CustomRow from './antd/CustomRow';
 import styled from 'styled-components';
-import CustomCarousel from './antd/CustomCarousel';
 import { dateTransform } from '@/helpers/dateTransform';
 import { CommentOutlined, HeartOutlined } from '@ant-design/icons';
 import CustomBadge from './antd/CustomBadge';
@@ -13,10 +12,7 @@ import CustomTooltip from './antd/CustomTooltip';
 import CustomSpace from './antd/CustomSpace';
 import Subtitle from './styled/SubTitle';
 import CustomDivider from './antd/CustomDivider';
-import Link from 'next/link';
-import { truncateText } from '@/helpers/truncateText';
 import { useRouter } from 'next/router';
-import { getPostDescription } from '@/helpers/getPostDescription';
 
 interface PostPreviewProps {
   post: Post;

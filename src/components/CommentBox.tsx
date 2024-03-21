@@ -1,16 +1,14 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef } from 'react';
 import CustomRow from './antd/CustomRow';
-import CustomTextArea from './antd/CustomTextArea';
 import CustomAvatar from './antd/CustomAvatar';
 import { getSessionInfo } from '@/lib/session';
 import CustomCol from './antd/CustomCol';
-import { CaretRightOutlined, FileImageOutlined } from '@ant-design/icons';
+import { FileImageOutlined } from '@ant-design/icons';
 import CustomButton from './antd/CustomButton';
 import styled from 'styled-components';
 import CustomTooltip from './antd/CustomTooltip';
 import { EmojiSmileFill, SendFill } from '@/icons';
 import EmojiPicker from 'emoji-picker-react';
-import { ConditionalComponent } from '.';
 import CustomPopover from './antd/CustomPopover';
 import CustomSpace from './antd/CustomSpace';
 import { defaultTheme } from '@/themes/themes';
